@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { POST } from "@/app/api/demo/support/route";
+import { POST as pgparaPOST } from "@/app/api/demo/pgpara/route";
 
 const apiKey = "test-development-key";
 
@@ -81,6 +82,45 @@ describe("support proxy", () => {
         channel: "website",
         message: { message_type: "text", content: "Hello" },
         request_id: expect.any(String),
+      }),
+    );
+  });
+});
+
+describe("PGPara prototype proxy", () => {
+  beforeEach(() => {
+    vi.stubEnv("NEXUS_BACKEND_URL", "http://127.0.0.1:8000");
+    vi.stubEnv("NEXUS_DEVELOPMENT_API_KEY", apiKey);
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
+  });
+
+  it("forwards PGPara IDs server-side without returning the API key", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response('event: response.completed\\ndata: {"type":"response.completed"}\\n\\n', {
+        status: 200,
+        headers: { "Content-Type": "text/event-stream" },
+      }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    const response = await pgparaPOST(
+      supportRequest({ conversation_id: "pg-conversation", customer_id: "pg-customer", message: "Sanal POS nedir?" }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("x-api-key")).toBeNull();
+    expect(await response.text()).not.toContain(apiKey);
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual(
+      expect.objectContaining({
+        tenant_id: "pgpara-demo",
+        business_id: "pgpara-assistant",
+        conversation_id: "pg-conversation",
+        customer_id: "pg-customer",
+        message: { message_type: "text", content: "Sanal POS nedir?" },
       }),
     );
   });

@@ -3,9 +3,10 @@ export type DemoIconName =
   | "restaurant"
   | "healthcare"
   | "real-estate"
-  | "custom-business";
+  | "custom-business"
+  | "pgpara";
 
-export type DemoStatus = "available" | "coming-soon" | "planned";
+export type DemoStatus = "available" | "prototype" | "coming-soon" | "planned";
 
 export type Demo = {
   id: string;
@@ -16,11 +17,22 @@ export type Demo = {
     label: string;
     values: string[];
   };
+  href?: string;
   icon: DemoIconName;
   status: DemoStatus;
 };
 
 export const demos: Demo[] = [
+  {
+    id: "pgpara",
+    title: "PGPara AI Assistant",
+    description: "A concept demo for multilingual product guidance, merchant inquiries and safe financial support responses.",
+    capabilities: ["Turkish, Arabic & English", "Merchant Inquiries", "Product Guidance", "Safe Support"],
+    availability: { label: "Demo status", values: ["Concept prototype"] },
+    href: "/demo/pgpara",
+    icon: "pgpara",
+    status: "prototype",
+  },
   {
     id: "customer-support",
     title: "Customer Support",
@@ -33,6 +45,7 @@ export const demos: Demo[] = [
       "Knowledge Base",
     ],
     availability: { label: "Live today", values: ["Website workspace"] },
+    href: "/demo/support",
     icon: "customer-support",
     status: "available",
   },

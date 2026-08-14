@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SSEParser } from "@/lib/sse";
-import { createNewSupportSession, getOrCreateSupportSession } from "@/lib/support-session";
+import { createNewDemoSession, getOrCreateDemoSession } from "@/lib/support-session";
 import {
   appendAssistantDelta,
   applyWorkflowEvent,
@@ -20,6 +20,12 @@ export type ChatMessage = {
   complete?: boolean;
 };
 
+type SupportChatOptions = {
+  endpoint?: string;
+  sessionNamespace?: string;
+  unavailableMessage?: string;
+};
+
 function isEngineEvent(value: unknown): value is EngineStreamEvent {
   return (
     typeof value === "object" &&
@@ -29,15 +35,17 @@ function isEngineEvent(value: unknown): value is EngineStreamEvent {
   );
 }
 
-export default function useSupportChat() {
+export default function useSupportChat({
+  endpoint = "/api/demo/support",
+  sessionNamespace = "support",
+  unavailableMessage = userFacingStreamError(),
+}: SupportChatOptions = {}) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [workflow, setWorkflow] = useState<WorkflowStep[]>(createWorkflowSteps);
   const [isSending, setIsSending] = useState(false);
-  const isReady = useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false,
-  );
+  // Session storage is accessed only from event handlers, so the workspace can
+  // be immediately available without creating a server/client hydration split.
+  const [isReady] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastFailedMessage, setLastFailedMessage] = useState<string | null>(null);
   const sessionRef = useRef<{ conversationId: string; customerId: string } | null>(null);
@@ -48,7 +56,7 @@ export default function useSupportChat() {
   const sendMessage = useCallback(async (content: string) => {
     const session =
       sessionRef.current ||
-      getOrCreateSupportSession(sessionStorage);
+      getOrCreateDemoSession(sessionStorage, sessionNamespace);
     sessionRef.current = session;
     const message = content.trim();
     if (!session || !message || isSending) return;
@@ -77,7 +85,7 @@ export default function useSupportChat() {
     };
 
     try {
-      const response = await fetch("/api/demo/support", {
+      const response = await fetch(endpoint, {
         method: "POST",
         signal: controller.signal,
         headers: { "Content-Type": "application/json" },
@@ -119,7 +127,7 @@ export default function useSupportChat() {
         }
         if (event.type === "request.failed") {
           completed = true;
-          const safeMessage = userFacingStreamError();
+          const safeMessage = unavailableMessage;
           setError(safeMessage);
           setLastFailedMessage(message);
           updateAssistant((assistant) => ({ ...assistant, content: safeMessage, complete: true }));
@@ -135,14 +143,14 @@ export default function useSupportChat() {
       for (const event of parser.finish()) handleEvent(event);
 
       if (!completed) {
-        const safeMessage = userFacingStreamError();
+        const safeMessage = unavailableMessage;
         setError(safeMessage);
         setLastFailedMessage(message);
         updateAssistant((assistant) => ({ ...assistant, content: safeMessage, complete: true }));
       }
     } catch (caught) {
       if (caught instanceof DOMException && caught.name === "AbortError") return;
-      const safeMessage = userFacingStreamError();
+      const safeMessage = unavailableMessage;
       setError(safeMessage);
       setLastFailedMessage(message);
       updateAssistant((assistant) => ({ ...assistant, content: safeMessage, complete: true }));
@@ -151,16 +159,16 @@ export default function useSupportChat() {
       setIsSending(false);
       abortRef.current = null;
     }
-  }, [isSending]);
+  }, [endpoint, isSending, sessionNamespace, unavailableMessage]);
 
   const startNewConversation = useCallback(() => {
     if (isSending) return;
-    sessionRef.current = createNewSupportSession(sessionStorage);
+    sessionRef.current = createNewDemoSession(sessionStorage, sessionNamespace);
     setMessages([]);
     setWorkflow(createWorkflowSteps());
     setError(null);
     setLastFailedMessage(null);
-  }, [isSending]);
+  }, [isSending, sessionNamespace]);
 
   return { messages, workflow, isSending, isReady, error, lastFailedMessage, sendMessage, startNewConversation };
 }

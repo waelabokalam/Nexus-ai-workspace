@@ -17,8 +17,8 @@ const demoCardVariants: Variants = {
 };
 
 export default function DemoCard({ demo }: DemoCardProps) {
-  const isAvailable = demo.status === "available";
-  const statusLabel = isAvailable ? "Live" : demo.status === "planned" ? "Planned" : "Coming soon";
+  const isAvailable = demo.status === "available" || demo.status === "prototype";
+  const statusLabel = demo.status === "available" ? "Live" : demo.status === "prototype" ? "Prototype" : demo.status === "planned" ? "Planned" : "Coming soon";
   const reduceMotion = useReducedMotion();
 
   return (
@@ -72,7 +72,7 @@ export default function DemoCard({ demo }: DemoCardProps) {
       {isAvailable ? (
         <Link
           className="nexus-focus relative mt-auto inline-flex h-11 w-full items-center justify-center rounded-[var(--nexus-radius-control)] bg-white text-sm font-medium text-zinc-950 transition hover:bg-zinc-200"
-          href="/demo/support"
+          href={demo.href ?? "/demo"}
         >
           Open Workspace →
         </Link>

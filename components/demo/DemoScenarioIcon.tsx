@@ -55,6 +55,13 @@ export default function DemoScenarioIcon({
         <path d="m7 9.1 3.1 1.7m6.9-1.7-3.1 1.7m-1.9 3.7v2.9" {...strokeProps} />
       </>
     ),
+    pgpara: (
+      <>
+        <path d="M12 3.5 19 6v5.2c0 4.1-2.7 7.6-7 9.3-4.3-1.7-7-5.2-7-9.3V6l7-2.5Z" {...strokeProps} />
+        <circle cx="12" cy="12" r="1.75" {...strokeProps} />
+        <path d="m7.3 9.1 3.1 1.8m6.3-1.8-3.1 1.8M12 13.75v3" {...strokeProps} />
+      </>
+    ),
   } satisfies Record<DemoIconName, ReactNode>;
 
   return (

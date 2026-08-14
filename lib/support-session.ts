@@ -17,28 +17,49 @@ export type SupportSession = {
   customerId: string;
 };
 
-function persistSupportSession(storage: Storage, session: SupportSession): SupportSession {
-  storage.setItem(CONVERSATION_KEY, session.conversationId);
-  storage.setItem(CUSTOMER_KEY, session.customerId);
+function sessionKeys(namespace: string) {
+  if (namespace === "support") {
+    return { conversation: CONVERSATION_KEY, customer: CUSTOMER_KEY };
+  }
+
+  return {
+    conversation: `nexus-${namespace}-conversation-id`,
+    customer: `nexus-${namespace}-customer-id`,
+  };
+}
+
+function persistDemoSession(storage: Storage, namespace: string, session: SupportSession): SupportSession {
+  const keys = sessionKeys(namespace);
+  storage.setItem(keys.conversation, session.conversationId);
+  storage.setItem(keys.customer, session.customerId);
   return session;
 }
 
-export function getOrCreateSupportSession(storage: Storage): SupportSession {
+export function getOrCreateDemoSession(storage: Storage, namespace = "support"): SupportSession {
+  const keys = sessionKeys(namespace);
   const conversationId =
-    storage.getItem(CONVERSATION_KEY) ?? createSupportId();
+    storage.getItem(keys.conversation) ?? createSupportId();
 
   const customerId =
-    storage.getItem(CUSTOMER_KEY) ?? createSupportId();
+    storage.getItem(keys.customer) ?? createSupportId();
 
-  return persistSupportSession(storage, {
+  return persistDemoSession(storage, namespace, {
     conversationId,
     customerId,
   });
 }
 
-export function createNewSupportSession(storage: Storage): SupportSession {
-  return persistSupportSession(storage, {
+export function createNewDemoSession(storage: Storage, namespace = "support"): SupportSession {
+  return persistDemoSession(storage, namespace, {
     conversationId: createSupportId(),
     customerId: createSupportId(),
   });
+}
+
+export function getOrCreateSupportSession(storage: Storage): SupportSession {
+  return getOrCreateDemoSession(storage);
+}
+
+export function createNewSupportSession(storage: Storage): SupportSession {
+  return createNewDemoSession(storage);
 }
