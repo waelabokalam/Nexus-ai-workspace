@@ -29,6 +29,7 @@ export default function DemoCard({ demo }: DemoCardProps) {
       className={`group relative flex min-h-[370px] flex-col overflow-hidden rounded-[var(--nexus-radius-surface)] border bg-white/[0.025] p-5 shadow-[0_18px_48px_rgba(0,0,0,0.18)] transition-colors duration-200 hover:border-white/[0.18] ${
         isAvailable ? "border-white/[0.17]" : "border-white/[0.1]"
       }`}
+      data-demo-id={demo.id}
     >
       <div className="relative flex items-start justify-between gap-4">
         <div className="flex size-10 items-center justify-center rounded-xl border border-white/[0.1] bg-white/[0.045] text-zinc-100">
