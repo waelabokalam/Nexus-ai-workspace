@@ -13,11 +13,12 @@ export default function NexusCore({
       }}
       className="relative"
     >
-      <div className="absolute inset-0 rounded-full bg-white/[0.07] blur-xl" />
+      <div className="nexus-core__aura absolute inset-0 rounded-full bg-white/[0.07] blur-xl" />
 
       {/* metal sphere */}
       <div
         className="
+          nexus-core__shell
           absolute
           inset-0
           rounded-full
@@ -28,12 +29,13 @@ export default function NexusCore({
         "
       />
 
-      <div className="absolute left-[22%] top-[18%] h-[16%] w-[42%] rounded-full bg-white/25 blur-md" />
+      <div className="nexus-core__highlight absolute left-[22%] top-[18%] h-[16%] w-[42%] rounded-full bg-white/25 blur-md" />
 
       {/* engraved N */}
       <div className="absolute inset-0 flex items-center justify-center">
         <span
           className="
+            nexus-core__letter
             font-heading
             text-xl
             font-semibold

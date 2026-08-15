@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import NexusCore from "@/components/ui/NexusCore";
+import ThemeToggle from "@/components/ThemeToggle";
 import useSupportChat, { type ChatMessage } from "@/hooks/useSupportChat";
 import { messageDirection } from "@/lib/message-direction";
 import type { WorkflowStep } from "@/lib/support-stream";
@@ -16,6 +17,8 @@ const prompts = [
 ] as const;
 
 export type WorkspaceConfig = {
+  theme?: "nexus" | "pgpara";
+  brandName?: string;
   assistantName: string;
   headerTitle: string;
   headerSubtext?: string;
@@ -124,7 +127,7 @@ function WorkflowPanel({ workflow, error, capabilityGroups, integrationTools }: 
       <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Live workflow</p>
       <p className="mt-2 text-sm leading-6 text-zinc-400">Stages appear only when they are emitted by the Nexus Engine.</p>
       {capabilityGroups ? <div className="mt-5 space-y-3 border-t border-white/[0.08] pt-4">{capabilityGroups.map((group) => <section key={group.title}><p className="text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-500">{group.title}</p><p className="mt-1.5 text-xs leading-5 text-zinc-400">{group.items.join(" · ")}</p></section>)}</div> : null}
-      {integrationTools ? <section aria-label="Integration-ready tools" className="mt-5 border-t border-white/[0.08] pt-4"><p className="text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-500">Integration-ready tools</p><div className="mt-3 space-y-2">{integrationTools.map((tool) => <article className="rounded-xl border border-white/[0.08] bg-black/20 p-3" key={tool.title}><div className="flex items-start justify-between gap-3"><p className="text-sm font-medium text-zinc-100">{tool.title}</p><span className="shrink-0 rounded-full border border-white/[0.1] px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-400">{tool.status}</span></div><p className="mt-1.5 text-xs leading-5 text-zinc-400">{tool.description}</p></article>)}</div></section> : null}
+      {integrationTools ? <section aria-label="Integration-ready PGPara tools" className="mt-5 border-t border-white/[0.08] pt-4"><p className="text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-500">PGPara service modules</p><div className="mt-3 space-y-2">{integrationTools.map((tool) => <article className="workspace-tool rounded-xl border border-white/[0.08] bg-black/20 p-3" key={tool.title}><div className="flex items-start justify-between gap-3"><p className="text-sm font-medium text-zinc-100">{tool.title}</p><span className="workspace-tool-status shrink-0 rounded-full border border-white/[0.1] px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-400">{tool.status}</span></div><p className="mt-1.5 text-xs leading-5 text-zinc-400">{tool.description}</p></article>)}</div></section> : null}
       {hasEvents ? <ol className="mt-4 divide-y divide-white/[0.07]">{workflow.map((step) => <WorkflowRow key={step.type} step={step} />)}</ol> : <p className="mt-5 rounded-xl border border-white/[0.08] bg-black/20 p-4 text-sm leading-6 text-zinc-400">Workflow activity will appear here after you send a message.</p>}
       {error && <p className="mt-4 rounded-xl border border-white/[0.12] bg-white/[0.04] p-3 text-sm leading-6 text-zinc-200" role="alert"><span className="font-medium text-white">Request ended.</span> {error}</p>}
     </div>
@@ -232,11 +235,12 @@ export default function SupportWorkspace({ config = supportWorkspaceConfig }: { 
   };
 
   return (
-    <main className="min-h-screen bg-[#09090b] text-white">
+    <main className="nexus-page nexus-workspace min-h-screen text-white" data-workspace-theme={config.theme ?? "nexus"}>
       <a className="nexus-skip-link" href="#support-workspace">Skip to workspace</a>
-      <header className="mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
-        <Link aria-label="Return to Demo Hub" className="nexus-focus inline-flex min-w-0 items-center gap-3 rounded-lg text-sm font-medium text-white" href="/demo"><NexusCore size={30} /><span className="min-w-0"><span className="block truncate">{config.headerTitle}</span>{config.headerSubtext ? <span className="mt-0.5 hidden truncate text-xs font-normal text-zinc-500 sm:block">{config.headerSubtext}</span> : null}</span></Link>
+      <header className="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-4 px-5 sm:px-8">
+        <Link aria-label="Return to Demo Hub" className="nexus-focus inline-flex min-w-0 items-center gap-3 rounded-lg text-sm font-medium text-white" href="/demo">{config.theme === "pgpara" ? <span aria-label="PGPara" className="pgpara-wordmark"><strong>PG</strong>Para</span> : <NexusCore size={30} />}<span className="min-w-0"><span className="block truncate">{config.headerTitle}</span>{config.headerSubtext ? <span className="mt-0.5 hidden truncate text-xs font-normal text-zinc-500 sm:block">{config.headerSubtext}</span> : null}</span></Link>
         <div className="flex items-center rounded-xl border border-white/[0.08] bg-white/[0.02] p-1">
+          <ThemeToggle />
           <button
             aria-label="New conversation"
             className="nexus-focus inline-flex min-h-9 items-center gap-2 rounded-lg border border-white/[0.1] bg-white/[0.055] px-2.5 text-sm font-medium text-zinc-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:border-white/[0.16] hover:bg-white/[0.09] disabled:cursor-not-allowed disabled:opacity-45 sm:px-3"
@@ -253,7 +257,7 @@ export default function SupportWorkspace({ config = supportWorkspaceConfig }: { 
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-6xl gap-4 px-5 pb-6 pt-4 sm:px-8 lg:grid-cols-[minmax(0,1fr)_19rem] lg:pb-10 lg:pt-6" id="support-workspace">
+      <div className="mx-auto grid max-w-7xl gap-4 px-5 pb-6 pt-4 sm:px-8 lg:grid-cols-[minmax(0,1fr)_19rem] lg:pb-10 lg:pt-6" id="support-workspace">
         <section className="nexus-surface flex min-h-[38rem] flex-col overflow-hidden rounded-[var(--nexus-radius-surface)] lg:h-[calc(100dvh-7.75rem)] lg:min-h-0">
           <div className="flex items-center justify-between gap-4 border-b border-white/[0.08] px-5 py-4 sm:px-6">
             <div><p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">{config.prototypeLabel ?? "Live workspace"}</p><h1 className="mt-1.5 font-heading text-xl font-medium tracking-[-0.03em] text-white">{config.workspaceTitle}</h1>{config.headerSubtext ? <p className="mt-1 text-sm text-zinc-400 sm:hidden">{config.headerSubtext}</p> : null}</div>
@@ -291,7 +295,7 @@ export default function SupportWorkspace({ config = supportWorkspaceConfig }: { 
             <p className="mt-3 text-sm leading-6 text-zinc-400" id="new-conversation-description">The current transcript and visible workflow stages will be cleared from this browser. {config.assistantName} receives a new conversation and customer context on your next message.</p>
             <div className="mt-6 flex flex-col-reverse gap-2 border-t border-white/[0.08] pt-4 sm:flex-row sm:justify-end">
               <button className="nexus-focus min-h-10 rounded-lg px-3 text-sm text-zinc-300 transition hover:bg-white/[0.06]" onClick={() => closeResetDialog()} ref={cancelResetRef} type="button">Cancel</button>
-              <button className="nexus-focus min-h-10 rounded-lg bg-white px-3 text-sm font-medium text-zinc-950 transition hover:bg-zinc-200" onClick={completeNewConversation} type="button">Start new conversation</button>
+              <button className="nexus-focus workspace-primary-action min-h-10 rounded-lg bg-white px-3 text-sm font-medium text-zinc-950 transition hover:bg-zinc-200" onClick={completeNewConversation} type="button">Start new conversation</button>
             </div>
           </div>
         </div>

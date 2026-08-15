@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 
 const metadata = [
   "One live workspace",
@@ -10,13 +10,11 @@ const metadata = [
 ];
 
 export default function DemoHero() {
-  const reduceMotion = useReducedMotion();
-
   return (
     <motion.section
       animate={{ opacity: 1, y: 0 }}
       className="mx-auto max-w-3xl text-center"
-      initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+      initial={false}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
       <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">
@@ -35,7 +33,7 @@ export default function DemoHero() {
       <motion.div
         animate="visible"
         className="mx-auto mt-10 flex max-w-2xl flex-wrap justify-center gap-2"
-        initial={reduceMotion ? false : "hidden"}
+        initial={false}
         variants={{
           hidden: {},
           visible: { transition: { delayChildren: 0.25, staggerChildren: 0.06 } },

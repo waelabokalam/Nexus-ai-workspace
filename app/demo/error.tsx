@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function DemoError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
-    <main className="grid min-h-screen place-items-center bg-[#09090b] px-5 text-white sm:px-8">
+    <main className="nexus-page grid min-h-screen place-items-center px-5 text-white sm:px-8">
       <section className="nexus-surface w-full max-w-lg rounded-[var(--nexus-radius-surface)] p-6 sm:p-8">
         <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Demo unavailable</p>
         <h1 className="mt-4 font-heading text-3xl font-medium tracking-[-0.04em] text-white">The product surface could not load.</h1>

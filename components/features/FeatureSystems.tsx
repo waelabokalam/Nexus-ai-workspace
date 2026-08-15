@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 
 type Feature = {
@@ -127,6 +128,7 @@ const systems: FeatureSystem[] = [
 
 export default function FeatureSystems() {
   const [openBySystem, setOpenBySystem] = useState<Record<string, string>>({ respond: "respond-adaptive-communication" });
+  const reduceMotion = useReducedMotion();
 
   return (
     <div className="mt-16 space-y-16 sm:mt-20">
@@ -136,30 +138,56 @@ export default function FeatureSystems() {
             <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">{system.eyebrow}</p>
             <h2 className="mt-3 font-heading text-3xl font-medium tracking-[-0.04em] text-white sm:text-4xl" id={`${system.id}-title`}>{system.title}</h2>
           </div>
-          <div className="mt-5 grid items-start gap-3 lg:grid-cols-2">
-            {system.features.map((feature) => {
+          <div className="mt-5 lg:grid lg:grid-cols-[minmax(14rem,0.76fr)_minmax(0,1.24fr)] lg:gap-5">
+            <div className="space-y-2">
+              {system.features.map((feature) => {
               const featureId = `${system.id}-${feature.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
-              const isOpen = openBySystem[system.id] === featureId;
+              const activeFeatureId = openBySystem[system.id] ?? `${system.id}-${system.features[0].title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
+              const isOpen = activeFeatureId === featureId;
 
               return (
-                <article className="nexus-surface self-start rounded-[var(--nexus-radius-control)]" key={featureId}>
-                  <button aria-controls={`${featureId}-content`} aria-expanded={isOpen} className="nexus-focus flex min-h-16 w-full items-center justify-between gap-4 rounded-[var(--nexus-radius-control)] px-5 py-4 text-left" onClick={() => setOpenBySystem((current) => ({ ...current, [system.id]: isOpen ? "" : featureId }))} type="button">
-                    <span className="text-base font-medium text-white">{feature.title}</span>
+                <article className="nexus-control rounded-[var(--nexus-radius-control)]" key={featureId}>
+                  <button aria-controls={`${featureId}-content`} aria-expanded={isOpen} className={`nexus-focus flex min-h-16 w-full items-center justify-between gap-4 rounded-[var(--nexus-radius-control)] px-5 py-4 text-left ${isOpen ? "bg-white/[0.055]" : ""}`} onClick={() => setOpenBySystem((current) => ({ ...current, [system.id]: featureId }))} type="button">
+                    <span className="nexus-heading text-base font-medium">{feature.title}</span>
                     <span aria-hidden="true" className={`text-lg text-zinc-400 transition-transform duration-200 ${isOpen ? "rotate-45" : ""}`}>+</span>
                   </button>
+                  <div className="lg:hidden">
+                  <AnimatePresence initial={false}>
                   {isOpen && (
-                    <div className="border-t border-white/[0.08] px-5 pb-5 pt-4" id={`${featureId}-content`}>
+                    <motion.div animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} initial={{ height: 0, opacity: 0 }} transition={{ duration: reduceMotion ? 0 : 0.2 }} className="overflow-hidden border-t border-white/[0.08]" id={`${featureId}-content`}>
+                    <div className="px-5 pb-5 pt-4">
                       <p className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-500">{feature.availability}</p>
                       <dl className="mt-5 grid gap-4 text-sm leading-6">
                         <div><dt className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">Business problem</dt><dd className="mt-1.5 text-zinc-400">{feature.problem}</dd></div>
                         <div><dt className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">How Nexus works</dt><dd className="mt-1.5 text-zinc-300">{feature.works}</dd></div>
                         <div><dt className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">Business outcome</dt><dd className="mt-1.5 text-zinc-200">{feature.outcome}</dd></div>
                       </dl>
-                    </div>
+                    </div></motion.div>
                   )}
+                  </AnimatePresence>
+                  </div>
                 </article>
               );
             })}
+            </div>
+            <div className="nexus-card hidden min-h-[20rem] rounded-[var(--nexus-radius-surface)] p-7 lg:block">
+              <AnimatePresence mode="wait" initial={false}>
+                {system.features.map((feature) => {
+                  const featureId = `${system.id}-${feature.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
+                  const activeFeatureId = openBySystem[system.id] ?? `${system.id}-${system.features[0].title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
+                  if (activeFeatureId !== featureId) return null;
+                  return <motion.div animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 6 }} initial={{ opacity: 0, y: 6 }} key={featureId} transition={{ duration: reduceMotion ? 0 : 0.22 }}>
+                    <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">{feature.availability}</p>
+                    <h3 className="nexus-heading mt-5 font-heading text-2xl font-medium tracking-[-0.04em]">{feature.title}</h3>
+                    <dl className="mt-8 grid gap-6 text-sm leading-6">
+                      <div><dt className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">Business problem</dt><dd className="nexus-copy mt-2">{feature.problem}</dd></div>
+                      <div><dt className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">How Nexus works</dt><dd className="nexus-copy mt-2">{feature.works}</dd></div>
+                      <div><dt className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">Business outcome</dt><dd className="nexus-heading mt-2">{feature.outcome}</dd></div>
+                    </dl>
+                  </motion.div>;
+                })}
+              </AnimatePresence>
+            </div>
           </div>
         </section>
       ))}

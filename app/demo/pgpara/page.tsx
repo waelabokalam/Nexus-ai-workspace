@@ -18,6 +18,8 @@ export const metadata: Metadata = {
 };
 
 export const pgparaWorkspaceConfig: WorkspaceConfig = {
+  theme: "pgpara",
+  brandName: "PGPara",
   assistantName: "PGPara AI Assistant",
   headerTitle: "PGPara AI Assistant",
   headerSubtext: "AI-powered product and customer assistance",

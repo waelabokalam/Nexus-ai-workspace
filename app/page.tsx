@@ -7,13 +7,13 @@ import SiteHeader from "@/components/SiteHeader";
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#09090b] text-white">
+    <main className="nexus-page min-h-screen overflow-x-hidden text-white">
       <a className="nexus-skip-link" href="#main-content">Skip to content</a>
       <SiteHeader />
       <div id="main-content">
-      <Hero />
-      <OperatingPrinciples />
-      <WorkspacePreview />
+        <Hero />
+        <OperatingPrinciples />
+        <WorkspacePreview />
       </div>
       <Footer />
     </main>

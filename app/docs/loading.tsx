@@ -1,6 +1,6 @@
 export default function DocsLoading() {
   return (
-    <main aria-busy="true" aria-label="Loading documentation" className="min-h-screen bg-[#09090b] px-5 pt-28 text-white sm:px-8">
+    <main aria-busy="true" aria-label="Loading documentation" className="nexus-page min-h-screen px-5 pt-28 text-white sm:px-8">
       <div className="mx-auto max-w-6xl animate-pulse">
         <div className="h-3 w-28 rounded bg-white/[0.1]" />
         <div className="mt-6 h-14 max-w-3xl rounded bg-white/[0.08]" />

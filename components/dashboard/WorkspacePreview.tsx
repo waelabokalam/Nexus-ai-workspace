@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 
 import AutomationIcon from "@/components/icons/AutomationIcon";
@@ -8,7 +9,7 @@ import GPTIcon from "@/components/icons/GPTIcon";
 import KnowledgeIcon from "@/components/icons/KnowledgeIcon";
 
 const workflowIconContainer =
-  "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.1] bg-white/[0.045] text-zinc-100";
+  "nexus-workflow-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.1] bg-white/[0.045] text-zinc-100";
 
 const flow = [
   { icon: KnowledgeIcon, title: "Business knowledge", description: "Relevant company context is retrieved when the request needs it." },
@@ -50,31 +51,33 @@ const communicationInputs = [
 export default function WorkspacePreview() {
   const [selectedInputIndex, setSelectedInputIndex] = useState(0);
   const selectedInput = communicationInputs[selectedInputIndex];
+  const reduceMotion = useReducedMotion();
 
   return (
-    <section className="relative px-5 py-20 sm:px-8 sm:py-28">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-10 max-w-2xl">
+    <section className="relative px-5 py-24 sm:px-8 sm:py-32">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-12 grid max-w-3xl gap-5">
           <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">How it operates</p>
-          <h2 className="mt-4 font-heading text-4xl font-semibold tracking-[-0.05em] text-white sm:text-5xl">From message to meaningful next step.</h2>
-          <p className="mt-5 text-base leading-7 text-zinc-400">A business request moves through knowledge, memory, routing and action—with the work made visible as it happens.</p>
+          <h2 className="font-heading text-4xl font-semibold tracking-[-0.055em] text-white sm:text-5xl">From message to a meaningful next step.</h2>
+          <p className="max-w-2xl text-base leading-7 text-zinc-400">A business request moves through knowledge, memory, routing and action—with the operational work visible as it happens.</p>
         </div>
 
-        <div className="nexus-surface rounded-[var(--nexus-radius-surface)] p-5 sm:p-8">
+        <div className="nexus-frame rounded-[var(--nexus-radius-surface)] p-1">
+          <div className="rounded-[calc(var(--nexus-radius-surface)-0.3rem)] bg-[#101012]/85 p-5 sm:p-8">
           <div className="flex flex-col gap-3 border-b border-white/[0.08] pb-5 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Illustrative operating flow</p>
-            <p className="text-xs leading-5 text-zinc-500">The live demo shows real emitted workflow events.</p>
+            <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Nexus operating flow</p>
+            <p className="text-xs leading-5 text-zinc-500">The live demo shows actual emitted workflow events.</p>
           </div>
 
           <div className="mt-6 grid gap-5 lg:grid-cols-[0.7fr_1.3fr]">
-            <div className="rounded-[var(--nexus-radius-control)] border border-white/[0.08] bg-black/20 p-5">
+            <div className="rounded-[var(--nexus-radius-control)] border border-white/[0.09] bg-black/25 p-5">
               <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Communication input</p>
               <div aria-label="Illustrative operating-flow stages" className="mt-5 space-y-3 text-left text-sm" role="group">
                 {communicationInputs.map((input, index) => {
                   const isSelected = index === selectedInputIndex;
 
                   return (
-                    <button
+                    <motion.button
                       aria-pressed={isSelected}
                       className={`nexus-focus w-full rounded-xl border px-3 py-3 text-left transition-colors duration-200 ${
                         isSelected
@@ -83,22 +86,24 @@ export default function WorkspacePreview() {
                       }`}
                       key={input.label}
                       onClick={() => setSelectedInputIndex(index)}
+                      transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
                       type="button"
+                      whileHover={reduceMotion ? undefined : { x: 3 }}
+                      whileTap={reduceMotion ? undefined : { scale: 0.985 }}
                     >
-                      <p className={isSelected ? "font-medium text-white" : "font-medium text-zinc-200"}>{input.label}</p>
+                      <div className="flex items-center justify-between gap-3"><p className={isSelected ? "font-medium text-white" : "font-medium text-zinc-200"}>{input.label}</p><motion.span animate={isSelected ? { opacity: [0.65, 1, 0.65], scale: [0.9, 1, 0.9] } : { opacity: 1, scale: 1 }} className={`size-1.5 rounded-full ${isSelected ? "bg-zinc-200 shadow-[0_0_0_4px_rgba(255,255,255,0.06)]" : "bg-zinc-700"}`} transition={isSelected && !reduceMotion ? { duration: 1.8, ease: "easeInOut", repeat: Infinity } : { duration: 0.2 }} /></div>
                       <p className="mt-1 text-xs leading-5 text-zinc-500">{input.detail}</p>
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
             </div>
 
-            <div className="rounded-[var(--nexus-radius-control)] border border-white/[0.08] bg-black/20 p-5 sm:p-7">
+            <div className="rounded-[var(--nexus-radius-control)] border border-white/[0.09] bg-black/25 p-5 sm:p-7">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-sm text-zinc-400">Visible execution</p>
-                  <h3 className="mt-2 font-heading text-2xl font-medium tracking-[-0.04em] text-white sm:text-3xl">{selectedInput.title}</h3>
-                  <p aria-live="polite" className="mt-3 max-w-xl text-sm leading-6 text-zinc-400">{selectedInput.summary}</p>
+                  <motion.div animate={{ opacity: 1, y: 0 }} initial={false} key={selectedInput.title} transition={{ duration: reduceMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}><h3 className="mt-2 font-heading text-2xl font-medium tracking-[-0.04em] text-white sm:text-3xl">{selectedInput.title}</h3><p aria-live="polite" className="mt-3 max-w-xl text-sm leading-6 text-zinc-400">{selectedInput.summary}</p></motion.div>
                 </div>
                 <span className="rounded-full border border-white/[0.1] px-3 py-1 text-xs text-zinc-300">Illustrative</span>
               </div>
@@ -110,15 +115,16 @@ export default function WorkspacePreview() {
                   const isDeemphasized = selectedInput.highlightedStep !== undefined && !isHighlighted;
 
                   return (
-                    <li className={`relative flex gap-4 transition-opacity duration-200 ${isDeemphasized ? "opacity-40" : "opacity-100"}`} key={step.title}>
-                      {index < flow.length - 1 && <span aria-hidden="true" className="absolute left-5 top-10 h-7 w-px bg-white/[0.12]" />}
-                      <span className={`${workflowIconContainer} ${isHighlighted ? "border-white/[0.18] bg-white/[0.09]" : ""}`}><Icon className="size-5" /></span>
+                    <motion.li animate={{ opacity: isDeemphasized ? 0.35 : 1, x: isHighlighted && !reduceMotion ? 3 : 0 }} className="relative flex gap-4" key={step.title} transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}>
+                      {index < flow.length - 1 && <span aria-hidden="true" className="absolute left-5 top-10 h-7 w-px overflow-hidden bg-white/[0.12]"><motion.span animate={isHighlighted && !reduceMotion ? { y: ["-100%", "250%"] } : { y: "-100%" }} className="absolute inset-x-0 top-0 h-3 bg-white" transition={{ duration: 1.3, ease: "easeInOut", repeat: Infinity, repeatDelay: 0.7 }} /></span>}
+                      <motion.span animate={isHighlighted && !reduceMotion ? { scale: [1, 1.08, 1] } : { scale: 1 }} className={`${workflowIconContainer} ${isHighlighted ? "border-white/[0.18] bg-white/[0.09]" : ""}`} transition={{ duration: 1.5, ease: "easeInOut", repeat: Infinity }}><Icon className="size-5" /></motion.span>
                       <div className="pb-1"><p className="text-sm font-medium text-white">{step.title}</p><p className="mt-1 text-sm leading-6 text-zinc-400">{step.description}</p></div>
-                    </li>
+                    </motion.li>
                   );
                 })}
               </ol>
             </div>
+          </div>
           </div>
         </div>
       </div>

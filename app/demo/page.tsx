@@ -4,13 +4,14 @@ import DemoGrid from "@/components/demo/DemoGrid";
 import DemoHero from "@/components/demo/DemoHero";
 import NexusCore from "@/components/ui/NexusCore";
 import Footer from "@/components/Footer";
+import ThemeToggle from "@/components/ThemeToggle";
 import { pageMetadata } from "@/app/metadata";
 
 export const metadata: Metadata = pageMetadata("Demo Hub", "Experience the live Nexus Customer Support workspace and future business communication scenarios.", "/demo");
 
 export default function DemoPage() {
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-[#09090b] text-white">
+    <main className="nexus-page relative min-h-screen overflow-x-hidden text-white">
       <a className="nexus-skip-link" href="#main-content">Skip to content</a>
 
       <header className="relative z-10 mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-6 sm:px-8">
@@ -24,13 +25,14 @@ export default function DemoPage() {
             Powered by<br />
             <span className="text-zinc-500">Nexus Engine</span>
           </p>
+          <ThemeToggle />
           <Link className="nexus-focus rounded-full border border-white/[0.09] bg-white/[0.035] px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-white/[0.16] hover:bg-white/[0.07] hover:text-white" href="/">
             Back to Home
           </Link>
         </div>
       </header>
 
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-20 pt-16 sm:px-8 sm:pt-24" id="main-content">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-24 pt-16 sm:px-8 sm:pt-24" id="main-content">
         <DemoHero />
         <div className="mt-20 sm:mt-24">
           <DemoGrid />

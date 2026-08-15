@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { absoluteSiteUrl, siteConfig } from "@/app/site-config";
 import "./globals.css";
 
@@ -29,9 +29,12 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export const viewport = {
-  themeColor: "#09090b",
-  colorScheme: "dark",
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f4f4f0" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+  ],
+  colorScheme: "dark light",
 };
 
 export default function RootLayout({
@@ -43,6 +46,7 @@ export default function RootLayout({
     <html
       lang="en"
       className="h-full antialiased dark"
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-[#09090B] text-white">
         {children}

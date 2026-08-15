@@ -50,14 +50,20 @@
 
 :root {
   --nexus-canvas: #09090b;
-  --nexus-surface: rgba(255, 255, 255, 0.035);
-  --nexus-surface-raised: rgba(255, 255, 255, 0.055);
+  --nexus-surface: #111113;
+  --nexus-surface-raised: #171719;
+  --nexus-surface-soft: rgba(255, 255, 255, 0.035);
   --nexus-border: rgba(255, 255, 255, 0.11);
-  --nexus-border-strong: rgba(255, 255, 255, 0.18);
-  --nexus-text-muted: #a1a1aa;
-  --nexus-text-subtle: #71717a;
+  --nexus-border-strong: rgba(255, 255, 255, 0.19);
+  --nexus-text: #f7f7f5;
+  --nexus-text-muted: #b0b0b5;
+  --nexus-text-subtle: #7b7b84;
+  --nexus-accent: #f7f7f5;
+  --nexus-accent-foreground: #131314;
+  --nexus-focus-ring: rgba(255, 255, 255, 0.46);
   --nexus-radius-surface: 1.5rem;
   --nexus-radius-control: 0.875rem;
+  --nexus-radius-frame: 1.125rem;
   --background: #050505;
   --foreground: #ffffff;
   --card: oklch(1 0 0);
@@ -126,6 +132,38 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+.light {
+  --nexus-canvas: #f4f4f0;
+  --nexus-surface: #ffffff;
+  --nexus-surface-raised: #ffffff;
+  --nexus-surface-soft: rgba(24, 24, 22, 0.035);
+  --nexus-border: rgba(22, 22, 20, 0.12);
+  --nexus-border-strong: rgba(22, 22, 20, 0.2);
+  --nexus-text: #181816;
+  --nexus-text-muted: #62625e;
+  --nexus-text-subtle: #81817c;
+  --background: #f4f4f0;
+  --foreground: #181816;
+  --card: #ffffff;
+  --card-foreground: #181816;
+  --popover: #ffffff;
+  --popover-foreground: #181816;
+  --primary: #181816;
+  --primary-foreground: #ffffff;
+  --secondary: #e7e7e2;
+  --secondary-foreground: #181816;
+  --muted: #e7e7e2;
+  --muted-foreground: #62625e;
+  --accent: #e7e7e2;
+  --accent-foreground: #181816;
+  --border: rgba(24, 24, 22, 0.14);
+  --input: rgba(24, 24, 22, 0.14);
+  --ring: #181816;
+  --nexus-accent: #181816;
+  --nexus-accent-foreground: #ffffff;
+  --nexus-focus-ring: rgba(24, 24, 22, 0.42);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -147,7 +185,26 @@
   .nexus-surface {
     border: 1px solid var(--nexus-border);
     background: var(--nexus-surface);
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.13);
+  }
+
+  .nexus-page {
+    position: relative;
+    isolation: isolate;
+    background:
+      radial-gradient(65rem 35rem at 50% -15rem, rgba(255, 255, 255, 0.065), transparent 52rem),
+      var(--nexus-canvas);
+    color: var(--nexus-text);
+  }
+
+  .nexus-frame {
+    border: 1px solid var(--nexus-border);
+    background: var(--nexus-surface-soft);
+    box-shadow: 0 20px 64px rgba(0, 0, 0, 0.16);
+  }
+
+  .nexus-hairline {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
   }
 
   .nexus-surface-raised {
@@ -157,12 +214,161 @@
   }
 
   .nexus-focus {
-    @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white;
+    outline-color: var(--nexus-focus-ring);
+    @apply focus-visible:outline-2 focus-visible:outline-offset-2;
   }
 
   .nexus-skip-link {
     @apply sr-only focus:not-sr-only focus:fixed focus:left-5 focus:top-5 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-zinc-950;
   }
+}
+
+.nexus-heading { color: var(--nexus-text); }
+.nexus-copy { color: var(--nexus-text-muted); }
+.nexus-subtle { color: var(--nexus-text-subtle); }
+.nexus-card { border: 1px solid var(--nexus-border); background: var(--nexus-surface); box-shadow: 0 14px 38px rgba(0, 0, 0, 0.12); }
+.nexus-control { border: 1px solid var(--nexus-border); background: var(--nexus-surface-soft); }
+.nexus-button-primary { background: var(--nexus-accent); color: var(--nexus-accent-foreground); }
+.nexus-button-secondary { border: 1px solid var(--nexus-border-strong); background: var(--nexus-surface-soft); color: var(--nexus-text); }
+.nexus-button-primary, .nexus-button-secondary { transition: transform 180ms ease, background 180ms ease, border-color 180ms ease; }
+.nexus-button-primary:hover, .nexus-button-secondary:hover { transform: translateY(-1px); border-color: var(--nexus-border-strong); }
+.nexus-status { border: 1px solid var(--nexus-border); background: var(--nexus-surface-soft); color: var(--nexus-text-muted); }
+
+.nexus-theme-toggle {
+  display: inline-flex;
+  min-height: 2.25rem;
+  min-width: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.035);
+  color: #d4d4d8;
+  transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.nexus-theme-toggle:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.075);
+  color: #ffffff;
+}
+
+.nexus-theme-toggle__track {
+  display: grid;
+  height: 1.25rem;
+  width: 1.25rem;
+  place-items: center;
+}
+
+.nexus-theme-toggle__thumb {
+  display: grid;
+  height: 1.25rem;
+  width: 1.25rem;
+  place-items: center;
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nexus-theme-toggle__thumb svg {
+  height: 1rem;
+  width: 1rem;
+}
+
+.light .nexus-page { background: radial-gradient(65rem 35rem at 50% -15rem, rgba(24, 24, 22, 0.07), transparent 52rem), var(--nexus-canvas); }
+.light .nexus-frame, .light .nexus-surface, .light .nexus-surface-raised, .light .nexus-card { box-shadow: 0 14px 38px rgba(34, 34, 28, 0.09); }
+.light .nexus-page .text-white { color: var(--nexus-text); }
+.light .nexus-page .text-zinc-100, .light .nexus-page .text-zinc-200, .light .nexus-page .text-zinc-300 { color: var(--nexus-text-muted); }
+.light .nexus-page .text-zinc-400, .light .nexus-page .text-zinc-500, .light .nexus-page .text-zinc-600 { color: var(--nexus-text-subtle); }
+.light .nexus-page .bg-white.text-zinc-950 { color: #ffffff; }
+.light .nexus-theme-toggle { border-color: var(--nexus-border); background: var(--nexus-surface); color: var(--nexus-text); }
+.light .nexus-theme-toggle:hover { border-color: var(--nexus-border-strong); background: var(--nexus-surface-soft); color: var(--nexus-text); }
+.light .nexus-theme-toggle__thumb { transform: rotate(180deg); }
+
+/* Keep the shared mark legible against the light canvas: a restrained, dark nickel core. */
+.light .nexus-core__aura {
+  background-color: rgba(24, 24, 22, 0.12) !important;
+}
+
+.light .nexus-core__shell {
+  border-color: rgba(24, 24, 22, 0.28) !important;
+  background: linear-gradient(145deg, #3a3a36 0%, #171716 72%) !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.28), 0 12px 28px rgba(24, 24, 22, 0.2) !important;
+}
+
+.light .nexus-core__highlight {
+  background-color: rgba(255, 255, 255, 0.28) !important;
+}
+
+.light .nexus-core__letter {
+  color: #ffffff !important;
+  text-shadow: 0 1px 7px rgba(255, 255, 255, 0.16);
+}
+
+.light .nexus-workflow-icon { border-color: var(--nexus-border-strong); background: var(--nexus-surface-soft); color: var(--nexus-text); }
+
+.nexus-workspace[data-workspace-theme="pgpara"] {
+  --nexus-canvas: #07110a;
+  --nexus-surface: #0e1a11;
+  --nexus-surface-raised: #142218;
+  --nexus-surface-soft: rgba(66, 167, 67, 0.08);
+  --nexus-border: rgba(150, 204, 143, 0.19);
+  --nexus-border-strong: rgba(107, 190, 96, 0.47);
+  --nexus-accent: #25a520;
+  --nexus-accent-foreground: #ffffff;
+  --nexus-focus-ring: rgba(91, 193, 82, 0.72);
+}
+
+.nexus-workspace[data-workspace-theme="pgpara"] .nexus-surface,
+.nexus-workspace[data-workspace-theme="pgpara"] .nexus-card {
+  background: var(--nexus-surface);
+  border-color: var(--nexus-border);
+  box-shadow: 0 16px 42px rgba(1, 20, 5, 0.25);
+}
+
+.pgpara-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  color: #f4fff2;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.07em;
+}
+
+.pgpara-wordmark strong { color: #42b83f; font-weight: 800; }
+
+.nexus-workspace[data-workspace-theme="pgpara"] .workspace-primary-action,
+.nexus-workspace[data-workspace-theme="pgpara"] button[type="submit"] {
+  background: #25a520;
+  color: #ffffff;
+}
+
+.nexus-workspace[data-workspace-theme="pgpara"] button[type="submit"]:hover,
+.nexus-workspace[data-workspace-theme="pgpara"] .workspace-primary-action:hover { background: #208c1d; }
+
+.nexus-workspace[data-workspace-theme="pgpara"] .nexus-theme-toggle {
+  border-color: rgba(150, 204, 143, 0.2);
+  background: rgba(66, 167, 67, 0.08);
+}
+
+.nexus-workspace[data-workspace-theme="pgpara"] .workspace-tool {
+  border-color: rgba(100, 195, 90, 0.22);
+  background: rgba(43, 151, 43, 0.08);
+}
+
+.nexus-workspace[data-workspace-theme="pgpara"] .workspace-tool-status {
+  border-color: rgba(91, 193, 82, 0.35);
+  color: #88df80;
+}
+
+.light .nexus-workspace[data-workspace-theme="pgpara"] {
+  --nexus-canvas: #f5faf4;
+  --nexus-surface: #ffffff;
+  --nexus-surface-raised: #ffffff;
+  --nexus-surface-soft: rgba(37, 165, 32, 0.07);
+  --nexus-border: rgba(28, 105, 28, 0.16);
+  --nexus-border-strong: rgba(28, 105, 28, 0.35);
+  --nexus-text: #102012;
+  --nexus-text-muted: #526254;
+  --nexus-text-subtle: #687669;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import NexusCore from "@/components/ui/NexusCore";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const navigation = [
   { href: "/features", label: "Features" },
@@ -54,14 +55,14 @@ export default function SiteHeader() {
   }, [closeMenu, open]);
 
   return (
-    <header className="sticky top-0 z-50 mx-auto w-full max-w-6xl px-5 pt-4 sm:px-8 sm:pt-5">
-      <div className="nexus-surface relative flex min-h-14 items-center justify-between rounded-[var(--nexus-radius-control)] bg-zinc-950/90 px-4 backdrop-blur-xl sm:px-5">
+    <header className="sticky top-0 z-50 mx-auto w-full max-w-7xl px-5 pt-4 sm:px-8 sm:pt-5">
+      <div className="nexus-frame relative flex min-h-14 items-center justify-between rounded-[var(--nexus-radius-frame)] bg-zinc-950/80 px-4 backdrop-blur-xl sm:px-5">
         <Link aria-label="Nexus home" className="inline-flex items-center gap-2.5 text-sm font-semibold tracking-[-0.02em] text-white" href="/">
           <NexusCore size={27} />
           <span>Nexus</span>
         </Link>
 
-        <nav aria-label="Primary navigation" className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 text-sm md:flex">
+        <nav aria-label="Primary navigation" className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-xl border border-white/[0.06] bg-black/20 p-1 text-sm md:flex">
           {navigation.map((item) => (
             <Link aria-current={pathname === item.href ? "page" : undefined} className={`nexus-focus rounded-lg px-3 py-2 transition-colors ${pathname === item.href ? "bg-white/[0.07] text-white" : "text-zinc-400 hover:bg-white/[0.04] hover:text-white"}`} href={item.href} key={item.href}>
               {item.label}
@@ -70,8 +71,9 @@ export default function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link className="nexus-focus hidden rounded-lg bg-white px-4 py-2 text-sm font-medium text-zinc-950 transition hover:bg-zinc-200 sm:inline-flex" href="/demo">
-            Try Nexus
+          <ThemeToggle />
+          <Link className="nexus-focus hidden min-h-9 items-center rounded-lg bg-white px-4 text-sm font-medium text-zinc-950 transition hover:bg-zinc-200 sm:inline-flex" href="/demo">
+            Try Nexus <span aria-hidden="true" className="ml-1.5">→</span>
           </Link>
           <button
             aria-controls="site-navigation-mobile"

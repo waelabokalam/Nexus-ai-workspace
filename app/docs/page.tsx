@@ -78,9 +78,9 @@ const eventRows = [
 export default function DocsPage() {
   return (
     <MarketingPage>
-      <div className="mx-auto max-w-6xl px-5 pb-24 pt-20 sm:px-8 sm:pt-28">
+      <div className="mx-auto max-w-7xl px-5 pb-28 pt-20 sm:px-8 sm:pt-28">
         <div className="max-w-3xl">
-          <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Documentation</p>
+          <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Nexus documentation</p>
           <h1 className="mt-5 font-heading text-5xl font-semibold tracking-[-0.055em] text-white sm:text-6xl">Operate the conversation with confidence.</h1>
           <p className="mt-6 text-lg leading-8 text-zinc-400">A practical guide to the current Nexus website workspace, its streaming behavior and the capabilities that support it.</p>
         </div>

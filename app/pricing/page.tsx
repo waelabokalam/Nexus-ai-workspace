@@ -54,16 +54,16 @@ const plans = [
 export default function PricingPage() {
   return (
     <MarketingPage>
-      <section className="mx-auto max-w-6xl px-5 pb-24 pt-20 sm:px-8 sm:pt-28">
+      <section className="mx-auto max-w-7xl px-5 pb-28 pt-20 sm:px-8 sm:pt-28">
         <div className="max-w-3xl">
-          <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Early access</p>
+          <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Nexus early access</p>
           <h1 className="mt-5 font-heading text-5xl font-semibold tracking-[-0.055em] text-white sm:text-6xl">A clear starting point for the work behind every customer reply.</h1>
           <p className="mt-6 text-lg leading-8 text-zinc-400">Choose the business communication scope that fits today, then shape the workflow deliberately as Nexus expands with your team.</p>
         </div>
 
         <div className="mt-14 grid items-start gap-4 lg:grid-cols-3">
           {plans.map((plan) => (
-            <article className={`relative flex min-h-[430px] flex-col rounded-[var(--nexus-radius-surface)] p-6 ${plan.recommended ? "nexus-surface-raised border-white/[0.22]" : "nexus-surface"}`} key={plan.name}>
+            <article className={`relative flex min-h-[430px] flex-col rounded-[var(--nexus-radius-surface)] p-6 transition-transform duration-300 hover:-translate-y-1 ${plan.recommended ? "nexus-surface-raised border-white/[0.22]" : "nexus-surface"}`} key={plan.name}>
               {plan.recommended && <span className="absolute right-6 top-6 rounded-full border border-white/[0.16] px-2.5 py-1 text-[11px] font-medium text-zinc-200">Recommended</span>}
               <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">{plan.availability}</p>
               <h2 className="mt-4 font-heading text-2xl font-medium tracking-[-0.04em] text-white">{plan.name}</h2>
