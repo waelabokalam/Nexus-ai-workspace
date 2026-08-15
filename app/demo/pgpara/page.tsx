@@ -3,6 +3,7 @@ import SupportWorkspace, { type WorkspaceConfig } from "@/components/support/Sup
 import { pageMetadata } from "@/app/metadata";
 import {
   pgparaCapabilities,
+  pgparaIntegrationTools,
   pgparaSecondaryPrompts,
   pgparaStarterPrompts,
 } from "@/data/pgpara-demo";
@@ -27,6 +28,7 @@ export const pgparaWorkspaceConfig: WorkspaceConfig = {
   prompts: pgparaStarterPrompts,
   secondaryPrompts: pgparaSecondaryPrompts,
   capabilityGroups: pgparaCapabilities,
+  integrationTools: pgparaIntegrationTools,
   composerPlaceholder: "Ask about PGPara products, transfers, or merchant services…",
   composerLabel: "Message PGPara AI Assistant",
   endpoint: "/api/demo/pgpara",

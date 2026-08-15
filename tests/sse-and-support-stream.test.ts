@@ -4,6 +4,7 @@ import { createNewSupportSession, getOrCreateSupportSession } from "@/lib/suppor
 import { createNewDemoSession, getOrCreateDemoSession } from "@/lib/support-session";
 import { messageDirection } from "@/lib/message-direction";
 import PGParaDemoPage, { pgparaWorkspaceConfig } from "@/app/demo/pgpara/page";
+import { pgparaIntegrationTools } from "@/data/pgpara-demo";
 import {
   appendAssistantDelta,
   applyWorkflowEvent,
@@ -137,5 +138,15 @@ describe("SSE parsing and support stream state", () => {
     expect(messageDirection("بدي أعرف كيف أقدر أرسل حوالة")).toBe("rtl");
     expect(messageDirection("Sanal POS nedir?")).toBe("auto");
     expect(JSON.stringify(pgparaWorkspaceConfig)).not.toContain("NEXUS_DEVELOPMENT_API_KEY");
+  });
+
+  it("presents only non-live PGPara integration-ready tools", () => {
+    expect(pgparaIntegrationTools.map((tool) => tool.title)).toEqual([
+      "Transfer Calculator",
+      "Transfer Status",
+      "Representative Finder",
+    ]);
+    expect(pgparaIntegrationTools.every((tool) => tool.status === "Integration ready")).toBe(true);
+    expect(JSON.stringify(pgparaIntegrationTools)).not.toMatch(/rate|commission|fee|endpoint|transaction number/i);
   });
 });

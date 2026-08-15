@@ -26,6 +26,7 @@ export type WorkspaceConfig = {
   prompts: readonly string[];
   secondaryPrompts?: readonly string[];
   capabilityGroups?: readonly { title: string; items: readonly string[] }[];
+  integrationTools?: readonly { title: string; status: string; description: string }[];
   composerPlaceholder: string;
   composerLabel?: string;
   endpoint?: string;
@@ -116,13 +117,14 @@ function WorkflowRow({ step }: { step: WorkflowStep }) {
   );
 }
 
-function WorkflowPanel({ workflow, error, capabilityGroups }: { workflow: WorkflowStep[]; error: string | null; capabilityGroups?: WorkspaceConfig["capabilityGroups"] }) {
+function WorkflowPanel({ workflow, error, capabilityGroups, integrationTools }: { workflow: WorkflowStep[]; error: string | null; capabilityGroups?: WorkspaceConfig["capabilityGroups"]; integrationTools?: WorkspaceConfig["integrationTools"] }) {
   const hasEvents = workflow.some((step) => step.state !== "pending");
   return (
     <div className="nexus-surface rounded-[var(--nexus-radius-surface)] p-5">
       <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Live workflow</p>
       <p className="mt-2 text-sm leading-6 text-zinc-400">Stages appear only when they are emitted by the Nexus Engine.</p>
       {capabilityGroups ? <div className="mt-5 space-y-3 border-t border-white/[0.08] pt-4">{capabilityGroups.map((group) => <section key={group.title}><p className="text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-500">{group.title}</p><p className="mt-1.5 text-xs leading-5 text-zinc-400">{group.items.join(" · ")}</p></section>)}</div> : null}
+      {integrationTools ? <section aria-label="Integration-ready tools" className="mt-5 border-t border-white/[0.08] pt-4"><p className="text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-500">Integration-ready tools</p><div className="mt-3 space-y-2">{integrationTools.map((tool) => <article className="rounded-xl border border-white/[0.08] bg-black/20 p-3" key={tool.title}><div className="flex items-start justify-between gap-3"><p className="text-sm font-medium text-zinc-100">{tool.title}</p><span className="shrink-0 rounded-full border border-white/[0.1] px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-zinc-400">{tool.status}</span></div><p className="mt-1.5 text-xs leading-5 text-zinc-400">{tool.description}</p></article>)}</div></section> : null}
       {hasEvents ? <ol className="mt-4 divide-y divide-white/[0.07]">{workflow.map((step) => <WorkflowRow key={step.type} step={step} />)}</ol> : <p className="mt-5 rounded-xl border border-white/[0.08] bg-black/20 p-4 text-sm leading-6 text-zinc-400">Workflow activity will appear here after you send a message.</p>}
       {error && <p className="mt-4 rounded-xl border border-white/[0.12] bg-white/[0.04] p-3 text-sm leading-6 text-zinc-200" role="alert"><span className="font-medium text-white">Request ended.</span> {error}</p>}
     </div>
@@ -279,7 +281,7 @@ export default function SupportWorkspace({ config = supportWorkspaceConfig }: { 
           </div>
         </section>
 
-        <aside className={`${workflowOpen ? "block" : "hidden"} lg:block`} id="support-workflow"><WorkflowPanel capabilityGroups={config.capabilityGroups} error={error} workflow={workflow} /></aside>
+        <aside className={`${workflowOpen ? "block" : "hidden"} lg:block`} id="support-workflow"><WorkflowPanel capabilityGroups={config.capabilityGroups} error={error} integrationTools={config.integrationTools} workflow={workflow} /></aside>
       </div>
       {confirmingNewConversation && (
         <div aria-describedby="new-conversation-description" aria-labelledby="new-conversation-title" aria-modal="true" className="fixed inset-0 z-[60] grid place-items-center bg-black/65 p-5 backdrop-blur-sm" onKeyDown={onResetDialogKeyDown} role="dialog">
