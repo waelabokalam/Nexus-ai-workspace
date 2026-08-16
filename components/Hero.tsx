@@ -40,7 +40,7 @@ export default function Hero() {
           <div className="rounded-[calc(var(--nexus-radius-surface)-0.3rem)] bg-[#111113]/90 p-5 sm:p-6">
             <div className="flex items-center justify-between gap-4"><motion.div animate={reduceMotion ? undefined : { rotate: [0, 1.5, 0, -1.5, 0] }} transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}><NexusCore size={38} /></motion.div><span className="rounded-full border border-white/[0.1] px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-400">Operating layer</span></div>
             <div className="relative mt-8 overflow-hidden border-y border-white/[0.08] py-4">
-              <motion.span animate={reduceMotion ? undefined : { x: ["-20%", "120%"] }} aria-hidden="true" className="absolute inset-y-0 w-20 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent" transition={{ duration: 3.8, ease: "easeInOut", repeat: Infinity, repeatDelay: 1.6 }} />
+              <motion.span animate={reduceMotion ? undefined : { left: ["-5rem", "50%", "-5rem"], x: ["0%", "-50%", "0%"] }} aria-hidden="true" className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent" transition={{ duration: 3.8, ease: "easeInOut", repeat: Infinity, repeatDelay: 1.6 }} />
               <p className="text-xs font-medium uppercase tracking-[0.15em] text-zinc-500">Customer request</p>
               <p className="mt-2 text-sm leading-6 text-zinc-200">“Can you help our team understand the right next step?”</p>
             </div>
