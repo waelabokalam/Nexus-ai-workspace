@@ -17,7 +17,7 @@ export default function ThemeToggle() {
     () => () => {},
     () => {
       const savedTheme = window.localStorage.getItem("nexus-theme") as Theme | null;
-      return savedTheme ?? (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+      return savedTheme ?? "dark";
     },
     () => "dark",
   );
