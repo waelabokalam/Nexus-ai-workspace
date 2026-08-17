@@ -279,10 +279,10 @@
 .light .nexus-page .text-zinc-100, .light .nexus-page .text-zinc-200, .light .nexus-page .text-zinc-300 { color: var(--nexus-text-muted); }
 .light .nexus-page .text-zinc-400, .light .nexus-page .text-zinc-500, .light .nexus-page .text-zinc-600 { color: var(--nexus-text-subtle); }
 .light .nexus-page .bg-white.text-zinc-950 {
-  background-color: var(--nexus-accent);
-  color: var(--nexus-accent-foreground);
+  background-color: var(--nexus-accent) !important;
+  color: var(--nexus-accent-foreground) !important;
 }
-.light .nexus-page .bg-white.text-zinc-950:hover { background-color: #30302d; }
+.light .nexus-page .bg-white.text-zinc-950:hover { background-color: #30302d !important; }
 .light .nexus-page .border-white\/\[0\.06\], .light .nexus-page .border-white\/\[0\.07\], .light .nexus-page .border-white\/\[0\.08\], .light .nexus-page .border-white\/\[0\.09\], .light .nexus-page .border-white\/\[0\.1\], .light .nexus-page .border-white\/\[0\.11\], .light .nexus-page .border-white\/\[0\.12\], .light .nexus-page .border-white\/\[0\.14\], .light .nexus-page .border-white\/\[0\.15\], .light .nexus-page .border-white\/\[0\.16\], .light .nexus-page .border-white\/\[0\.18\], .light .nexus-page .border-white\/\[0\.22\], .light .nexus-page .border-white\/\[0\.25\] { border-color: var(--nexus-border); }
 .light .nexus-page .bg-black\/20, .light .nexus-page .bg-black\/25, .light .nexus-page .bg-black\/35 { background-color: var(--nexus-surface-soft); }
 .light .nexus-page .bg-zinc-950\/80, .light .nexus-page .bg-zinc-950\/95, .light .nexus-page .bg-\[\#101012\]\/85, .light .nexus-page .bg-\[\#111113\]\/90 { background-color: var(--nexus-surface); }
