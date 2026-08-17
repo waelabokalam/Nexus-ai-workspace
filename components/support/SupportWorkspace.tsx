@@ -240,7 +240,7 @@ export default function SupportWorkspace({ config = supportWorkspaceConfig }: { 
       <header className="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-4 px-5 sm:px-8">
         <Link aria-label="Return to Demo Hub" className="workspace-brand nexus-focus inline-flex min-w-0 items-center gap-3 rounded-lg text-sm font-medium text-white" href="/demo">{config.theme === "pgpara" ? <span aria-label="PGPara" className="pgpara-wordmark"><strong>PG</strong>Para</span> : <NexusCore size={30} />}<span className="min-w-0"><span className="block truncate">{config.headerTitle}</span>{config.headerSubtext ? <span className="mt-0.5 hidden truncate text-xs font-normal text-zinc-500 sm:block">{config.headerSubtext}</span> : null}</span></Link>
         <div className="flex items-center rounded-xl border border-white/[0.08] bg-white/[0.02] p-1">
-          <ThemeToggle />
+          <ThemeToggle defaultTheme={config.theme === "pgpara" ? "light" : "dark"} />
           <button
             aria-label="New conversation"
             className="nexus-focus inline-flex min-h-9 items-center gap-2 rounded-lg border border-white/[0.1] bg-white/[0.055] px-2.5 text-sm font-medium text-zinc-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:border-white/[0.16] hover:bg-white/[0.09] disabled:cursor-not-allowed disabled:opacity-45 sm:px-3"

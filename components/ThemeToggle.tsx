@@ -12,14 +12,14 @@ function MoonIcon() {
   return <svg aria-hidden="true" fill="none" viewBox="0 0 24 24"><path d="M20 14.4A8.5 8.5 0 0 1 9.6 4a8.5 8.5 0 1 0 10.4 10.4Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" /></svg>;
 }
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ defaultTheme = "dark" }: { defaultTheme?: Theme }) {
   const storedTheme = useSyncExternalStore(
     () => () => {},
     () => {
       const savedTheme = window.localStorage.getItem("nexus-theme") as Theme | null;
-      return savedTheme ?? "dark";
+      return savedTheme ?? defaultTheme;
     },
-    () => "dark",
+    () => defaultTheme,
   );
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
   const theme = selectedTheme ?? storedTheme;

@@ -401,6 +401,27 @@
   --nexus-text-subtle: #687669;
 }
 
+.dark .nexus-workspace[data-workspace-theme="pgpara"] {
+  --nexus-canvas: #0b120d;
+  --nexus-surface: #111b13;
+  --nexus-surface-raised: #172319;
+  --nexus-surface-soft: rgba(75, 165, 69, 0.1);
+  --nexus-border: rgba(146, 205, 139, 0.19);
+  --nexus-border-strong: rgba(116, 193, 106, 0.46);
+  --nexus-text: #eff8ed;
+  --nexus-text-muted: #b6c9b4;
+  --nexus-text-subtle: #82947f;
+  background: var(--nexus-canvas);
+}
+
+.dark .nexus-workspace[data-workspace-theme="pgpara"] .text-white { color: var(--nexus-text); }
+.dark .nexus-workspace[data-workspace-theme="pgpara"] .text-zinc-100, .dark .nexus-workspace[data-workspace-theme="pgpara"] .text-zinc-200, .dark .nexus-workspace[data-workspace-theme="pgpara"] .text-zinc-300 { color: var(--nexus-text-muted); }
+.dark .nexus-workspace[data-workspace-theme="pgpara"] .text-zinc-400, .dark .nexus-workspace[data-workspace-theme="pgpara"] .text-zinc-500, .dark .nexus-workspace[data-workspace-theme="pgpara"] .text-zinc-600 { color: var(--nexus-text-subtle); }
+.dark .nexus-workspace[data-workspace-theme="pgpara"] .workspace-message--assistant { border-color: rgba(146, 205, 139, 0.16); background: #142016; color: #dcebd9; }
+.dark .nexus-workspace[data-workspace-theme="pgpara"] .workspace-shortcut { border-color: rgba(146, 205, 139, 0.2); background: #152317; color: #dfeeda; }
+.dark .nexus-workspace[data-workspace-theme="pgpara"] .workspace-composer { border-color: rgba(146, 205, 139, 0.22); background: #111b13; }
+.dark .nexus-workspace[data-workspace-theme="pgpara"] .workspace-tool { border-color: rgba(146, 205, 139, 0.19); background: #142016; }
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
