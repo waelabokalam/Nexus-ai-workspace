@@ -52,11 +52,12 @@ export const demos: Demo[] = [
   {
     id: "restaurant",
     title: "Restaurant",
-    description: "A future guest-support configuration for questions, reservations and service details.",
+    description: "Guest support for Saray Sofrasi: menu questions in three languages and live table reservations.",
     capabilities: ["Reservations", "Menu Q&A", "Business Knowledge"],
-    availability: { label: "Release status", values: ["Planned scenario"] },
+    availability: { label: "Live today", values: ["Website workspace"] },
+    href: "/demo/restaurant",
     icon: "restaurant",
-    status: "coming-soon",
+    status: "available",
   },
   {
     id: "healthcare",
