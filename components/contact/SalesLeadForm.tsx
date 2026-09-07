@@ -40,17 +40,17 @@ const channelChoices: Array<[CurrentChannel, string]> = [
 ];
 
 const interestChoices: Array<[Interest, string]> = [
-  ["website_digital_experience", "Website / digital experience"],
-  ["online_ordering", "Online ordering"],
-  ["customer_support", "Customer support"],
-  ["whatsapp_automation", "WhatsApp automation"],
+  ["too_many_systems", "Too many disconnected systems"],
+  ["customer_messages", "Customer messages"],
   ["reservations", "Reservations"],
-  ["customer_crm", "Customer CRM"],
-  ["delivery_workflow", "Delivery workflow"],
-  ["admin_operations", "Admin operations"],
-  ["analytics", "Analytics"],
-  ["full_restaurant_system", "Full restaurant system"],
-  ["something_custom", "Something custom"],
+  ["reviews_reputation", "Reviews and reputation"],
+  ["manager_reporting", "Manager reporting"],
+  ["repetitive_admin", "Repetitive admin work"],
+  ["customer_retention", "Customer retention"],
+  ["multi_location_operations", "Multi-location operations"],
+  ["supplier_invoice_work", "Supplier and invoice work"],
+  ["direct_customer_channel", "Customer-facing direct channel"],
+  ["custom_workflow", "Something custom"],
 ];
 
 function initialFormState(industry: Industry): FormState {
@@ -215,7 +215,7 @@ export default function SalesLeadForm({ initialAttribution, contactEmail }: { in
       <fieldset className="mt-8 border-t border-[var(--nexus-border)] pt-7">
         <legend className="nexus-heading text-sm font-medium">Current operations</legend>
         <div className="mt-5">
-          <p className="nexus-label">How do customers currently order or contact you?<span aria-hidden="true"> *</span></p>
+          <p className="nexus-label">Which channels or systems are part of the workflow today?<span aria-hidden="true"> *</span></p>
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {channelChoices.map(([value, label]) => <MultiSelectButton key={value} onClick={() => update("current_channels", toggleSelection(form.current_channels, value))} selected={form.current_channels.includes(value)}>{label}</MultiSelectButton>)}
           </div>

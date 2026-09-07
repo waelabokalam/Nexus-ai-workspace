@@ -146,7 +146,7 @@ describe("SSE parsing and support stream state", () => {
       "Transfer Status",
       "Representative Finder",
     ]);
-    expect(pgparaIntegrationTools.every((tool) => tool.status === "Integration ready")).toBe(true);
+    expect(pgparaIntegrationTools.every((tool) => tool.status === "Next")).toBe(true);
     expect(JSON.stringify(pgparaIntegrationTools)).not.toMatch(/rate|commission|fee|endpoint|transaction number/i);
   });
 });

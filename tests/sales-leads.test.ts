@@ -14,7 +14,7 @@ function validLead(overrides: Record<string, unknown> = {}) {
     city: "Istanbul",
     location_count: "2-5",
     current_channels: ["website", "instagram"],
-    interested_in: ["online_ordering", "customer_crm"],
+    interested_in: ["too_many_systems", "manager_reporting"],
     pain_point: "Orders and customer context are split across tools.",
     industry: "restaurants",
     source_page: "/restaurants",

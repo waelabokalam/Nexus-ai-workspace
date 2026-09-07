@@ -23,12 +23,12 @@ export function GET() {
           Nexus
         </div>
         <div style={{ display: "flex", flexDirection: "column", maxWidth: "900px" }}>
-          <div style={{ color: "#a1a1aa", fontSize: 22, letterSpacing: "0.16em", textTransform: "uppercase" }}>Business communication</div>
-          <div style={{ fontSize: 72, fontWeight: 600, letterSpacing: "-0.055em", lineHeight: 1.02, marginTop: 24 }}>AI operating system for business communication.</div>
-          <div style={{ color: "#a1a1aa", fontSize: 28, lineHeight: 1.4, marginTop: 26 }}>Adaptive responses, business knowledge, memory, workflows and visible execution.</div>
+          <div style={{ color: "#a1a1aa", fontSize: 22, letterSpacing: "0.16em", textTransform: "uppercase" }}>Intelligent business systems</div>
+          <div style={{ fontSize: 72, fontWeight: 600, letterSpacing: "-0.055em", lineHeight: 1.02, marginTop: 24 }}>Intelligence built around the operation.</div>
+          <div style={{ color: "#a1a1aa", fontSize: 28, lineHeight: 1.4, marginTop: 26 }}>Applied AI, automation, focused software and emerging vision products.</div>
         </div>
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.13)", color: "#a1a1aa", display: "flex", fontSize: 20, justifyContent: "space-between", paddingTop: 22 }}>
-          <span>English · Arabic · Turkish</span>
+          <span>Agents · Automation · Systems · Vision</span>
           <span>Early access</span>
         </div>
       </div>

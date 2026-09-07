@@ -1,5 +1,5 @@
 const principles = [
-  ["Business systems", "Complete operational platforms designed around the workflows, people and constraints of a specific industry.", "Software"],
+  ["Business systems", "Focused operational products designed around the workflows, people and constraints of a specific industry.", "Software"],
   ["AI agents", "Customer service, sales, scheduling, knowledge and internal agents connected to approved business context.", "Intelligence"],
   ["Automation", "Workflows that connect messaging, CRM, operations, approvals and external services without hiding execution.", "Operations"],
   ["Computer vision", "Camera activity translated into useful operational signals and alerts for people to review where appropriate.", "Vision"],
@@ -9,7 +9,7 @@ export default function OperatingPrinciples() {
   return (
     <section className="relative border-y border-white/[0.08] bg-white/[0.018] py-20 sm:py-24" id="systems">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="max-w-3xl"><p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">What Nexus builds</p><h2 className="nexus-heading mt-4 font-heading text-3xl font-medium tracking-[-0.045em] sm:text-4xl">Four disciplines. One operating system.</h2><p className="nexus-copy mt-4 max-w-2xl text-base leading-7">Nexus brings product engineering and applied intelligence together so businesses do not have to stitch the operating model together themselves.</p></div>
+        <div className="max-w-3xl"><p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">What Nexus builds</p><h2 className="nexus-heading mt-4 font-heading text-3xl font-medium tracking-[-0.045em] sm:text-4xl">Four disciplines. One applied intelligence partner.</h2><p className="nexus-copy mt-4 max-w-2xl text-base leading-7">Nexus brings product engineering and applied intelligence together around the parts of an operation where context, decisions, and repeated work need to connect.</p></div>
         <div className="mt-10 grid gap-3 md:grid-cols-2">
           {principles.map(([title, description, status], index) => (
             <article className="nexus-card group min-h-56 rounded-[var(--nexus-radius-control)] p-6 transition-transform hover:-translate-y-0.5" key={title}>

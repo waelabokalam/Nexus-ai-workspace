@@ -5,7 +5,7 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import DocsNavigation from "@/components/docs/DocsNavigation";
 import { pageMetadata } from "@/app/metadata";
 
-export const metadata: Metadata = pageMetadata("Documentation", "A practical guide to the current Nexus website workspace and communication engine capabilities.", "/docs");
+export const metadata: Metadata = pageMetadata("Nexus Agent Documentation", "Technical documentation for the current Nexus Agent website workspace, streaming contract, knowledge, memory, and actions.", "/docs");
 
 const sections = [
   { id: "overview", title: "Overview" },
@@ -80,17 +80,17 @@ export default function DocsPage() {
     <MarketingPage>
       <div className="mx-auto max-w-7xl px-5 pb-28 pt-20 sm:px-8 sm:pt-28">
         <div className="max-w-3xl">
-          <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Nexus documentation</p>
-          <h1 className="mt-5 font-heading text-5xl font-semibold tracking-[-0.055em] text-white sm:text-6xl">Operate the conversation with confidence.</h1>
-          <p className="mt-6 text-lg leading-8 text-zinc-400">A practical guide to the current Nexus website workspace, its streaming behavior and the capabilities that support it.</p>
+          <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Nexus Agent · Technical documentation</p>
+          <h1 className="nexus-heading mt-5 font-heading text-5xl font-semibold tracking-[-0.055em] sm:text-6xl">Build on the conversational engine.</h1>
+          <p className="nexus-copy mt-6 text-lg leading-8">This documentation covers the current Nexus Agent website workspace, streaming contract, knowledge retrieval, conversation memory, and enabled actions. It does not document every Nexus product area.</p>
         </div>
 
         <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-[13.5rem_minmax(0,1fr)]">
           <DocsNavigation sections={sections} />
-          <article className="space-y-10">
+          <article className="min-w-0 space-y-10">
             <DocSection id="overview" title="Overview">
-              <p>Nexus is an AI operating system for business communication. The public product currently demonstrates a website support workspace connected to the Nexus Engine.</p>
-              <aside className="rounded-[var(--nexus-radius-control)] border border-white/[0.1] bg-white/[0.035] p-4 text-sm leading-6 text-zinc-300" role="note"><strong className="font-medium text-white">Current public scope.</strong> Customer Support is the live workspace. Other scenarios, integrations and channels are planned rather than functioning public demos.</aside>
+              <p>Nexus Agent is the conversational intelligence module within the broader Nexus product. The public workspaces demonstrate the current engine through real streamed responses and emitted workflow events.</p>
+              <aside className="rounded-[var(--nexus-radius-control)] border border-[var(--nexus-border)] bg-[var(--nexus-surface-soft)] p-4 text-sm leading-6 text-[var(--nexus-text-muted)]" role="note"><strong className="font-medium text-[var(--nexus-text)]">Documentation scope.</strong> These pages cover conversational infrastructure. Manager intelligence, Nexus Direct, vision products, and future operational connectors have separate product scopes.</aside>
             </DocSection>
 
             <DocSection id="quick-start" title="Quick Start">

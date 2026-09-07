@@ -17,25 +17,25 @@ export const restaurantCapabilities = [
     items: ["Menu Q&A", "Live table reservations", "Multilingual service"],
   },
   {
-    title: "Integration-ready",
-    items: ["Point-of-sale specials", "Delivery ordering", "Loyalty program"],
+    title: "Next",
+    items: ["Manager brief", "Approval inbox", "Reputation signals"],
   },
 ] as const;
 
 export const restaurantIntegrationTools = [
   {
     title: "Google Calendar",
-    status: "Live",
+    status: "Building",
     description: "Confirmed reservations are created as real calendar events.",
   },
   {
     title: "Human handoff",
     status: "Live",
-    description: "Guests can ask for staff contact at any point in the conversation.",
+    description: "Human routing is part of the restaurant control model.",
   },
   {
     title: "Lead capture",
-    status: "Live",
-    description: "Large-party and event inquiries are collected for the restaurant team.",
+    status: "Building",
+    description: "Structured inquiry capture is being prepared for restaurant teams.",
   },
 ] as const;

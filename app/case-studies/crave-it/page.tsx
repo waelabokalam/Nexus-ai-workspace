@@ -7,7 +7,7 @@ import CraveItSystemMap from "@/components/restaurants/CraveItSystemMap";
 
 export const metadata: Metadata = pageMetadata(
   "Crave It Case Study",
-  "How Nexus shaped Crave It into a connected digital operations platform spanning customer experience, operational workflows and administration.",
+  "How Nexus Direct shaped Crave It into a connected direct-commerce system spanning customer experience, fulfilment workflows and administration.",
   "/case-studies/crave-it",
 );
 
@@ -38,11 +38,11 @@ export default function CraveItCaseStudyPage() {
       <section className="px-5 pb-24 pt-20 sm:px-8 sm:pb-28 sm:pt-28">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:items-end lg:gap-16">
           <div>
-            <div className="flex flex-wrap items-center gap-3"><p className="nexus-subtle text-xs font-medium uppercase tracking-[0.17em]">Case study</p><span className="nexus-status rounded-full px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.1em]">Built by Nexus</span></div>
+            <div className="flex flex-wrap items-center gap-3"><p className="nexus-subtle text-xs font-medium uppercase tracking-[0.17em]">Nexus Direct case study</p><span className="nexus-status rounded-full px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.1em]">Live</span></div>
             <h1 className="nexus-heading mt-5 font-heading text-6xl font-semibold tracking-[-0.065em] sm:text-7xl">Crave It</h1>
-            <p className="nexus-heading mt-5 max-w-xl font-heading text-2xl font-medium leading-tight tracking-[-0.035em] sm:text-3xl">A complete digital operations platform for a food business.</p>
-            <p className="nexus-copy mt-6 max-w-xl text-base leading-7">Nexus designed the customer experience, operational workflows, administration and underlying system as one connected product.</p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row"><Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact?industry=restaurants&source_page=%2Fcase-studies%2Fcrave-it">Talk to Nexus <span aria-hidden="true" className="ml-2">→</span></Link><Link className="nexus-button-secondary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/restaurants">Restaurant systems</Link></div>
+            <p className="nexus-heading mt-5 max-w-xl font-heading text-2xl font-medium leading-tight tracking-[-0.035em] sm:text-3xl">A direct-commerce system for a food business.</p>
+            <p className="nexus-copy mt-6 max-w-xl text-base leading-7">Crave It is a specific Nexus Direct implementation connecting a customer journey for food plans and orders to fulfilment, administration, and communication.</p>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row"><Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact?industry=restaurants&source_page=%2Fcase-studies%2Fcrave-it">Talk to Nexus <span aria-hidden="true" className="ml-2">→</span></Link><Link className="nexus-button-secondary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/restaurants">Restaurant intelligence</Link></div>
           </div>
           <CraveItSystemMap />
         </div>
@@ -74,7 +74,7 @@ export default function CraveItCaseStudyPage() {
 
       <section className="border-y border-white/[0.08] bg-white/[0.018] px-5 py-24 sm:px-8 sm:py-32">
         <div className="mx-auto max-w-7xl">
-          <div className="grid gap-6 lg:grid-cols-[0.76fr_1.24fr] lg:items-end"><div><p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Product system</p><h2 className="nexus-heading mt-4 font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Customer experience and operations, designed together.</h2></div><p className="nexus-copy max-w-2xl text-base leading-7 lg:justify-self-end">This view focuses on the verified relationship between the customer journey and business operations. Approved Crave It product imagery can be introduced when those assets are available.</p></div>
+          <div className="grid gap-6 lg:grid-cols-[0.76fr_1.24fr] lg:items-end"><div><p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Nexus Direct model</p><h2 className="nexus-heading mt-4 font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Customer experience and fulfilment, designed together.</h2></div><p className="nexus-copy max-w-2xl text-base leading-7 lg:justify-self-end">This implementation fits businesses whose direct customer channel—such as meal plans, subscriptions, catering, or cloud-kitchen ordering—is itself a core operating workflow.</p></div>
           <CraveItSystemMap className="mt-12" />
         </div>
       </section>
@@ -90,7 +90,7 @@ export default function CraveItCaseStudyPage() {
 
       <section className="border-y border-white/[0.08] bg-white/[0.018] px-5 py-24 sm:px-8 sm:py-28">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
-          <div><p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Reusable foundation</p><h2 className="nexus-heading mt-4 font-heading text-4xl font-semibold tracking-[-0.055em]">One system, adaptable foundation.</h2><p className="nexus-copy mt-5 text-base leading-7">Crave It demonstrates the Nexus model: build a strong operational core, then configure that foundation around related business workflows without claiming every business is identical.</p></div>
+          <div><p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Reusable foundation</p><h2 className="nexus-heading mt-4 font-heading text-4xl font-semibold tracking-[-0.055em]">One direct channel, adaptable foundation.</h2><p className="nexus-copy mt-5 text-base leading-7">Crave It demonstrates the Nexus Direct model: build a strong direct-commerce core, then configure it around the business offering and fulfilment workflow. It is not a claim that Nexus replaces every dine-in system.</p></div>
           <div className="nexus-frame rounded-[var(--nexus-radius-surface)] p-1"><ol className="nexus-surface rounded-[calc(var(--nexus-radius-surface)-0.3rem)] p-5 sm:p-7">{reusableFoundation.map((step, index) => <li className="flex items-center gap-4 border-b border-white/[0.08] py-4 first:pt-0 last:border-0 last:pb-0" key={step}><span className="grid size-8 shrink-0 place-items-center rounded-full border border-white/[0.1] text-[10px] text-[var(--nexus-text-muted)]">0{index + 1}</span><span className="nexus-heading text-sm font-medium">{step}</span>{index < reusableFoundation.length - 1 ? <span aria-hidden="true" className="nexus-subtle ml-auto">↓</span> : null}</li>)}</ol></div>
         </div>
       </section>
@@ -99,9 +99,9 @@ export default function CraveItCaseStudyPage() {
         <div className="nexus-frame mx-auto max-w-7xl rounded-[var(--nexus-radius-surface)] p-1">
           <div className="nexus-surface rounded-[calc(var(--nexus-radius-surface)-0.3rem)] px-6 py-16 text-center sm:px-10 sm:py-20">
             <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Build with Nexus</p>
-            <h2 className="nexus-heading mx-auto mt-5 max-w-4xl font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Need a system built around your business?</h2>
-            <p className="nexus-copy mx-auto mt-5 max-w-xl text-base leading-7">Start with the workflow. Nexus can shape the product and operating system around it.</p>
-            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row"><Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact?industry=restaurants&source_page=%2Fcase-studies%2Fcrave-it">Talk to Nexus <span aria-hidden="true" className="ml-2">→</span></Link><Link className="nexus-button-secondary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/restaurants">Explore restaurant systems</Link></div>
+            <h2 className="nexus-heading mx-auto mt-5 max-w-4xl font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Is a direct channel central to your business?</h2>
+            <p className="nexus-copy mx-auto mt-5 max-w-xl text-base leading-7">Nexus Direct can be scoped around the customer journey and operational workflow that make that channel work.</p>
+            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row"><Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact?industry=restaurants&source_page=%2Fcase-studies%2Fcrave-it">Talk to Nexus <span aria-hidden="true" className="ml-2">→</span></Link><Link className="nexus-button-secondary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/restaurants">Explore restaurant intelligence</Link></div>
           </div>
         </div>
       </section>

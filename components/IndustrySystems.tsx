@@ -1,20 +1,21 @@
 import Link from "next/link";
+import ProductStatus, { type ProductStatusValue } from "@/components/ui/ProductStatus";
 
 const industries = [
   {
     number: "01",
     title: "Restaurants",
-    status: "Live",
-    description: "Ordering, operations, customer experience and AI in one connected system.",
-    capabilities: ["Digital ordering", "Delivery", "Customer CRM", "Admin operations", "AI customer agent", "Automation"],
-    action: "Explore restaurant systems",
+    status: "building" as ProductStatusValue,
+    description: "An intelligence and automation layer above the systems restaurant teams already use.",
+    capabilities: ["Manager intelligence", "Guest AI", "Approval inbox", "Controlled automation", "Operational insights", "Activity log"],
+    action: "Explore restaurant intelligence",
     href: "/restaurants",
     featured: true,
   },
   {
     number: "02",
     title: "Retail",
-    status: "In development",
+    status: "next" as ProductStatusValue,
     description: "Connect inventory, pricing, customers, analytics and intelligent monitoring.",
     capabilities: ["Inventory intelligence", "CRM", "Smart pricing", "Computer vision", "Shelf systems", "Analytics"],
     action: "Discuss the retail roadmap",
@@ -24,7 +25,7 @@ const industries = [
   {
     number: "03",
     title: "Fitness",
-    status: "Planned",
+    status: "later" as ProductStatusValue,
     description: "Membership operations enhanced by automation and intelligent access.",
     capabilities: ["Memberships", "CRM", "Smart access", "Attendance", "AI receptionist", "Retention intelligence"],
     action: "Discuss fitness systems",
@@ -57,7 +58,7 @@ export default function IndustrySystems() {
             >
               <div className="flex items-center justify-between gap-4">
                 <span className="nexus-subtle text-xs font-medium tabular-nums">{industry.number}</span>
-                <span className="nexus-status rounded-full px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.12em]">{industry.status}</span>
+                <ProductStatus status={industry.status} />
               </div>
 
               <div className="mt-12">

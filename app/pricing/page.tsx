@@ -1,89 +1,42 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import MarketingPage from "@/components/MarketingPage";
+import ProductStatus from "@/components/ui/ProductStatus";
 import { pageMetadata } from "@/app/metadata";
 
-export const metadata: Metadata = pageMetadata("Pricing", "Early-access Nexus plans for business communication workflows.", "/pricing");
+export const metadata: Metadata = pageMetadata("Engagements", "Scoped Nexus implementations for restaurant intelligence, direct commerce, and connected operational workflows.", "/pricing");
 
-const plans = [
+const engagements = [
   {
-    name: "Starter",
-    price: "$79",
-    audience: "A focused website assistant for a single business communication workflow.",
-    availability: "Current website scope",
-    recommended: false,
-    items: [
-      ["Website assistant", "Available"],
-      ["Business knowledge", "Available"],
-      ["English, Arabic and Turkish", "Available"],
-      ["Adaptive communication style", "Available"],
-      ["Basic conversation history", "Available"],
-    ],
+    name: "Restaurant Intelligence",
+    status: "building" as const,
+    audience: "For restaurant teams that need clearer management across existing systems.",
+    outcome: "A focused operating layer configured around your current tools, policies, and highest-value workflow.",
+    items: ["System and workflow mapping", "Manager Command Center scope", "Nexus Guest Agent where appropriate", "Approval and handoff policy", "Integration assessment", "Managed implementation"],
+    href: "/contact?industry=restaurants&source_page=%2Fpricing",
   },
   {
-    name: "Growth",
-    price: "$149",
-    audience: "For teams preparing a broader operational support workflow.",
-    availability: "Early-access expansion",
-    recommended: true,
-    items: [
-      ["Everything in Starter", "Included"],
-      ["Lead capture", "Planned"],
-      ["Google Calendar scheduling", "Configured workflows"],
-      ["Business notifications", "Planned"],
-      ["Human handoff", "Planned"],
-      ["Basic analytics", "Planned"],
-    ],
+    name: "Nexus Direct",
+    status: "live" as const,
+    audience: "For cloud kitchens, meal plans, subscriptions, catering, and businesses building a direct customer channel.",
+    outcome: "A scoped customer and operations product designed around the direct-commerce model.",
+    items: ["Customer experience", "Plan or order journey", "Account context", "Admin workflow", "Fulfilment coordination", "Deployment and handover"],
+    href: "/contact?industry=restaurants&source_page=%2Fpricing",
   },
   {
-    name: "Custom",
-    price: "From $249",
-    audience: "For a business workflow that needs dedicated configuration and rollout planning.",
-    availability: "Scoped with your team",
-    recommended: false,
-    items: [
-      ["Custom workflows", "Early access"],
-      ["Integrations", "Scoped"],
-      ["Multiple locations", "Scoped"],
-      ["Higher usage", "Scoped"],
-      ["Managed onboarding", "Early access"],
-    ],
+    name: "Custom Integration",
+    status: "next" as const,
+    audience: "For businesses with a defined operational problem that spans software, automation, AI, or vision.",
+    outcome: "A discovery-led implementation with scope, access requirements, risk controls, and rollout agreed before build.",
+    items: ["Operational discovery", "Technical feasibility", "Custom workflow", "Existing-system connection", "Human control model", "Phased rollout plan"],
+    href: "/contact?source_page=%2Fpricing",
   },
 ] as const;
 
 export default function PricingPage() {
-  return (
-    <MarketingPage>
-      <section className="mx-auto max-w-7xl px-5 pb-28 pt-20 sm:px-8 sm:pt-28">
-        <div className="max-w-3xl">
-          <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Nexus early access</p>
-          <h1 className="mt-5 font-heading text-5xl font-semibold tracking-[-0.055em] text-white sm:text-6xl">A clear starting point for the work behind every customer reply.</h1>
-          <p className="mt-6 text-lg leading-8 text-zinc-400">Choose the business communication scope that fits today, then shape the workflow deliberately as Nexus expands with your team.</p>
-        </div>
-
-        <div className="mt-14 grid items-start gap-4 lg:grid-cols-3">
-          {plans.map((plan) => (
-            <article className={`relative flex min-h-[430px] flex-col rounded-[var(--nexus-radius-surface)] p-6 transition-transform duration-300 hover:-translate-y-1 ${plan.recommended ? "nexus-surface-raised border-white/[0.22]" : "nexus-surface"}`} key={plan.name}>
-              {plan.recommended && <span className="absolute right-6 top-6 rounded-full border border-white/[0.16] px-2.5 py-1 text-[11px] font-medium text-zinc-200">Recommended</span>}
-              <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">{plan.availability}</p>
-              <h2 className="mt-4 font-heading text-2xl font-medium tracking-[-0.04em] text-white">{plan.name}</h2>
-              <p className="mt-4 font-heading text-4xl font-medium tracking-[-0.05em] text-white">{plan.price}<span className="ml-1 text-base font-normal tracking-normal text-zinc-400">/month</span></p>
-              <p className="mt-4 min-h-12 text-sm leading-6 text-zinc-400">{plan.audience}</p>
-              <ul className="mt-7 space-y-3 border-t border-white/[0.08] pt-2 text-sm leading-6">
-                {plan.items.map(([item, state]) => (
-                  <li className="flex items-start justify-between gap-4 border-b border-white/[0.07] py-3" key={item}>
-                    <span className="text-zinc-300">{item}</span>
-                    <span className="shrink-0 text-xs text-zinc-500">{state}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link className={`nexus-focus mt-auto inline-flex min-h-11 items-center justify-center rounded-[var(--nexus-radius-control)] px-4 text-sm font-medium transition ${plan.recommended ? "bg-white text-zinc-950 hover:bg-zinc-200" : "border border-white/[0.12] text-white hover:bg-white/[0.06]"}`} href="/contact?source_page=%2Fpricing">Discuss {plan.name}</Link>
-            </article>
-          ))}
-        </div>
-
-        <p className="mt-8 max-w-3xl text-sm leading-6 text-zinc-500">Early-access pricing. Usage limits, onboarding requirements, and custom integrations may affect final pricing.</p>
-      </section>
-    </MarketingPage>
-  );
+  return <MarketingPage><section className="mx-auto max-w-7xl px-5 pb-28 pt-20 sm:px-8 sm:pt-28">
+    <div className="max-w-4xl"><p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Scoped engagements</p><h1 className="nexus-heading mt-5 font-heading text-5xl font-semibold tracking-[-0.055em] sm:text-6xl">Start with the operation—not a software tier.</h1><p className="nexus-copy mt-6 max-w-3xl text-lg leading-8">Nexus work is priced around the systems involved, workflow risk, integration access, and implementation depth. We do not publish a fixed subscription before those facts are known.</p></div>
+    <div className="mt-14 grid items-stretch gap-4 lg:grid-cols-3">{engagements.map((engagement) => <article className="nexus-card flex min-h-[34rem] flex-col rounded-[var(--nexus-radius-surface)] p-6 sm:p-7" key={engagement.name}><div className="flex items-start justify-between gap-4"><p className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">Implementation area</p><ProductStatus status={engagement.status} /></div><h2 className="nexus-heading mt-8 font-heading text-2xl font-medium tracking-[-0.04em]">{engagement.name}</h2><p className="nexus-copy mt-4 text-sm leading-6">{engagement.audience}</p><p className="nexus-heading mt-6 border-t border-[var(--nexus-border)] pt-6 text-sm leading-6">{engagement.outcome}</p><ul className="nexus-copy mt-6 space-y-3 text-xs leading-5">{engagement.items.map((item) => <li className="flex gap-2" key={item}><span aria-hidden="true" className="mt-2 size-1 shrink-0 rounded-full bg-current opacity-50" />{item}</li>)}</ul><Link className="nexus-button-secondary nexus-focus mt-auto inline-flex min-h-11 items-center justify-center rounded-[var(--nexus-radius-control)] px-4 text-sm font-medium" href={engagement.href}>Discuss scope <span aria-hidden="true" className="ms-2">→</span></Link></article>)}</div>
+    <div className="nexus-control mt-8 rounded-[var(--nexus-radius-control)] p-5 sm:flex sm:items-center sm:justify-between sm:gap-8"><div><p className="nexus-heading text-sm font-medium">Pricing follows discovery.</p><p className="nexus-copy mt-2 max-w-3xl text-sm leading-6">Every proposal states the agreed scope, dependencies, implementation stages, and any recurring infrastructure or support costs. No artificial discounts or assumed usage tiers.</p></div><Link className="nexus-button-primary nexus-focus mt-5 inline-flex min-h-11 shrink-0 items-center justify-center rounded-[var(--nexus-radius-control)] px-4 text-sm font-medium sm:mt-0" href="/contact?source_page=%2Fpricing">Start a conversation</Link></div>
+  </section></MarketingPage>;
 }

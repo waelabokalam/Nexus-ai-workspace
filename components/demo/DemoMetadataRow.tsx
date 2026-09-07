@@ -9,8 +9,8 @@ export default function DemoMetadataRow({
 }: DemoMetadataRowProps) {
   return (
     <div className="flex items-start gap-3 text-xs leading-5">
-      <span className="w-[7.25rem] shrink-0 text-zinc-600">{label}</span>
-      <span className="text-zinc-400">{values.join(" · ")}</span>
+      <span className="nexus-subtle w-[7.25rem] shrink-0">{label}</span>
+      <span className="nexus-copy">{values.join(" · ")}</span>
     </div>
   );
 }

@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import ThemeToggle from "@/components/ThemeToggle";
 import { pageMetadata } from "@/app/metadata";
 
-export const metadata: Metadata = pageMetadata("Demo Hub", "Experience the live Nexus Customer Support workspace and future business communication scenarios.", "/demo");
+export const metadata: Metadata = pageMetadata("Nexus Agent Lab", "Experience the live Nexus Agent through support and restaurant workspaces, with future scenarios clearly labeled.", "/demo");
 
 export default function DemoPage() {
   return (
@@ -15,18 +15,18 @@ export default function DemoPage() {
       <a className="nexus-skip-link" href="#main-content">Skip to content</a>
 
       <header className="relative z-10 mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-6 sm:px-8">
-        <Link className="nexus-focus inline-flex items-center gap-3 rounded-lg text-sm font-medium tracking-[-0.02em] text-white" href="/">
+        <Link className="nexus-heading nexus-focus inline-flex items-center gap-3 rounded-lg text-sm font-medium tracking-[-0.02em]" href="/">
           <NexusCore size={30} />
           <span>Nexus</span>
         </Link>
 
         <div className="flex items-center gap-5">
-          <p className="hidden text-right text-[10px] font-medium uppercase leading-4 tracking-[0.16em] text-zinc-600 sm:block">
+          <p className="nexus-subtle hidden text-right text-[10px] font-medium uppercase leading-4 tracking-[0.16em] sm:block">
             Powered by<br />
-            <span className="text-zinc-500">Nexus Engine</span>
+            <span>Nexus Engine</span>
           </p>
           <ThemeToggle />
-          <Link className="nexus-focus rounded-full border border-white/[0.09] bg-white/[0.035] px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-white/[0.16] hover:bg-white/[0.07] hover:text-white" href="/">
+          <Link className="nexus-button-secondary nexus-focus rounded-full px-4 py-2 text-sm" href="/">
             Back to Home
           </Link>
         </div>
@@ -38,9 +38,9 @@ export default function DemoPage() {
           <DemoGrid />
         </div>
 
-        <section className="mt-24 border-t border-white/[0.08] py-16 text-center sm:mt-32">
-          <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">What is live today</p>
-          <h2 className="mt-5 font-heading text-3xl font-medium tracking-[-0.045em] text-white sm:text-4xl">A real website workspace, with real emitted workflow events.</h2>
+        <section className="mt-24 border-t border-[var(--nexus-border)] py-16 text-center sm:mt-32">
+          <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">What is live today</p>
+          <h2 className="nexus-heading mt-5 font-heading text-3xl font-medium tracking-[-0.045em] sm:text-4xl">Real website workspaces with streamed responses and emitted workflow events.</h2>
         </section>
       </div>
       <Footer />

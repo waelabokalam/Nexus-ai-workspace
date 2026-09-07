@@ -2,195 +2,54 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
+import ProductStatus, { type ProductStatusValue } from "@/components/ui/ProductStatus";
 
-type Feature = {
-  title: string;
-  availability: string;
-  problem: string;
-  works: string;
-  outcome: string;
-};
-
-type FeatureSystem = {
-  id: string;
-  eyebrow: string;
-  title: string;
-  features: Feature[];
-};
+type Feature = { title: string; status: ProductStatusValue; problem: string; works: string; outcome: string };
+type FeatureSystem = { id: string; eyebrow: string; title: string; features: Feature[] };
 
 const systems: FeatureSystem[] = [
-  {
-    id: "understand",
-    eyebrow: "Understand",
-    title: "Start with the customer’s actual request.",
-    features: [
-      {
-        title: "Intent routing",
-        availability: "Live in the website workspace",
-        problem: "A question, an appointment request and a follow-up do not need the same path.",
-        works: "The engine classifies intent before choosing a response, retrieval or scheduling workflow.",
-        outcome: "Work begins from the customer’s need rather than a generic chat reply.",
-      },
-    ],
-  },
-  {
-    id: "respond",
-    eyebrow: "Respond",
-    title: "Make the reply fit the person and language in front of you.",
-    features: [
-      {
-        title: "Adaptive communication",
-        availability: "Live in the website workspace",
-        problem: "A rigid script can sound distant or inappropriate.",
-        works: "Nexus uses style signals and reviewed examples to shape the form of a response without changing the business answer.",
-        outcome: "Conversations can remain helpful and appropriate to the person asking.",
-      },
-      {
-        title: "English, Arabic and Turkish",
-        availability: "Live in the website workspace",
-        problem: "Customers should not have to switch languages to get help.",
-        works: "Nexus keeps the response in the supported language of the conversation.",
-        outcome: "Teams can serve these supported languages from one workspace.",
-      },
-    ],
-  },
-  {
-    id: "remember",
-    eyebrow: "Remember",
-    title: "Keep the conversation connected across turns.",
-    features: [
-      {
-        title: "Conversation memory",
-        availability: "Live in the website workspace",
-        problem: "Customers lose confidence when they have to repeat themselves.",
-        works: "Nexus retains context across turns for the same session.",
-        outcome: "Follow-up questions can build on the conversation already in progress.",
-      },
-    ],
-  },
-  {
-    id: "retrieve",
-    eyebrow: "Retrieve",
-    title: "Bring grounded company context into the reply.",
-    features: [
-      {
-        title: "Business knowledge",
-        availability: "Live in the website workspace",
-        problem: "Answers are unreliable when they are disconnected from current company material.",
-        works: "Qdrant-backed retrieval brings relevant business knowledge into the response path.",
-        outcome: "Responses can be grounded in reviewed information your team provides.",
-      },
-    ],
-  },
-  {
-    id: "act",
-    eyebrow: "Act",
-    title: "Move beyond a reply when a workflow needs to continue.",
-    features: [
-      {
-        title: "Calendar and action execution",
-        availability: "Available in configured workflows",
-        problem: "A booking request often stops at a suggested time.",
-        works: "Available scheduling flows gather the needed detail before using the configured Google Calendar integration.",
-        outcome: "A conversation can progress into an operational next step.",
-      },
-      {
-        title: "Voice and audio",
-        availability: "Available in supported workflows",
-        problem: "Some customer requests begin as voice rather than typed text.",
-        works: "The engine includes audio transcription capability for supported workflows.",
-        outcome: "Voice can enter the same business communication flow as text when enabled.",
-      },
-    ],
-  },
-  {
-    id: "operate",
-    eyebrow: "Operate",
-    title: "Make the work visible, without rebuilding it for every channel.",
-    features: [
-      {
-        title: "Live workflow visibility",
-        availability: "Live in the website workspace",
-        problem: "People should not have to guess whether meaningful work is happening.",
-        works: "The website workspace displays only the server-sent workflow events emitted for that request.",
-        outcome: "Customers can see the real stages used to process the conversation.",
-      },
-      {
-        title: "Channel-neutral architecture",
-        availability: "Website workspace live · other channels planned",
-        problem: "Business logic should not be rebuilt for every entry point.",
-        works: "Nexus is designed around channel-neutral message contracts, with the public website workspace as the current product surface.",
-        outcome: "Future channels can share one operational communication layer as they are released.",
-      },
-    ],
-  },
+  { id: "manager-intelligence", eyebrow: "Manager Intelligence", title: "Turn fragmented activity into a useful operating view.", features: [
+    { title: "Manager Command Center", status: "building", problem: "Important work is scattered across inboxes, platforms, and informal staff updates.", works: "Nexus is being designed to group attention, approvals, handled work, and daily operating signals around one manager view.", outcome: "Managers spend less time assembling the picture before they can act." },
+    { title: "Daily Manager Brief", status: "building", problem: "Daily reporting often arrives late or depends on someone manually summarizing every source.", works: "Connected signals are intended to become a concise brief with sources, open work, and recommended next steps.", outcome: "The day can start from a shared operational picture rather than a search for context." },
+  ] },
+  { id: "nexus-agent", eyebrow: "Nexus Agent", title: "Understand, remember, and respond with business context.", features: [
+    { title: "Grounded multilingual conversations", status: "live", problem: "Generic assistants answer without the company’s current information or the customer’s language.", works: "The live website workspace combines intent routing, Qdrant-backed knowledge, and responses in English, Arabic, or Turkish.", outcome: "Customers receive answers grounded in reviewed business information." },
+    { title: "Adaptive communication", status: "live", problem: "One rigid communication style feels wrong across formal, casual, and multilingual conversations.", works: "Reviewed style examples shape the form of the response while preserving the underlying business answer.", outcome: "Replies can fit the conversation without inventing a different policy." },
+    { title: "Conversation memory", status: "live", problem: "A customer should not need to repeat context with every follow-up.", works: "Nexus carries relevant context across turns in the same session.", outcome: "The conversation progresses as one exchange instead of disconnected prompts." },
+  ] },
+  { id: "automation", eyebrow: "Automation", title: "Move from understanding to controlled action.", features: [
+    { title: "Intent and workflow routing", status: "live", problem: "Questions, complaints, and booking requests should not follow the same path.", works: "The engine classifies intent and routes the request toward response, retrieval, scheduling, or an enabled continuation.", outcome: "Work starts from the actual need instead of a generic reply." },
+    { title: "Calendar scheduling", status: "live", problem: "Booking conversations often stop before an operational record exists.", works: "The verified flow enforces scheduling policy, gathers confirmation, creates the Google Calendar event, and returns its real link.", outcome: "An approved conversation can finish as a traceable Calendar action." },
+    { title: "Approval and human control", status: "building", problem: "Automation becomes risky when every decision is treated as safe to execute.", works: "Nexus workflows are being structured around explicit AUTO, APPROVAL, and HUMAN operating modes.", outcome: "Teams can automate routine work without surrendering judgment." },
+  ] },
+  { id: "business-systems", eyebrow: "Business Systems", title: "Build focused software where a workflow needs more than an integration.", features: [
+    { title: "Nexus Direct", status: "live", problem: "Some food businesses need a direct customer and operations product, not another marketplace listing.", works: "Crave It demonstrates a connected experience for plans, ordering, customer context, fulfilment, and administration.", outcome: "The direct channel and the work behind it are designed as one focused system." },
+    { title: "Restaurant intelligence", status: "building", problem: "Restaurant managers already have software, but its activity rarely becomes one coordinated operating view.", works: "Nexus is being designed as an intelligence layer above POS, delivery, messages, reservations, and reviews.", outcome: "Existing tools can contribute to clearer decisions without being needlessly replaced." },
+  ] },
+  { id: "integrations", eyebrow: "Integrations", title: "Connect deliberately, with the system of record left intact.", features: [
+    { title: "Channel-neutral engine", status: "live", problem: "Business logic should not be rewritten for every customer entry point.", works: "The engine uses a channel-neutral message contract; the website workspaces are the current public surface.", outcome: "New approved channels can reuse the same reasoning and workflow layer." },
+    { title: "Operational connectors", status: "next", problem: "Managers cannot coordinate activity that remains trapped in separate platforms.", works: "Future connectors will be scoped around authorized access to restaurant, CRM, reputation, and notification systems.", outcome: "Nexus can coordinate existing tools while respecting system ownership and controls." },
+  ] },
+  { id: "vision", eyebrow: "Vision", title: "Translate camera activity into signals people can review.", features: [
+    { title: "Shoplifting monitor", status: "building", problem: "Store teams cannot continuously inspect every camera feed with equal attention.", works: "The product direction is to surface reviewable activity signals for staff—not make unsupported identity or guilt decisions.", outcome: "Teams can focus human review on moments that may warrant attention." },
+  ] },
 ];
 
+function featureId(systemId: string, title: string) { return `${systemId}-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`; }
+
+function FeatureDetail({ feature }: { feature: Feature }) {
+  return <div><div className="flex items-center justify-between gap-4"><ProductStatus status={feature.status} /><span className="nexus-subtle text-[10px] uppercase tracking-[0.12em]">Product status</span></div><h3 className="nexus-heading mt-5 font-heading text-2xl font-medium tracking-[-0.04em]">{feature.title}</h3><dl className="mt-8 grid gap-6 text-sm leading-6"><div><dt className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">Business problem</dt><dd className="nexus-copy mt-2">{feature.problem}</dd></div><div><dt className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">How Nexus works</dt><dd className="nexus-copy mt-2">{feature.works}</dd></div><div><dt className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">Business outcome</dt><dd className="nexus-heading mt-2">{feature.outcome}</dd></div></dl></div>;
+}
+
 export default function FeatureSystems() {
-  const [openBySystem, setOpenBySystem] = useState<Record<string, string>>({ respond: "respond-adaptive-communication" });
+  const [openBySystem, setOpenBySystem] = useState<Record<string, string>>({});
   const reduceMotion = useReducedMotion();
-
-  return (
-    <div className="mt-16 space-y-16 sm:mt-20">
-      {systems.map((system) => (
-        <section aria-labelledby={`${system.id}-title`} key={system.id}>
-          <div className="max-w-3xl border-b border-white/[0.1] pb-5">
-            <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">{system.eyebrow}</p>
-            <h2 className="mt-3 font-heading text-3xl font-medium tracking-[-0.04em] text-white sm:text-4xl" id={`${system.id}-title`}>{system.title}</h2>
-          </div>
-          <div className="mt-5 lg:grid lg:grid-cols-[minmax(14rem,0.76fr)_minmax(0,1.24fr)] lg:gap-5">
-            <div className="space-y-2">
-              {system.features.map((feature) => {
-              const featureId = `${system.id}-${feature.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
-              const activeFeatureId = openBySystem[system.id] ?? `${system.id}-${system.features[0].title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
-              const isOpen = activeFeatureId === featureId;
-
-              return (
-                <article className="nexus-control rounded-[var(--nexus-radius-control)]" key={featureId}>
-                  <button aria-controls={`${featureId}-content`} aria-expanded={isOpen} className={`nexus-focus flex min-h-16 w-full items-center justify-between gap-4 rounded-[var(--nexus-radius-control)] px-5 py-4 text-left ${isOpen ? "bg-white/[0.055]" : ""}`} onClick={() => setOpenBySystem((current) => ({ ...current, [system.id]: featureId }))} type="button">
-                    <span className="nexus-heading text-base font-medium">{feature.title}</span>
-                    <span aria-hidden="true" className={`text-lg text-zinc-400 transition-transform duration-200 ${isOpen ? "rotate-45" : ""}`}>+</span>
-                  </button>
-                  <div className="lg:hidden">
-                  <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} initial={{ height: 0, opacity: 0 }} transition={{ duration: reduceMotion ? 0 : 0.2 }} className="overflow-hidden border-t border-white/[0.08]" id={`${featureId}-content`}>
-                    <div className="px-5 pb-5 pt-4">
-                      <p className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-500">{feature.availability}</p>
-                      <dl className="mt-5 grid gap-4 text-sm leading-6">
-                        <div><dt className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">Business problem</dt><dd className="mt-1.5 text-zinc-400">{feature.problem}</dd></div>
-                        <div><dt className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">How Nexus works</dt><dd className="mt-1.5 text-zinc-300">{feature.works}</dd></div>
-                        <div><dt className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">Business outcome</dt><dd className="mt-1.5 text-zinc-200">{feature.outcome}</dd></div>
-                      </dl>
-                    </div></motion.div>
-                  )}
-                  </AnimatePresence>
-                  </div>
-                </article>
-              );
-            })}
-            </div>
-            <div className="nexus-card hidden min-h-[20rem] rounded-[var(--nexus-radius-surface)] p-7 lg:block">
-              <AnimatePresence mode="wait" initial={false}>
-                {system.features.map((feature) => {
-                  const featureId = `${system.id}-${feature.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
-                  const activeFeatureId = openBySystem[system.id] ?? `${system.id}-${system.features[0].title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
-                  if (activeFeatureId !== featureId) return null;
-                  return <motion.div animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 6 }} initial={{ opacity: 0, y: 6 }} key={featureId} transition={{ duration: reduceMotion ? 0 : 0.22 }}>
-                    <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">{feature.availability}</p>
-                    <h3 className="nexus-heading mt-5 font-heading text-2xl font-medium tracking-[-0.04em]">{feature.title}</h3>
-                    <dl className="mt-8 grid gap-6 text-sm leading-6">
-                      <div><dt className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">Business problem</dt><dd className="nexus-copy mt-2">{feature.problem}</dd></div>
-                      <div><dt className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">How Nexus works</dt><dd className="nexus-copy mt-2">{feature.works}</dd></div>
-                      <div><dt className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">Business outcome</dt><dd className="nexus-heading mt-2">{feature.outcome}</dd></div>
-                    </dl>
-                  </motion.div>;
-                })}
-              </AnimatePresence>
-            </div>
-          </div>
-        </section>
-      ))}
-    </div>
-  );
+  return <div className="mt-16 space-y-16 sm:mt-20">{systems.map((system) => {
+    const activeId = openBySystem[system.id] ?? featureId(system.id, system.features[0].title);
+    const activeFeature = system.features.find((feature) => featureId(system.id, feature.title) === activeId) ?? system.features[0];
+    return <section aria-labelledby={`${system.id}-title`} key={system.id}><div className="max-w-3xl border-b border-[var(--nexus-border)] pb-5"><p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">{system.eyebrow}</p><h2 className="nexus-heading mt-3 font-heading text-3xl font-medium tracking-[-0.04em] sm:text-4xl" id={`${system.id}-title`}>{system.title}</h2></div><div className="mt-5 lg:grid lg:grid-cols-[minmax(14rem,0.76fr)_minmax(0,1.24fr)] lg:gap-5"><div className="space-y-2">{system.features.map((feature) => {
+      const id = featureId(system.id, feature.title); const isOpen = activeId === id;
+      return <article className="nexus-control rounded-[var(--nexus-radius-control)]" key={id}><button aria-controls={`${id}-content`} aria-expanded={isOpen} className={`nexus-focus flex min-h-16 w-full items-center justify-between gap-4 rounded-[var(--nexus-radius-control)] px-5 py-4 text-start ${isOpen ? "bg-[var(--nexus-surface-soft)]" : ""}`} onClick={() => setOpenBySystem((current) => ({ ...current, [system.id]: id }))} type="button"><span className="nexus-heading text-base font-medium">{feature.title}</span><span aria-hidden="true" className={`nexus-subtle text-lg transition-transform duration-200 ${isOpen ? "rotate-45" : ""}`}>+</span></button><div className="lg:hidden"><AnimatePresence initial={false}>{isOpen && <motion.div animate={{ height: "auto", opacity: 1 }} className="overflow-hidden border-t border-[var(--nexus-border)]" exit={{ height: 0, opacity: 0 }} initial={{ height: 0, opacity: 0 }} transition={{ duration: reduceMotion ? 0 : 0.2 }}><div className="px-5 pb-5 pt-4"><FeatureDetail feature={feature} /></div></motion.div>}</AnimatePresence></div></article>;
+    })}</div><div className="nexus-card hidden min-h-[22rem] rounded-[var(--nexus-radius-surface)] p-7 lg:block"><AnimatePresence initial={false} mode="wait"><motion.div animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 6 }} initial={{ opacity: 0, y: 6 }} key={activeId} transition={{ duration: reduceMotion ? 0 : 0.22 }}><FeatureDetail feature={activeFeature} /></motion.div></AnimatePresence></div></div></section>;
+  })}</div>;
 }

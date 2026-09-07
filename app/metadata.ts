@@ -16,7 +16,7 @@ export function pageMetadata(title: string, description: string, path: string): 
       type: "website",
       url: absoluteSiteUrl(path),
       siteName: "Nexus",
-      images: socialImage ? [{ url: socialImage, width: 1200, height: 630, alt: "Nexus — AI Operating System for Business Communication" }] : undefined,
+      images: socialImage ? [{ url: socialImage, width: 1200, height: 630, alt: "Nexus — Intelligent systems for real business operations" }] : undefined,
     },
     twitter: socialImage ? { card: "summary_large_image", title: fullTitle, description, images: [socialImage] } : undefined,
   };

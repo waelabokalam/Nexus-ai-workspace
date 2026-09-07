@@ -1,0 +1,16 @@
+import ProductStatus from "@/components/ui/ProductStatus";
+
+const columns = [
+  { title: "Needs attention", count: "02", items: ["Guest complaint needs context", "Unanswered reservation change"] },
+  { title: "Waiting for approval", count: "01", items: ["Proposed recovery response"] },
+  { title: "Nexus handled", count: "08", items: ["Business-hour questions", "Reservation confirmations"] },
+] as const;
+
+export default function ManagerCommandCenter() {
+  return <div className="nexus-frame rounded-[var(--nexus-radius-surface)] p-1"><div className="nexus-surface rounded-[calc(var(--nexus-radius-surface)-0.3rem)] p-5 sm:p-7">
+    <header className="flex flex-col gap-4 border-b border-[var(--nexus-border)] pb-5 sm:flex-row sm:items-center sm:justify-between"><div><p className="nexus-subtle text-[10px] font-medium uppercase tracking-[0.16em]">Manager Command Center</p><h3 className="nexus-heading mt-2 font-heading text-2xl font-medium tracking-[-0.04em]">Today at a glance</h3></div><div className="flex items-center gap-2"><span className="nexus-subtle text-xs">Concept preview</span><ProductStatus status="building" /></div></header>
+    <div className="mt-5 grid gap-3 lg:grid-cols-3">{columns.map((column) => <section className="nexus-control min-h-64 rounded-[var(--nexus-radius-control)] p-4" key={column.title}><div className="flex items-center justify-between gap-4"><h4 className="nexus-heading text-sm font-medium">{column.title}</h4><span className="nexus-subtle text-xs tabular-nums">{column.count}</span></div><div className="mt-5 space-y-2">{column.items.map((item) => <div className="rounded-xl border border-[var(--nexus-border)] bg-[var(--nexus-surface-soft)] p-3 text-xs leading-5 text-[var(--nexus-text-muted)]" key={item}>{item}</div>)}</div></section>)}</div>
+    <div className="mt-3 grid gap-3 lg:grid-cols-3"><section className="nexus-control rounded-[var(--nexus-radius-control)] p-5"><div className="flex items-center justify-between gap-4"><h4 className="nexus-heading text-sm font-medium">Today&apos;s summary</h4><span className="nexus-subtle text-[10px] uppercase tracking-[0.12em]">Demo data</span></div><p className="nexus-copy mt-4 text-sm leading-6">A manager brief would consolidate connected signals, open work, and recommended next steps.</p></section><section className="nexus-control rounded-[var(--nexus-radius-control)] p-5"><div className="flex items-center justify-between gap-4"><h4 className="nexus-heading text-sm font-medium">Reputation intelligence</h4><ProductStatus status="building" /></div><p className="nexus-copy mt-4 text-sm leading-6">Review and complaint signals are intended to surface patterns and draft next steps for manager review.</p></section><section className="nexus-control rounded-[var(--nexus-radius-control)] p-5"><h4 className="nexus-heading text-sm font-medium">Activity log</h4><ol className="nexus-copy mt-4 space-y-3 text-xs"><li>11:42 · Guest answer prepared</li><li>11:36 · Approval requested</li><li>11:28 · Reservation confirmed</li></ol></section></div>
+    <p className="nexus-subtle mt-5 text-xs leading-5">This interface uses illustrative data to explain the product direction. It is not connected to a live restaurant operation.</p>
+  </div></div>;
+}

@@ -13,15 +13,15 @@ export default function CraveItSpotlight() {
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.84fr_1.16fr] lg:items-center lg:gap-16">
         <div>
           <div className="flex flex-wrap items-center gap-3">
-            <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Built by Nexus</p>
-            <span className="nexus-status rounded-full px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.11em]">Restaurant system</span>
+            <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Nexus Direct case study</p>
+            <span className="nexus-status rounded-full px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.11em]">Live</span>
           </div>
           <h2 className="nexus-heading mt-5 font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Crave It</h2>
           <p className="nexus-heading mt-4 max-w-xl font-heading text-xl font-medium tracking-[-0.025em] sm:text-2xl">
-            A complete digital operations platform for food businesses.
+            A direct-commerce system for a food business.
           </p>
           <p className="nexus-copy mt-6 max-w-xl text-base leading-7">
-            Crave It shows how Nexus turns an industry workflow into one connected business system: the customer experience, ordering, accounts, delivery operations, administration and communication working together.
+            Crave It shows the Nexus Direct model for a business whose direct channel is the product: customer experience, plans, ordering, fulfilment, administration, and communication working together.
           </p>
 
           <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 border-y border-white/[0.08] py-6 text-sm">
@@ -40,8 +40,8 @@ export default function CraveItSpotlight() {
           <div className="nexus-surface rounded-[calc(var(--nexus-radius-surface)-0.3rem)] p-5 sm:p-7">
             <div className="flex items-center justify-between gap-4 border-b border-white/[0.08] pb-5">
               <div>
-                <p className="nexus-subtle text-[10px] font-medium uppercase tracking-[0.15em]">Crave It system</p>
-                <p className="nexus-heading mt-1 text-sm font-semibold">Restaurant operations</p>
+                <p className="nexus-subtle text-[10px] font-medium uppercase tracking-[0.15em]">Nexus Direct</p>
+                <p className="nexus-heading mt-1 text-sm font-semibold">Direct food commerce</p>
               </div>
               <span className="nexus-status rounded-full px-2.5 py-1 text-[10px] uppercase tracking-[0.1em]">Connected</span>
             </div>
@@ -61,7 +61,7 @@ export default function CraveItSpotlight() {
 
             <div className="nexus-control mt-3 flex flex-col gap-3 rounded-[var(--nexus-radius-control)] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="nexus-copy text-xs">One operational model across customer and team workflows.</p>
-              <p className="nexus-heading text-xs font-medium">Nexus industry system</p>
+              <p className="nexus-heading text-xs font-medium">Focused implementation</p>
             </div>
           </div>
         </div>

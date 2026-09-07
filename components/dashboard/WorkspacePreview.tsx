@@ -17,10 +17,10 @@ const coreCapabilities = [
 ] as const;
 
 const industryLayers = [
-  { name: "Restaurant systems", state: "Live" },
-  { name: "Retail systems", state: "In development" },
-  { name: "Fitness systems", state: "Planned" },
-  { name: "Future verticals", state: "Extensible" },
+  { name: "Restaurant intelligence", state: "Building" },
+  { name: "Restaurant Guest Agent", state: "Live" },
+  { name: "Retail intelligence", state: "Next" },
+  { name: "Fitness systems", state: "Later" },
 ] as const;
 
 export default function WorkspacePreview() {
@@ -37,7 +37,7 @@ export default function WorkspacePreview() {
             </h2>
           </div>
           <p className="nexus-copy max-w-2xl text-base leading-7 lg:justify-self-end">
-            Nexus combines shared infrastructure with industry-specific modules. That means each product can feel purpose-built without rebuilding intelligence, automation and operational foundations every time.
+            Nexus combines shared infrastructure with industry-specific intelligence. Each implementation can coordinate the systems a business already uses without pretending every industry works the same way.
           </p>
         </div>
 

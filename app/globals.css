@@ -234,6 +234,34 @@
 .nexus-button-primary:hover, .nexus-button-secondary:hover { transform: translateY(-1px); border-color: var(--nexus-border-strong); }
 .nexus-status { border: 1px solid var(--nexus-border); background: var(--nexus-surface-soft); color: var(--nexus-text-muted); }
 
+.nexus-product-status {
+  display: inline-flex;
+  min-height: 1.75rem;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--nexus-border);
+  border-radius: 999px;
+  background: var(--nexus-surface-soft);
+  padding: 0.3rem 0.65rem;
+  color: var(--nexus-text-muted);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.nexus-product-status__dot {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.nexus-product-status[data-status="live"] { border-color: var(--nexus-border-strong); color: var(--nexus-text); }
+.nexus-product-status[data-status="next"],
+.nexus-product-status[data-status="later"] { color: var(--nexus-text-subtle); }
+
 .nexus-label {
   display: block;
   color: var(--nexus-text-muted);

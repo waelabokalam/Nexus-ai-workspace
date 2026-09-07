@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 
 const metadata = [
-  "One live workspace",
+  "Live Nexus Agent workspaces",
   "Business knowledge",
   "Conversation memory",
   "Calendar workflows",
@@ -17,17 +17,17 @@ export default function DemoHero() {
       initial={false}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
-      <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">
-        Live product experience
+      <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">
+        Nexus Agent lab
       </p>
-      <h1 className="mt-6 font-heading text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl md:text-7xl">
+      <h1 className="nexus-heading mt-6 font-heading text-5xl font-semibold tracking-[-0.06em] sm:text-6xl md:text-7xl">
         Experience Nexus
       </h1>
-      <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-zinc-400 sm:text-lg">
-        Explore the live Customer Support workspace, then see the business scenarios planned for future releases.
+      <p className="nexus-copy mx-auto mt-6 max-w-2xl text-base leading-7 sm:text-lg">
+        Explore the live conversational engine through support and restaurant workspaces, then review clearly labeled concept scenarios.
       </p>
-      <p className="mt-3 text-sm tracking-[-0.01em] text-zinc-500">
-        Customer Support is available now. The remaining scenarios are planned product directions, not functioning demos.
+      <p className="nexus-subtle mt-3 text-sm tracking-[-0.01em]">
+        Customer Support and Restaurant are live. PGPara is a disclosed concept prototype. Other scenarios are later product directions.
       </p>
 
       <motion.div
@@ -41,7 +41,7 @@ export default function DemoHero() {
       >
         {metadata.map((item) => (
           <motion.span
-            className="rounded-full border border-white/[0.1] bg-white/[0.035] px-3 py-1.5 text-xs font-medium text-zinc-300"
+            className="nexus-control rounded-full px-3 py-1.5 text-xs font-medium text-[var(--nexus-text-muted)]"
             key={item}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0 } }}

@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Nexus",
     short_name: "Nexus",
-    description: "AI operating system for business communication.",
+    description: "Intelligent systems built around real business operations.",
     start_url: "/",
     display: "standalone",
     background_color: "#09090b",

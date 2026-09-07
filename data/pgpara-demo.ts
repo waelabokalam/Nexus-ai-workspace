@@ -17,7 +17,7 @@ export const pgparaCapabilities = [
     items: ["Product guidance", "Multilingual assistance", "Merchant inquiries", "Safe support guidance"],
   },
   {
-    title: "Integration-ready",
+    title: "Next",
     items: ["Transfer status", "Representative lookup", "Authenticated account assistance"],
   },
 ] as const;
@@ -25,17 +25,17 @@ export const pgparaCapabilities = [
 export const pgparaIntegrationTools = [
   {
     title: "Transfer Calculator",
-    status: "Integration ready",
+    status: "Next",
     description: "Connects to PGPara's approved calculation service for verified transfer estimates.",
   },
   {
     title: "Transfer Status",
-    status: "Integration ready",
+    status: "Next",
     description: "Can connect to PGPara's approved transaction-status service for verified results.",
   },
   {
     title: "Representative Finder",
-    status: "Integration ready",
+    status: "Next",
     description: "Can connect to approved PGPara representative and location data.",
   },
 ] as const;

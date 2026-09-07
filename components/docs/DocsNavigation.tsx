@@ -39,9 +39,9 @@ export default function DocsNavigation({ sections }: DocsNavigationProps) {
 
   return (
     <>
-      <details className="nexus-surface rounded-[var(--nexus-radius-control)] p-2 lg:hidden">
-        <summary className="nexus-focus cursor-pointer list-none rounded-lg px-3 py-2 text-sm font-medium text-white">On this page</summary>
-        <div className="border-t border-white/[0.08] pt-2">{links}</div>
+      <details className="nexus-surface min-w-0 rounded-[var(--nexus-radius-control)] p-2 lg:hidden">
+        <summary className="nexus-heading nexus-focus cursor-pointer list-none rounded-lg px-3 py-2 text-sm font-medium">On this page</summary>
+        <div className="border-t border-[var(--nexus-border)] pt-2">{links}</div>
       </details>
       <aside className="hidden h-fit lg:sticky lg:top-24 lg:block">
         <p className="mb-3 px-3 text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">On this page</p>

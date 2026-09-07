@@ -11,17 +11,17 @@ export const currentChannelOptions = [
   "other",
 ] as const;
 export const interestOptions = [
-  "website_digital_experience",
-  "online_ordering",
-  "customer_support",
-  "whatsapp_automation",
+  "too_many_systems",
+  "customer_messages",
   "reservations",
-  "customer_crm",
-  "delivery_workflow",
-  "admin_operations",
-  "analytics",
-  "full_restaurant_system",
-  "something_custom",
+  "reviews_reputation",
+  "manager_reporting",
+  "repetitive_admin",
+  "customer_retention",
+  "multi_location_operations",
+  "supplier_invoice_work",
+  "direct_customer_channel",
+  "custom_workflow",
 ] as const;
 
 export type ContactMethod = (typeof contactMethods)[number];
