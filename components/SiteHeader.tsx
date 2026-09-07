@@ -7,10 +7,11 @@ import NexusCore from "@/components/ui/NexusCore";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const navigation = [
-  { href: "/features", label: "Features" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/docs", label: "Docs" },
-  { href: "/demo", label: "Demo" },
+  { href: "/#industries", label: "Industries" },
+  { href: "/#systems", label: "Systems" },
+  { href: "/case-studies/crave-it", label: "Case Studies" },
+  { href: "/demo", label: "AI Lab" },
+  { href: "/about", label: "Company" },
 ];
 
 export default function SiteHeader() {
@@ -62,7 +63,7 @@ export default function SiteHeader() {
           <span>Nexus</span>
         </Link>
 
-        <nav aria-label="Primary navigation" className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-xl border border-white/[0.06] bg-black/20 p-1 text-sm md:flex">
+        <nav aria-label="Primary navigation" className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-0.5 rounded-xl border border-white/[0.06] bg-black/20 p-1 text-sm lg:flex">
           {navigation.map((item) => (
             <Link aria-current={pathname === item.href ? "page" : undefined} className={`nexus-focus rounded-lg px-3 py-2 transition-colors ${pathname === item.href ? "bg-white/[0.07] text-white" : "text-zinc-400 hover:bg-white/[0.04] hover:text-white"}`} href={item.href} key={item.href}>
               {item.label}
@@ -72,13 +73,13 @@ export default function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Link className="nexus-focus hidden min-h-9 items-center rounded-lg bg-white px-4 text-sm font-medium text-zinc-950 transition hover:bg-zinc-200 sm:inline-flex" href="/demo">
-            Try Nexus <span aria-hidden="true" className="ml-1.5">→</span>
+          <Link className="nexus-focus hidden min-h-9 items-center rounded-lg bg-white px-4 text-sm font-medium text-zinc-950 transition hover:bg-zinc-200 sm:inline-flex" href="/contact">
+            Talk to Nexus <span aria-hidden="true" className="ml-1.5">→</span>
           </Link>
           <button
             aria-controls="site-navigation-mobile"
             aria-expanded={open}
-            className="nexus-focus inline-flex min-h-10 items-center rounded-lg border border-white/[0.12] px-3 text-sm text-zinc-200 transition hover:bg-white/[0.06] md:hidden"
+            className="nexus-focus inline-flex min-h-10 items-center rounded-lg border border-white/[0.12] px-3 text-sm text-zinc-200 transition hover:bg-white/[0.06] lg:hidden"
             onClick={() => (open ? closeMenu(true) : setOpen(true))}
             ref={menuButtonRef}
             type="button"
@@ -89,12 +90,15 @@ export default function SiteHeader() {
       </div>
 
       {open && (
-        <nav aria-label="Mobile navigation" className="nexus-surface mt-2 rounded-[var(--nexus-radius-control)] bg-zinc-950/95 p-2 backdrop-blur-xl md:hidden" id="site-navigation-mobile" ref={mobileNavigationRef}>
+        <nav aria-label="Mobile navigation" className="nexus-surface mt-2 rounded-[var(--nexus-radius-control)] bg-zinc-950/95 p-2 backdrop-blur-xl lg:hidden" id="site-navigation-mobile" ref={mobileNavigationRef}>
           {navigation.map((item) => (
             <Link aria-current={pathname === item.href ? "page" : undefined} className={`nexus-focus block min-h-11 rounded-lg px-4 py-3 text-sm transition ${pathname === item.href ? "bg-white/[0.08] text-white" : "text-zinc-300 hover:bg-white/[0.06] hover:text-white"}`} href={item.href} key={item.href} onClick={() => closeMenu(false)}>
               {item.label}
             </Link>
           ))}
+          <Link className="nexus-button-primary nexus-focus mt-1 flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm font-medium sm:hidden" href="/contact" onClick={() => closeMenu(false)}>
+            Talk to Nexus <span aria-hidden="true" className="ml-2">→</span>
+          </Link>
         </nav>
       )}
     </header>

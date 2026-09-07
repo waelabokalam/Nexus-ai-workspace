@@ -1,23 +1,21 @@
 const principles = [
-  ["Adaptive communication", "Responses can adapt their style while keeping the business answer intact."],
-  ["English, Arabic & Turkish", "Supported conversations stay in the customer’s language."],
-  ["Grounded business knowledge", "Qdrant-backed retrieval brings relevant business context into the response."],
-  ["Conversation memory", "Context carries across messages instead of resetting with every turn."],
-  ["Workflows & actions", "Intent can route a request toward response, retrieval or scheduling work."],
-  ["Channel-neutral by design", "The public website workspace is live today; other channels are released deliberately."],
+  ["Business systems", "Complete operational platforms designed around the workflows, people and constraints of a specific industry.", "Software"],
+  ["AI agents", "Customer service, sales, scheduling, knowledge and internal agents connected to approved business context.", "Intelligence"],
+  ["Automation", "Workflows that connect messaging, CRM, operations, approvals and external services without hiding execution.", "Operations"],
+  ["Computer vision", "Camera activity translated into useful operational signals and alerts for people to review where appropriate.", "Vision"],
 ] as const;
 
 export default function OperatingPrinciples() {
   return (
-    <section className="relative border-y border-white/[0.08] bg-white/[0.018] py-20 sm:py-24">
+    <section className="relative border-y border-white/[0.08] bg-white/[0.018] py-20 sm:py-24" id="systems">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="max-w-2xl"><p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">The operating layer</p><h2 className="mt-4 font-heading text-3xl font-medium tracking-[-0.045em] text-white sm:text-4xl">Every reply has context, not just a prompt.</h2></div>
-        <div className="mt-10 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {principles.map(([title, description], index) => (
-            <article className="group rounded-[var(--nexus-radius-control)] border border-white/[0.08] bg-white/[0.018] p-5 transition-colors hover:border-white/[0.15] hover:bg-white/[0.035]" key={title}>
-              <span className="text-xs font-medium tabular-nums text-zinc-600">0{index + 1}</span>
-              <h3 className="mt-6 font-heading text-lg font-medium tracking-[-0.025em] text-white">{title}</h3>
-              <p className="mt-2 text-sm leading-6 text-zinc-400">{description}</p>
+        <div className="max-w-3xl"><p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">What Nexus builds</p><h2 className="nexus-heading mt-4 font-heading text-3xl font-medium tracking-[-0.045em] sm:text-4xl">Four disciplines. One operating system.</h2><p className="nexus-copy mt-4 max-w-2xl text-base leading-7">Nexus brings product engineering and applied intelligence together so businesses do not have to stitch the operating model together themselves.</p></div>
+        <div className="mt-10 grid gap-3 md:grid-cols-2">
+          {principles.map(([title, description, status], index) => (
+            <article className="nexus-card group min-h-56 rounded-[var(--nexus-radius-control)] p-6 transition-transform hover:-translate-y-0.5" key={title}>
+              <div className="flex items-center justify-between gap-3"><span className="nexus-subtle text-xs font-medium tabular-nums">0{index + 1}</span><span className="nexus-status rounded-full px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.1em]">{status}</span></div>
+              <h3 className="nexus-heading mt-10 font-heading text-xl font-medium tracking-[-0.025em]">{title}</h3>
+              <p className="nexus-copy mt-3 max-w-xl text-sm leading-6">{description}</p>
             </article>
           ))}
         </div>
