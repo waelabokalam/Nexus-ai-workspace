@@ -1,40 +1,89 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import MarketingPage from "@/components/MarketingPage";
 import ContactEmailActions from "@/components/ContactEmailActions";
+import SalesLeadForm from "@/components/contact/SalesLeadForm";
 import { pageMetadata } from "@/app/metadata";
 import { siteConfig } from "@/app/site-config";
+import { industries, type Industry } from "@/lib/sales-lead";
 
-export const metadata: Metadata = pageMetadata("Contact", "Contact Nexus about an early-access business communication workflow.", "/contact");
+export const metadata: Metadata = pageMetadata(
+  "Talk to Nexus",
+  "Tell Nexus how your restaurant or business works and request a focused system conversation.",
+  "/contact",
+);
 
-export default function ContactPage() {
-  const contactEmail = siteConfig.contactEmail;
+type ContactPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+function firstValue(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function industryValue(value: string | string[] | undefined): Industry {
+  const candidate = firstValue(value);
+  return candidate && industries.includes(candidate as Industry) ? candidate as Industry : "restaurants";
+}
+
+function safeSourcePage(value: string | string[] | undefined) {
+  const candidate = firstValue(value);
+  return candidate?.startsWith("/") && !candidate.startsWith("//") ? candidate.slice(0, 300) : "/contact";
+}
+
+function safeAttribution(value: string | string[] | undefined) {
+  return firstValue(value)?.slice(0, 100) || null;
+}
+
+const preparationPoints = [
+  ["Your current workflow", "Where customer requests arrive and how the team handles them today."],
+  ["The operational friction", "The handoffs, repeated work or disconnected tools that slow the business down."],
+  ["The right starting scope", "A focused first system that can expand as the workflow proves its value."],
+] as const;
+
+export default async function ContactPage({ searchParams }: ContactPageProps) {
+  const params = await searchParams;
+  const selectedIndustry = industryValue(params.industry);
+  const initialAttribution = {
+    industry: selectedIndustry,
+    source_page: safeSourcePage(params.source_page),
+    utm_source: safeAttribution(params.utm_source),
+    utm_medium: safeAttribution(params.utm_medium),
+    utm_campaign: safeAttribution(params.utm_campaign),
+  };
 
   return (
     <MarketingPage>
-      <section className="mx-auto max-w-4xl px-5 pb-24 pt-20 sm:px-8 sm:pt-28">
-        <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Contact</p>
-        <h1 className="mt-5 font-heading text-5xl font-semibold tracking-[-0.055em] text-white sm:text-6xl">Start with the workflow.</h1>
-        <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-400">For pilots, custom plans, partnerships and product questions, begin with the customer conversation, business knowledge and action you want Nexus to support.</p>
+      <section className="px-5 pb-24 pt-16 sm:px-8 sm:pb-32 sm:pt-24">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:gap-16">
+          <div className="lg:sticky lg:top-28">
+            <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Build with Nexus</p>
+            <h1 className="nexus-heading mt-5 max-w-xl font-heading text-5xl font-semibold leading-[0.98] tracking-[-0.06em] sm:text-6xl">Tell us how your {selectedIndustry === "restaurants" ? "restaurant" : "business"} works.</h1>
+            <p className="nexus-copy mt-6 max-w-xl text-lg leading-8">Nexus systems are configured around the actual workflow of the business. Give us enough context to make the first conversation useful.</p>
 
-        <div className="nexus-surface mt-10 max-w-2xl rounded-[var(--nexus-radius-surface)] p-6 sm:p-7">
-          {contactEmail ? (
-            <>
-              <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Public contact</p>
-              <a className="nexus-focus mt-3 inline-block break-all text-lg font-medium text-white underline decoration-white/30 underline-offset-4 transition hover:decoration-white" href={`mailto:${contactEmail}`}>{contactEmail}</a>
-              <p className="mt-4 text-sm leading-6 text-zinc-400">Share the communication workflow you want to improve, and the team can discuss the right early-access scope.</p>
-              <ContactEmailActions email={contactEmail} />
-            </>
-          ) : (
-            <>
-              <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">{siteConfig.isProduction ? "Contact unavailable" : "Development configuration"}</p>
-              <p className="mt-3 text-sm leading-6 text-zinc-300">{siteConfig.isProduction ? "A public contact address has not been configured yet. Please return when this page has been updated." : "Set NEXT_PUBLIC_CONTACT_EMAIL to enable the public email actions. No contact address is displayed until a real address is configured."}</p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link className="nexus-focus inline-flex min-h-11 items-center rounded-[var(--nexus-radius-control)] bg-white px-4 text-sm font-medium text-zinc-950 transition hover:bg-zinc-200" href="/demo">Open the Demo Hub</Link>
-                <Link className="nexus-focus inline-flex min-h-11 items-center rounded-[var(--nexus-radius-control)] border border-white/[0.12] px-4 text-sm font-medium text-white transition hover:bg-white/[0.06]" href="/docs">Read the documentation</Link>
+            <ol className="mt-10 space-y-0 border-y border-[var(--nexus-border)]">
+              {preparationPoints.map(([title, description], index) => (
+                <li className="grid grid-cols-[2rem_1fr] gap-3 border-b border-[var(--nexus-border)] py-5 last:border-0" key={title}>
+                  <span className="nexus-subtle pt-0.5 text-[10px] tabular-nums">0{index + 1}</span>
+                  <div><h2 className="nexus-heading text-sm font-medium">{title}</h2><p className="nexus-copy mt-2 text-sm leading-6">{description}</p></div>
+                </li>
+              ))}
+            </ol>
+
+            <div className="mt-8 rounded-[var(--nexus-radius-control)] border border-[var(--nexus-border)] bg-[var(--nexus-surface-soft)] p-4">
+              <p className="nexus-heading text-sm font-medium">What happens next</p>
+              <p className="nexus-copy mt-2 text-sm leading-6">The Nexus team reviews the business context before following up. No response time or implementation scope is promised by this form.</p>
+            </div>
+
+            {siteConfig.contactEmail ? (
+              <div className="mt-8">
+                <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">Prefer email?</p>
+                <a className="nexus-heading nexus-focus mt-3 inline-block break-all text-sm font-medium underline decoration-current/30 underline-offset-4 hover:decoration-current" href={`mailto:${siteConfig.contactEmail}`}>{siteConfig.contactEmail}</a>
+                <ContactEmailActions email={siteConfig.contactEmail} />
               </div>
-            </>
-          )}
+            ) : null}
+          </div>
+
+          <SalesLeadForm contactEmail={siteConfig.contactEmail} initialAttribution={initialAttribution} />
         </div>
       </section>
     </MarketingPage>

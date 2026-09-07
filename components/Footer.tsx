@@ -1,5 +1,6 @@
 import Link from "next/link";
 import NexusCore from "@/components/ui/NexusCore";
+import TrackedContactLink from "@/components/contact/TrackedContactLink";
 
 const groups = [
   { title: "Systems", links: [{ href: "/#industries", label: "Industries" }, { href: "/#nexus-core", label: "Nexus Core" }, { href: "/demo", label: "AI Lab" }] },
@@ -12,7 +13,7 @@ export default function Footer() {
     <footer className="relative z-10 border-t border-white/[0.08]">
       <div className="mx-auto flex max-w-7xl flex-col justify-between gap-6 border-b border-white/[0.08] px-5 py-12 sm:px-8 md:flex-row md:items-end">
         <div><p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">Start with the industry</p><h2 className="mt-3 font-heading text-2xl font-medium tracking-[-0.04em] text-white">What should work better in your operation?</h2></div>
-        <Link className="nexus-button-primary nexus-focus inline-flex min-h-11 items-center justify-center rounded-[var(--nexus-radius-control)] px-4 text-sm font-medium" href="/contact">Talk to Nexus <span aria-hidden="true" className="ml-2">→</span></Link>
+        <TrackedContactLink className="nexus-button-primary nexus-focus inline-flex min-h-11 items-center justify-center rounded-[var(--nexus-radius-control)] px-4 text-sm font-medium">Talk to Nexus <span aria-hidden="true" className="ml-2">→</span></TrackedContactLink>
       </div>
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-[1.4fr_repeat(3,1fr)]">
         <div>

@@ -77,7 +77,7 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <Link className={`nexus-focus mt-auto inline-flex min-h-11 items-center justify-center rounded-[var(--nexus-radius-control)] px-4 text-sm font-medium transition ${plan.recommended ? "bg-white text-zinc-950 hover:bg-zinc-200" : "border border-white/[0.12] text-white hover:bg-white/[0.06]"}`} href="/contact">Discuss {plan.name}</Link>
+              <Link className={`nexus-focus mt-auto inline-flex min-h-11 items-center justify-center rounded-[var(--nexus-radius-control)] px-4 text-sm font-medium transition ${plan.recommended ? "bg-white text-zinc-950 hover:bg-zinc-200" : "border border-white/[0.12] text-white hover:bg-white/[0.06]"}`} href="/contact?source_page=%2Fpricing">Discuss {plan.name}</Link>
             </article>
           ))}
         </div>

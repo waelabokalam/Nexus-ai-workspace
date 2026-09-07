@@ -32,7 +32,25 @@ const comparison = [
 
 const futureModules = ["Loyalty", "Marketing automation", "Demand forecasting", "Inventory intelligence", "Delivery integrations", "POS integrations", "Advanced analytics", "Kitchen intelligence"] as const;
 
-export default function RestaurantsPage() {
+type RestaurantsPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+function firstValue(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function restaurantContactHref(params: Record<string, string | string[] | undefined>) {
+  const contactParams = new URLSearchParams({ industry: "restaurants", source_page: "/restaurants" });
+  for (const key of ["utm_source", "utm_medium", "utm_campaign"] as const) {
+    const value = firstValue(params[key])?.slice(0, 100);
+    if (value) contactParams.set(key, value);
+  }
+  return `/contact?${contactParams.toString()}`;
+}
+
+export default async function RestaurantsPage({ searchParams }: RestaurantsPageProps) {
+  const contactHref = restaurantContactHref(await searchParams);
   return (
     <MarketingPage>
       <section className="px-5 pb-24 pt-20 sm:px-8 sm:pb-28 sm:pt-28">
@@ -46,7 +64,7 @@ export default function RestaurantsPage() {
               Bring your digital presence, customer journey, communication, operations and business data into one connected platform built around your restaurant.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact">Book a demo <span aria-hidden="true" className="ml-2">→</span></Link>
+              <Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href={contactHref}>Book a demo <span aria-hidden="true" className="ml-2">→</span></Link>
               <Link className="nexus-button-secondary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/case-studies/crave-it">See Crave It</Link>
             </div>
           </div>
@@ -176,7 +194,7 @@ export default function RestaurantsPage() {
           <div className="nexus-surface rounded-[calc(var(--nexus-radius-surface)-0.3rem)] px-6 py-16 text-center sm:px-10 sm:py-20">
             <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Nexus for restaurants</p>
             <h2 className="nexus-heading mx-auto mt-5 max-w-4xl font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Your restaurant already has a workflow. Nexus turns it into software.</h2>
-            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row"><Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact">Talk to Nexus <span aria-hidden="true" className="ml-2">→</span></Link><Link className="nexus-button-secondary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/case-studies/crave-it">View Crave It</Link></div>
+            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row"><Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href={contactHref}>Talk to Nexus <span aria-hidden="true" className="ml-2">→</span></Link><Link className="nexus-button-secondary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/case-studies/crave-it">View Crave It</Link></div>
           </div>
         </div>
       </section>

@@ -42,7 +42,7 @@ export default function CraveItCaseStudyPage() {
             <h1 className="nexus-heading mt-5 font-heading text-6xl font-semibold tracking-[-0.065em] sm:text-7xl">Crave It</h1>
             <p className="nexus-heading mt-5 max-w-xl font-heading text-2xl font-medium leading-tight tracking-[-0.035em] sm:text-3xl">A complete digital operations platform for a food business.</p>
             <p className="nexus-copy mt-6 max-w-xl text-base leading-7">Nexus designed the customer experience, operational workflows, administration and underlying system as one connected product.</p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row"><Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact">Talk to Nexus <span aria-hidden="true" className="ml-2">→</span></Link><Link className="nexus-button-secondary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/restaurants">Restaurant systems</Link></div>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row"><Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact?industry=restaurants&source_page=%2Fcase-studies%2Fcrave-it">Talk to Nexus <span aria-hidden="true" className="ml-2">→</span></Link><Link className="nexus-button-secondary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/restaurants">Restaurant systems</Link></div>
           </div>
           <CraveItSystemMap />
         </div>
@@ -101,7 +101,7 @@ export default function CraveItCaseStudyPage() {
             <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Build with Nexus</p>
             <h2 className="nexus-heading mx-auto mt-5 max-w-4xl font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Need a system built around your business?</h2>
             <p className="nexus-copy mx-auto mt-5 max-w-xl text-base leading-7">Start with the workflow. Nexus can shape the product and operating system around it.</p>
-            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row"><Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact">Talk to Nexus <span aria-hidden="true" className="ml-2">→</span></Link><Link className="nexus-button-secondary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/restaurants">Explore restaurant systems</Link></div>
+            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row"><Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact?industry=restaurants&source_page=%2Fcase-studies%2Fcrave-it">Talk to Nexus <span aria-hidden="true" className="ml-2">→</span></Link><Link className="nexus-button-secondary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/restaurants">Explore restaurant systems</Link></div>
           </div>
         </div>
       </section>

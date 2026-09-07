@@ -14,7 +14,7 @@ export default function HomeFinalCta() {
             Start with the operation that matters most. Nexus can shape the system, intelligence and integrations around it.
           </p>
           <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact">
+            <Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact?source_page=%2F">
               Build with Nexus <span aria-hidden="true" className="ml-2">→</span>
             </Link>
             <Link className="nexus-button-secondary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="#industries">

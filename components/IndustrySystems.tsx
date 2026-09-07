@@ -18,7 +18,7 @@ const industries = [
     description: "Connect inventory, pricing, customers, analytics and intelligent monitoring.",
     capabilities: ["Inventory intelligence", "CRM", "Smart pricing", "Computer vision", "Shelf systems", "Analytics"],
     action: "Discuss the retail roadmap",
-    href: "/contact",
+    href: "/contact?industry=retail&source_page=%2F",
     featured: false,
   },
   {
@@ -28,7 +28,7 @@ const industries = [
     description: "Membership operations enhanced by automation and intelligent access.",
     capabilities: ["Memberships", "CRM", "Smart access", "Attendance", "AI receptionist", "Retention intelligence"],
     action: "Discuss fitness systems",
-    href: "/contact",
+    href: "/contact?industry=fitness&source_page=%2F",
     featured: false,
   },
 ] as const;

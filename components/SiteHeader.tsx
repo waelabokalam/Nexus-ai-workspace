@@ -17,6 +17,7 @@ const navigation = [
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const contactHref = `/contact?source_page=${encodeURIComponent(pathname)}`;
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobileNavigationRef = useRef<HTMLElement>(null);
 
@@ -73,7 +74,7 @@ export default function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Link className="nexus-focus hidden min-h-9 items-center rounded-lg bg-white px-4 text-sm font-medium text-zinc-950 transition hover:bg-zinc-200 sm:inline-flex" href="/contact">
+          <Link className="nexus-focus hidden min-h-9 items-center rounded-lg bg-white px-4 text-sm font-medium text-zinc-950 transition hover:bg-zinc-200 sm:inline-flex" href={contactHref}>
             Talk to Nexus <span aria-hidden="true" className="ml-1.5">→</span>
           </Link>
           <button
@@ -96,7 +97,7 @@ export default function SiteHeader() {
               {item.label}
             </Link>
           ))}
-          <Link className="nexus-button-primary nexus-focus mt-1 flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm font-medium sm:hidden" href="/contact" onClick={() => closeMenu(false)}>
+          <Link className="nexus-button-primary nexus-focus mt-1 flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm font-medium sm:hidden" href={contactHref} onClick={() => closeMenu(false)}>
             Talk to Nexus <span aria-hidden="true" className="ml-2">→</span>
           </Link>
         </nav>
