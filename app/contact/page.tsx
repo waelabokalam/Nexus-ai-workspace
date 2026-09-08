@@ -71,7 +71,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
 
             <div className="mt-8 rounded-[var(--nexus-radius-control)] border border-[var(--nexus-border)] bg-[var(--nexus-surface-soft)] p-4">
               <p className="nexus-heading text-sm font-medium">What happens next</p>
-              <p className="nexus-copy mt-2 text-sm leading-6">The Nexus team reviews the business context before following up. No response time or implementation scope is promised by this form.</p>
+              <p className="nexus-copy mt-2 text-sm leading-6">We review your workflow and follow up with a focused view of the strongest starting point.</p>
             </div>
 
             {siteConfig.contactEmail ? (

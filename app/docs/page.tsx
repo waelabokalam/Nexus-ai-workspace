@@ -44,20 +44,10 @@ NEXUS_BACKEND_URL=http://127.0.0.1:8000
 NEXUS_DEVELOPMENT_API_KEY=replace-with-server-only-key`;
 
 function DocSection({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
-  const currentIndex = sections.findIndex((section) => section.id === id);
-  const previous = sections[currentIndex - 1];
-  const next = sections[currentIndex + 1];
-
   return (
     <section className="scroll-mt-28 border-b border-white/[0.08] pb-10" id={id} tabIndex={-1}>
       <h2 className="font-heading text-2xl font-medium tracking-[-0.035em] text-white">{title}</h2>
       <div className="mt-4 space-y-4 text-base leading-7 text-zinc-400">{children}</div>
-      {(previous || next) && (
-        <nav aria-label={`${title} documentation navigation`} className="mt-7 flex items-center justify-between gap-4 text-sm">
-          {previous ? <Link className="nexus-focus text-zinc-400 transition hover:text-white" href={`#${previous.id}`}>← {previous.title}</Link> : <span />}
-          {next ? <Link className="nexus-focus text-right font-medium text-zinc-200 transition hover:text-white" href={`#${next.id}`}>{next.title} →</Link> : <span />}
-        </nav>
-      )}
     </section>
   );
 }

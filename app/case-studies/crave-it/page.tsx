@@ -75,7 +75,6 @@ export default function CraveItCaseStudyPage() {
       <section className="border-y border-white/[0.08] bg-white/[0.018] px-5 py-24 sm:px-8 sm:py-32">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-6 lg:grid-cols-[0.76fr_1.24fr] lg:items-end"><div><p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Nexus Direct model</p><h2 className="nexus-heading mt-4 font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Customer experience and fulfilment, designed together.</h2></div><p className="nexus-copy max-w-2xl text-base leading-7 lg:justify-self-end">This implementation fits businesses whose direct customer channel—such as meal plans, subscriptions, catering, or cloud-kitchen ordering—is itself a core operating workflow.</p></div>
-          <CraveItSystemMap className="mt-12" />
         </div>
       </section>
 
