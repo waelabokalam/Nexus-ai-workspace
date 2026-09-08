@@ -3,9 +3,8 @@
 import { motion } from "framer-motion";
 
 const metadata = [
-  "Live Nexus Agent workspaces",
+  "Two live workspaces",
   "Business knowledge",
-  "Conversation memory",
   "Calendar workflows",
 ];
 
@@ -18,16 +17,16 @@ export default function DemoHero() {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
       <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">
-        Nexus Agent lab
+        Nexus proof and demos
       </p>
       <h1 className="nexus-heading mt-6 font-heading text-5xl font-semibold tracking-[-0.06em] sm:text-6xl md:text-7xl">
         Experience Nexus
       </h1>
       <p className="nexus-copy mx-auto mt-6 max-w-2xl text-base leading-7 sm:text-lg">
-        Explore the live conversational engine through support and restaurant workspaces, then review clearly labeled concept scenarios.
+        Try the live Nexus Agent, inspect a restaurant workflow, or explore a real Nexus Direct implementation.
       </p>
       <p className="nexus-subtle mt-3 text-sm tracking-[-0.01em]">
-        Customer Support and Restaurant are live. PGPara is a disclosed concept prototype. Other scenarios are later product directions.
+        Live products, proof and independent prototypes are grouped separately.
       </p>
 
       <motion.div

@@ -8,10 +8,9 @@ import ThemeToggle from "@/components/ThemeToggle";
 
 const navigation = [
   { href: "/#industries", label: "Industries" },
-  { href: "/#systems", label: "Systems" },
+  { href: "/#what-we-build", label: "What We Build" },
+  { href: "/demo", label: "Demo" },
   { href: "/case-studies/crave-it", label: "Case Studies" },
-  { href: "/demo", label: "AI Lab" },
-  { href: "/about", label: "Company" },
 ];
 
 export default function SiteHeader() {

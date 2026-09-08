@@ -16,9 +16,9 @@ export default function CraveItSystemMap({ className = "" }: { className?: strin
   return (
     <div className={`nexus-frame rounded-[var(--nexus-radius-surface)] p-1 ${className}`}>
       <div className="nexus-surface overflow-hidden rounded-[calc(var(--nexus-radius-surface)-0.3rem)]">
-        <div className="flex items-center justify-between gap-4 border-b border-white/[0.08] px-5 py-4 sm:px-6">
+        <div className="flex items-center justify-between gap-4 border-b border-[var(--nexus-border)] px-5 py-4 sm:px-6">
           <div className="flex items-center gap-3">
-            <span aria-hidden="true" className="grid size-8 place-items-center rounded-lg border border-white/[0.1] bg-white/[0.05] text-xs font-semibold text-[var(--nexus-text)]">C</span>
+            <span aria-hidden="true" className="nexus-control grid size-8 place-items-center rounded-lg text-xs font-semibold text-[var(--nexus-text)]">C</span>
             <div>
               <p className="nexus-heading text-sm font-semibold">Crave It</p>
               <p className="nexus-subtle text-[10px] uppercase tracking-[0.12em]">Product system map</p>
@@ -53,7 +53,7 @@ export default function CraveItSystemMap({ className = "" }: { className?: strin
           </section>
         </div>
 
-        <div className="grid gap-3 border-t border-white/[0.08] p-5 sm:grid-cols-3 sm:p-6">
+        <div className="grid gap-3 border-t border-[var(--nexus-border)] p-5 sm:grid-cols-3 sm:p-6">
           {[
             ["Customer layer", "Website · Accounts"],
             ["Operational layer", "Requests · Administration"],

@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import ThemeToggle from "@/components/ThemeToggle";
 import { pageMetadata } from "@/app/metadata";
 
-export const metadata: Metadata = pageMetadata("Nexus Agent Lab", "Experience the live Nexus Agent through support and restaurant workspaces, with future scenarios clearly labeled.", "/demo");
+export const metadata: Metadata = pageMetadata("Nexus Systems Demo", "Experience live Nexus agents, inspect working product proof, and explore a clearly disclosed concept prototype.", "/demo");
 
 export default function DemoPage() {
   return (
@@ -38,10 +38,6 @@ export default function DemoPage() {
           <DemoGrid />
         </div>
 
-        <section className="mt-24 border-t border-[var(--nexus-border)] py-16 text-center sm:mt-32">
-          <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">What is live today</p>
-          <h2 className="nexus-heading mt-5 font-heading text-3xl font-medium tracking-[-0.045em] sm:text-4xl">Real website workspaces with streamed responses and emitted workflow events.</h2>
-        </section>
       </div>
       <Footer />
     </main>

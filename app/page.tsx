@@ -1,10 +1,9 @@
 import Hero from "@/components/Hero";
-import WorkspacePreview from "@/components/dashboard/WorkspacePreview";
 import Footer from "@/components/Footer";
 import OperatingPrinciples from "@/components/OperatingPrinciples";
 import SiteHeader from "@/components/SiteHeader";
 import IndustrySystems from "@/components/IndustrySystems";
-import CraveItSpotlight from "@/components/CraveItSpotlight";
+import ProofSystems from "@/components/ProofSystems";
 import IntelligenceDifferentiator from "@/components/IntelligenceDifferentiator";
 import HomeFinalCta from "@/components/HomeFinalCta";
 
@@ -16,11 +15,10 @@ export default function Home() {
       <SiteHeader />
       <div id="main-content">
         <Hero />
-        <IndustrySystems />
-        <WorkspacePreview />
-        <CraveItSpotlight />
-        <IntelligenceDifferentiator />
         <OperatingPrinciples />
+        <IndustrySystems />
+        <ProofSystems />
+        <IntelligenceDifferentiator />
         <HomeFinalCta />
       </div>
       <Footer />

@@ -17,8 +17,7 @@ const demoCardVariants: Variants = {
 };
 
 export default function DemoCard({ demo }: DemoCardProps) {
-  const isAvailable = demo.status === "available" || demo.status === "prototype";
-  const statusLabel = demo.status === "available" ? "Live" : demo.status === "prototype" ? "Building" : "Later";
+  const statusLabel = demo.status === "available" ? "Live" : demo.status === "proof" ? "Proof" : "Prototype";
   const reduceMotion = useReducedMotion();
 
   return (
@@ -26,9 +25,7 @@ export default function DemoCard({ demo }: DemoCardProps) {
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       variants={demoCardVariants}
       whileHover={reduceMotion ? undefined : { y: -2, transition: { duration: 0.2, ease: "easeOut" } }}
-      className={`nexus-card group relative flex min-h-[370px] flex-col overflow-hidden rounded-[var(--nexus-radius-surface)] p-5 transition-colors duration-200 ${
-        isAvailable ? "border-[var(--nexus-border-strong)]" : ""
-      }`}
+      className="nexus-card group relative flex min-h-[370px] flex-col overflow-hidden rounded-[var(--nexus-radius-surface)] border-[var(--nexus-border-strong)] p-5 transition-colors duration-200"
       data-demo-id={demo.id}
     >
       <div className="relative flex items-start justify-between gap-4">
@@ -39,14 +36,8 @@ export default function DemoCard({ demo }: DemoCardProps) {
           />
         </div>
 
-        <span className={`nexus-subtle inline-flex items-center gap-1.5 pt-1 text-xs font-medium ${isAvailable ? "!text-[var(--nexus-text)]" : ""}`}>
-          {isAvailable ? (
-            <span className="relative flex size-1.5">
-              <span className="relative inline-flex size-1.5 rounded-full bg-current" />
-            </span>
-          ) : (
-            <span className="size-1.5 rounded-full bg-current" />
-          )}
+        <span className="inline-flex items-center gap-1.5 pt-1 text-xs font-medium text-[var(--nexus-text)]">
+          <span className="relative inline-flex size-1.5 rounded-full bg-current" />
           {statusLabel}
         </span>
       </div>
@@ -70,23 +61,12 @@ export default function DemoCard({ demo }: DemoCardProps) {
         <DemoMetadataRow label={demo.availability.label} values={demo.availability.values} />
       </div>
 
-      {isAvailable ? (
-        <Link
-          className="nexus-button-primary nexus-focus relative mt-auto inline-flex h-11 w-full items-center justify-center rounded-[var(--nexus-radius-control)] text-sm font-medium"
-          href={demo.href ?? "/demo"}
-        >
-          Open Workspace →
-        </Link>
-      ) : (
-        <button
-          aria-disabled="true"
-          className="nexus-control nexus-subtle relative mt-auto inline-flex h-11 w-full cursor-default items-center justify-center rounded-[var(--nexus-radius-control)] text-sm font-medium"
-          disabled
-          type="button"
-        >
-          Later
-        </button>
-      )}
+      <Link
+        className="nexus-button-primary nexus-focus relative mt-auto inline-flex h-11 w-full items-center justify-center rounded-[var(--nexus-radius-control)] text-sm font-medium"
+        href={demo.href ?? "/demo"}
+      >
+        {demo.status === "proof" ? "View Case Study" : demo.status === "prototype" ? "Open Prototype" : "Open Workspace"} →
+      </Link>
     </motion.article>
   );
 }

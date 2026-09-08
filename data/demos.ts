@@ -6,7 +6,8 @@ export type DemoIconName =
   | "custom-business"
   | "pgpara";
 
-export type DemoStatus = "available" | "prototype" | "coming-soon" | "planned";
+export type DemoStatus = "available" | "prototype" | "proof";
+export type DemoGroup = "live" | "proof" | "lab";
 
 export type Demo = {
   id: string;
@@ -20,19 +21,10 @@ export type Demo = {
   href?: string;
   icon: DemoIconName;
   status: DemoStatus;
+  group: DemoGroup;
 };
 
 export const demos: Demo[] = [
-  {
-    id: "pgpara",
-    title: "PGPara AI Assistant",
-    description: "A concept demo for multilingual product guidance, merchant inquiries and safe financial support responses.",
-    capabilities: ["Turkish, Arabic & English", "Merchant Inquiries", "Product Guidance", "Safe Support"],
-    availability: { label: "Disclosure", values: ["Concept prototype · Building"] },
-    href: "/demo/pgpara",
-    icon: "pgpara",
-    status: "prototype",
-  },
   {
     id: "customer-support",
     title: "Customer Support",
@@ -48,6 +40,7 @@ export const demos: Demo[] = [
     href: "/demo/support",
     icon: "customer-support",
     status: "available",
+    group: "live",
   },
   {
     id: "restaurant",
@@ -58,32 +51,28 @@ export const demos: Demo[] = [
     href: "/demo/restaurant",
     icon: "restaurant",
     status: "available",
+    group: "live",
   },
   {
-    id: "healthcare",
-    title: "Healthcare",
-    description: "A future service-information and appointment-request configuration for healthcare teams.",
-    capabilities: ["Appointments", "Service FAQ", "Calendar Workflows"],
-    availability: { label: "Release status", values: ["Later"] },
-    icon: "healthcare",
-    status: "coming-soon",
+    id: "crave-it",
+    title: "Crave It / Nexus Direct",
+    description: "A real customer and operational system built around a direct food-business workflow.",
+    capabilities: ["Customer Experience", "Order Workflow", "Administration", "Fulfilment"],
+    availability: { label: "Proof", values: ["Nexus Direct implementation"] },
+    href: "/case-studies/crave-it",
+    icon: "restaurant",
+    status: "proof",
+    group: "proof",
   },
   {
-    id: "real-estate",
-    title: "Real Estate",
-    description: "A future property-information and viewing-request configuration for real estate teams.",
-    capabilities: ["Property Search", "Viewing Requests", "Business Knowledge"],
-    availability: { label: "Release status", values: ["Later"] },
-    icon: "real-estate",
-    status: "coming-soon",
-  },
-  {
-    id: "custom-business",
-    title: "Custom Business",
-    description: "Nexus is designed to adapt to a company’s knowledge, communication style, languages, policies and enabled workflows.",
-    capabilities: ["Business Knowledge", "Communication Style", "Languages", "Workflows & Tools"],
-    availability: { label: "Configuration model", values: ["Later"] },
-    icon: "custom-business",
-    status: "planned",
+    id: "pgpara",
+    title: "PGPara AI Assistant",
+    description: "A disclosed concept prototype for multilingual product guidance, merchant inquiries and safe financial support.",
+    capabilities: ["Turkish, Arabic & English", "Merchant Inquiries", "Product Guidance", "Safe Support"],
+    availability: { label: "Disclosure", values: ["Independent concept prototype"] },
+    href: "/demo/pgpara",
+    icon: "pgpara",
+    status: "prototype",
+    group: "lab",
   },
 ];

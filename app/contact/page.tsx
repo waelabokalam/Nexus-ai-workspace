@@ -22,7 +22,7 @@ function firstValue(value: string | string[] | undefined) {
 
 function industryValue(value: string | string[] | undefined): Industry {
   const candidate = firstValue(value);
-  return candidate && industries.includes(candidate as Industry) ? candidate as Industry : "restaurants";
+  return candidate && industries.includes(candidate as Industry) ? candidate as Industry : "other";
 }
 
 function safeSourcePage(value: string | string[] | undefined) {

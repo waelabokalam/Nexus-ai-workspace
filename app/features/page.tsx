@@ -6,7 +6,7 @@ import { pageMetadata } from "@/app/metadata";
 
 export const metadata: Metadata = pageMetadata(
   "Features",
-  "Explore Nexus manager intelligence, AI agents, automation, focused business systems, integrations, and vision products.",
+  "Explore Nexus AI agents, automation, focused business systems, computer vision, and how they combine inside real operations.",
   "/features",
 );
 
@@ -17,7 +17,7 @@ export default function FeaturesPage() {
         <div className="max-w-4xl">
           <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Nexus capabilities</p>
           <h1 className="nexus-heading mt-5 font-heading text-5xl font-semibold tracking-[-0.055em] sm:text-6xl">Intelligence that understands the operation around it.</h1>
-          <p className="nexus-copy mt-6 max-w-3xl text-lg leading-8">Nexus combines a live conversational engine with controlled automation, focused business systems, and emerging manager and vision products. Every capability is labeled by its actual product status.</p>
+          <p className="nexus-copy mt-6 max-w-3xl text-lg leading-8">Nexus combines AI agents, controlled automation, focused business software and computer vision. The result is not a catalogue of disconnected tools, but a system shaped around the operation.</p>
         </div>
 
         <FeatureSystems />
