@@ -66,7 +66,9 @@ create table public.restaurant_events (
   source_reference text check (source_reference is null or char_length(btrim(source_reference)) between 1 and 240),
   subject_type text check (subject_type is null or subject_type ~ '^[a-z][a-z0-9_]{0,79}$'),
   subject_id text check (subject_id is null or char_length(btrim(subject_id)) between 1 and 240),
-  structured_data jsonb not null default '{}'::jsonb check (jsonb_typeof(structured_data) = 'object'),
+  structured_data jsonb not null default '{}'::jsonb
+    constraint restaurant_events_structured_data_object_check
+    check (jsonb_typeof(structured_data) = 'object'),
   confidence double precision check (confidence is null or confidence between 0 and 1),
   requires_attention boolean not null default false,
   dedupe_key text check (dedupe_key is null or char_length(btrim(dedupe_key)) between 1 and 240),
@@ -130,7 +132,9 @@ create table public.manager_approvals (
   action_type text not null check (action_type ~ '^[a-z][a-z0-9_]{0,79}$'),
   title text not null check (char_length(btrim(title)) between 1 and 180),
   summary text not null check (char_length(btrim(summary)) between 1 and 2000),
-  proposed_action jsonb not null default '{}'::jsonb check (jsonb_typeof(proposed_action) = 'object'),
+  proposed_action jsonb not null default '{}'::jsonb
+    constraint manager_approvals_proposed_action_object_check
+    check (jsonb_typeof(proposed_action) = 'object'),
   status public.restaurant_approval_status not null default 'pending',
   requested_at timestamptz not null default now(),
   reviewed_at timestamptz,

@@ -7,6 +7,7 @@ import {
   processManagerApproval,
   updateManagerAttentionItem,
 } from "@/lib/restaurant/services";
+import { isRestaurantMutationAlreadyApplied } from "@/lib/restaurant/errors";
 
 const attentionActionSchema = z.object({
   organizationId: z.uuid(),
@@ -37,7 +38,11 @@ export async function updateAttentionAction(formData: FormData) {
   if (status === "open") candidate.assignedTo = null;
 
   const input = attentionActionSchema.parse(candidate);
-  await updateManagerAttentionItem(input);
+  try {
+    await updateManagerAttentionItem(input);
+  } catch (error) {
+    if (!isRestaurantMutationAlreadyApplied(error)) throw error;
+  }
   revalidatePath("/restaurant");
 }
 
@@ -65,12 +70,16 @@ export async function processApprovalAction(formData: FormData) {
     };
   }
 
-  await processManagerApproval({
-    organizationId: parsed.organizationId,
-    approvalId: parsed.approvalId,
-    decision: parsed.decision,
-    reviewerNote: parsed.reviewerNote,
-    editedAction,
-  });
+  try {
+    await processManagerApproval({
+      organizationId: parsed.organizationId,
+      approvalId: parsed.approvalId,
+      decision: parsed.decision,
+      reviewerNote: parsed.reviewerNote,
+      editedAction,
+    });
+  } catch (error) {
+    if (!isRestaurantMutationAlreadyApplied(error)) throw error;
+  }
   revalidatePath("/restaurant");
 }

@@ -14,6 +14,7 @@ import {
   serializeAttentionUpdate,
   serializeMembershipManagement,
 } from "@/lib/restaurant/domain";
+import { RestaurantDatabaseError } from "@/lib/restaurant/errors";
 import { calculateRestaurantSummary } from "@/lib/restaurant/summary";
 import {
   getRestaurantDayWindow,
@@ -29,8 +30,13 @@ const commandCenterRequestSchema = z.object({
   localDate: z.iso.date().optional(),
 });
 
-function throwDatabaseError(context: string, error: { message: string } | null) {
-  if (error) throw new Error(`${context}: ${error.message}`);
+function throwDatabaseError(
+  context: string,
+  error: { message: string; code?: string } | null,
+) {
+  if (error) {
+    throw new RestaurantDatabaseError(`${context}: ${error.message}`, error.code);
+  }
 }
 
 function branchFilter<T extends { or: (filter: string) => T }>(query: T, branchId: string | null) {

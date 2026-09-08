@@ -37,7 +37,7 @@ export default async function RestaurantPage({
           <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500">Nexus Restaurant</p>
           <h1 className="mt-3 text-2xl font-semibold tracking-[-0.035em] text-white light:text-zinc-950">No restaurant workspace yet</h1>
           <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-zinc-400 light:text-zinc-600">
-            Your account is authenticated, but it has not been added to a restaurant organization. Ask an owner to add your user account, or run the explicit development seed against a safe local Supabase project.
+            Your account is authenticated, but it has not been added to a restaurant organization. Ask an owner to add your user account, or run the guarded seed against an approved Restaurant development project.
           </p>
           <form action={signOutRestaurant} className="mt-7">
             <button className="nexus-focus nexus-button-secondary min-h-10 rounded-xl px-4 text-sm font-medium" type="submit">Sign out</button>

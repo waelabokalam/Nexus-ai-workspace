@@ -1,18 +1,23 @@
 -- DEV-ONLY Restaurant V1 demo seed.
 --
--- This file is inert unless the caller explicitly enables it and supplies an
--- existing Supabase Auth user. Example for a disposable local database only:
+-- This file is inert unless the caller explicitly enables it, identifies the
+-- allowed seed target, and supplies an existing Supabase Auth user.
+-- Example for a disposable local database:
 --
 --   psql "$LOCAL_DATABASE_URL" \
 --     --command "set nexus.allow_restaurant_demo_seed = 'on'" \
+--     --command "set nexus.restaurant_seed_target = 'local'" \
 --     --command "set nexus.restaurant_seed_user_id = '<auth-user-uuid>'" \
 --     --file supabase/seed.sql
 --
--- Never enable this guard for a linked or production database.
+-- The only hosted target accepted by this V1 seed is the dedicated Nexus
+-- Restaurant development project. Never add a production project ref here.
 
 do $restaurant_seed$
 declare
   v_user_id uuid;
+  v_seed_target text;
+  v_hosted_development_project_ref constant text := 'ovloyniqxpuqkwrpoafp';
   v_org_id constant uuid := '10000000-0000-4000-8000-000000000001';
   v_branch_central constant uuid := '20000000-0000-4000-8000-000000000001';
   v_branch_marina constant uuid := '20000000-0000-4000-8000-000000000002';
@@ -20,6 +25,13 @@ begin
   if coalesce(current_setting('nexus.allow_restaurant_demo_seed', true), 'off') <> 'on' then
     raise notice 'Restaurant demo seed skipped. Set nexus.allow_restaurant_demo_seed=on explicitly to run it.';
     return;
+  end if;
+
+  v_seed_target := current_setting('nexus.restaurant_seed_target', true);
+  if v_seed_target is null
+    or v_seed_target not in ('local', v_hosted_development_project_ref)
+  then
+    raise exception 'Restaurant seed target is not an approved development environment.';
   end if;
 
   begin
