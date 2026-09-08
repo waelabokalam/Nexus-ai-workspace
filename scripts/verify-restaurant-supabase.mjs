@@ -206,6 +206,8 @@ function ingestionInput({
   eventStatus,
   severity,
   attentionPriority,
+  eventType = handlingMode === "human" ? "customer_handoff" : "customer_question",
+  category = "customer",
   approvalRequired = false,
   proposedAction = {},
 }) {
@@ -215,8 +217,8 @@ function ingestionInput({
     p_branch_id: branchId,
     p_occurred_at: occurredAt,
     p_source: "nexus_agent",
-    p_event_type: handlingMode === "human" ? "customer_handoff" : "customer_question",
-    p_category: "customer",
+    p_event_type: eventType,
+    p_category: category,
     p_title: title,
     p_summary: `Persisted Supabase verification ${suffix}.`,
     p_severity: severity,
@@ -236,6 +238,127 @@ function ingestionInput({
     p_approval_action_type: approvalRequired ? "customer_response" : null,
     p_proposed_action: proposedAction,
   };
+}
+
+const dailyBriefMode = process.argv[2];
+const dailyBriefStatePath = "/tmp/nexus-daily-manager-brief-live.json";
+if (dailyBriefMode === "daily-brief-setup") {
+  const [existingAttention, existingApprovals, existingEscalations] = await Promise.all([
+    owner.client
+      .from("manager_attention_items")
+      .select("id")
+      .eq("organization_id", organizationId)
+      .in("status", ["open", "assigned"]),
+    owner.client
+      .from("manager_approvals")
+      .select("id")
+      .eq("organization_id", organizationId)
+      .eq("status", "pending"),
+    owner.client
+      .from("restaurant_events")
+      .select("id")
+      .eq("organization_id", organizationId)
+      .eq("handling_mode", "human")
+      .eq("status", "escalated"),
+  ]);
+  assert.equal(expectSuccess(existingAttention, "daily brief attention baseline").length, 0);
+  assert.equal(expectSuccess(existingApprovals, "daily brief approval baseline").length, 0);
+  assert.equal(expectSuccess(existingEscalations, "daily brief escalation baseline").length, 0);
+
+  const definitions = [
+    {
+      suffix: "brief-auto", branchId: centralBranchId,
+      title: "Daily brief AUTO verification", handlingMode: "auto",
+      eventStatus: "handled", severity: "info", attentionPriority: null,
+    },
+    {
+      suffix: "brief-reservation", branchId: centralBranchId,
+      title: "Daily brief reservation verification", handlingMode: "auto",
+      eventStatus: "handled", severity: "info", attentionPriority: null,
+      eventType: "reservation_confirmed", category: "reservations",
+    },
+    {
+      suffix: "brief-human", branchId: marinaBranchId,
+      title: "Daily brief HUMAN verification", handlingMode: "human",
+      eventStatus: "escalated", severity: "high", attentionPriority: "high",
+    },
+    {
+      suffix: "brief-approval", branchId: centralBranchId,
+      title: "Daily brief approval verification", handlingMode: "approval",
+      eventStatus: "waiting_approval", severity: "medium", attentionPriority: "medium",
+      eventType: "complaint", category: "reputation", approvalRequired: true,
+      proposedAction: {
+        channel: "email", tone: "neutral",
+        message: "Daily brief live verification draft",
+      },
+    },
+  ];
+  const created = [];
+  for (const definition of definitions) {
+    created.push(expectSuccess(
+      await service.rpc("ingest_restaurant_event", ingestionInput(definition)),
+      `daily brief ${definition.suffix} ingestion`,
+    ));
+  }
+  fs.writeFileSync(dailyBriefStatePath, JSON.stringify({ runId, created }), { mode: 0o600 });
+  console.log(JSON.stringify({
+    result: "READY", projectRef: fixture.projectRef,
+    allBranches: { openAttention: 2, pendingApprovals: 1, humanEscalations: 1 },
+    central: { openAttention: 1, pendingApprovals: 1, humanEscalations: 0 },
+    marina: { openAttention: 1, pendingApprovals: 0, humanEscalations: 1 },
+  }));
+  process.exit(0);
+}
+
+if (dailyBriefMode === "daily-brief-cleanup") {
+  const state = JSON.parse(fs.readFileSync(dailyBriefStatePath, "utf8"));
+  const pending = state.created.find((item) => item.approval_id);
+  const human = state.created.find(
+    (item) => item.attention_item_id && !item.approval_id,
+  );
+  expectSuccess(
+    await owner.client.rpc("process_manager_approval", {
+      p_organization_id: organizationId,
+      p_approval_id: pending.approval_id,
+      p_decision: "approved",
+      p_reviewer_note: "Daily brief live verification cleanup",
+      p_edited_action: null,
+    }),
+    "daily brief approval cleanup",
+  );
+  expectSuccess(
+    await owner.client.rpc("update_manager_attention_item", {
+      p_organization_id: organizationId,
+      p_attention_id: human.attention_item_id,
+      p_status: "resolved",
+      p_assigned_to: null,
+      p_assigned_to_is_set: false,
+    }),
+    "daily brief escalation cleanup",
+  );
+  const [openAttention, pendingApprovals, humanEscalations] = await Promise.all([
+    owner.client
+      .from("manager_attention_items")
+      .select("id")
+      .eq("organization_id", organizationId)
+      .in("status", ["open", "assigned"]),
+    owner.client
+      .from("manager_approvals")
+      .select("id")
+      .eq("organization_id", organizationId)
+      .eq("status", "pending"),
+    owner.client
+      .from("restaurant_events")
+      .select("id")
+      .eq("organization_id", organizationId)
+      .eq("handling_mode", "human")
+      .eq("status", "escalated"),
+  ]);
+  assert.equal(expectSuccess(openAttention, "daily brief clean attention").length, 0);
+  assert.equal(expectSuccess(pendingApprovals, "daily brief clean approvals").length, 0);
+  assert.equal(expectSuccess(humanEscalations, "daily brief clean escalations").length, 0);
+  console.log(JSON.stringify({ result: "CLEAN", projectRef: fixture.projectRef }));
+  process.exit(0);
 }
 
 const autoInput = ingestionInput({

@@ -3,6 +3,7 @@ export default function RestaurantLoading() {
     <main className="nexus-page min-h-screen flex-1 px-4 py-8 text-white sm:px-6 lg:px-8">
       <div className="mx-auto max-w-[1480px] animate-pulse">
         <div className="h-16 rounded-2xl border border-white/[0.08] bg-white/[0.025]" />
+        <div className="mt-7 h-56 rounded-3xl border border-white/[0.08] bg-white/[0.025] sm:h-44" />
         <div className="mt-7 grid grid-cols-2 gap-2.5 md:grid-cols-5">
           {Array.from({ length: 5 }, (_, index) => (
             <div className="h-24 rounded-2xl border border-white/[0.08] bg-white/[0.025]" key={index} />

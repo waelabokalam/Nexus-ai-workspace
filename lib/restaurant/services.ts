@@ -15,7 +15,11 @@ import {
   serializeMembershipManagement,
 } from "@/lib/restaurant/domain";
 import { RestaurantDatabaseError } from "@/lib/restaurant/errors";
-import { calculateRestaurantSummary } from "@/lib/restaurant/summary";
+import {
+  calculateDailyManagerBrief,
+  calculateRestaurantSummary,
+  isAutomaticallyHandledEvent,
+} from "@/lib/restaurant/summary";
 import {
   getRestaurantDayWindow,
   getRestaurantLocalDate,
@@ -129,6 +133,7 @@ export async function getRestaurantCommandCenter(
   const events = eventsResult.data ?? [];
   const attentionItems = attentionResult.data ?? [];
   const approvals = approvalsResult.data ?? [];
+  const activity = activityResult.data ?? [];
   const relatedEventIds = Array.from(
     new Set(
       [...attentionItems, ...approvals]
@@ -161,13 +166,25 @@ export async function getRestaurantCommandCenter(
       endsAt,
       branchId: input.branchId,
     }),
+    dailyBrief: calculateDailyManagerBrief({
+      organizationId: input.organizationId,
+      generatedForDate: localDate,
+      branches: branchesResult.data ?? [],
+      events,
+      attentionItems,
+      approvals,
+      activity,
+      startsAt,
+      endsAt,
+      branchId: input.branchId,
+    }),
     attentionItems,
     approvals,
     relatedEvents: relatedEventsResult.data ?? [],
     handledEvents: events
-      .filter((event) => event.status === "handled")
+      .filter(isAutomaticallyHandledEvent)
       .slice(0, 12),
-    activity: activityResult.data ?? [],
+    activity,
   };
 }
 

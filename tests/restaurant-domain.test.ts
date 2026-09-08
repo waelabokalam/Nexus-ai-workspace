@@ -13,6 +13,7 @@ import {
 } from "@/lib/restaurant/domain";
 import {
   belongsToBranch,
+  calculateDailyManagerBrief,
   calculateRestaurantSummary,
 } from "@/lib/restaurant/summary";
 import {
@@ -22,6 +23,7 @@ import {
 import type {
   ManagerApprovalRow,
   ManagerAttentionItemRow,
+  RestaurantActivityRow,
   RestaurantEventRow,
 } from "@/lib/supabase/database.types";
 
@@ -110,6 +112,25 @@ function approval(overrides: Partial<ManagerApprovalRow> = {}): ManagerApprovalR
     reviewed_by: null,
     reviewer_note: null,
     updated_at: "2026-09-08T09:00:00.000Z",
+    ...overrides,
+  };
+}
+
+function activity(
+  overrides: Partial<RestaurantActivityRow> = {},
+): RestaurantActivityRow {
+  return {
+    id: crypto.randomUUID(),
+    organization_id: organizationId,
+    branch_id: branchOne,
+    actor_type: "user",
+    actor_id: null,
+    action: "attention_resolved",
+    entity_type: "manager_attention_item",
+    entity_id: null,
+    description: "Manager resolved an attention item.",
+    metadata: {},
+    created_at: "2026-09-08T10:00:00.000Z",
     ...overrides,
   };
 }
@@ -466,5 +487,190 @@ describe("branch filtering and deterministic summary", () => {
       reservationsToday: 0,
       customerInteractions: 3,
     });
+  });
+});
+
+describe("daily manager brief", () => {
+  const baseInput = {
+    organizationId,
+    generatedForDate: "2026-09-08",
+    startsAt: "2026-09-08T00:00:00.000Z",
+    endsAt: "2026-09-09T00:00:00.000Z",
+    branches: [
+      { id: branchOne, name: "Central" },
+      { id: branchTwo, name: "Marina" },
+    ],
+  };
+
+  it("calculates grounded counts and deterministic priority ordering", () => {
+    const humanEvent = event({
+      event_type: "complaint",
+      severity: "critical",
+      handling_mode: "human",
+      status: "escalated",
+    });
+    const approvalEvent = event({
+      event_type: "complaint",
+      severity: "medium",
+      handling_mode: "approval",
+      status: "waiting_approval",
+    });
+    const result = calculateDailyManagerBrief({
+      ...baseInput,
+      events: [
+        humanEvent,
+        approvalEvent,
+        event({ event_type: "reservation_created", category: "reservations" }),
+        event(),
+      ],
+      attentionItems: [
+        attention({ event_id: humanEvent.id, priority: "critical" }),
+        attention({ event_id: approvalEvent.id, priority: "medium" }),
+      ],
+      approvals: [approval({ event_id: approvalEvent.id })],
+      activity: [activity(), activity({ action: "approval_approved" })],
+    });
+
+    expect(result).toMatchObject({
+      source: "deterministic",
+      headline: "2 items need your attention today.",
+      actionableCount: 2,
+      attentionCount: 2,
+      highPriorityAttentionCount: 1,
+      approvalCount: 1,
+      escalationCount: 1,
+      handledCount: 2,
+      eventCount: 4,
+      reservationCount: 1,
+      customerInteractionCount: 3,
+      unresolvedComplaintCount: 2,
+      generatedForDate: "2026-09-08",
+      organizationId,
+      branchId: null,
+      scopeLabel: "All branches",
+    });
+    expect(result.priorityItems.map((item) => item.kind)).toEqual([
+      "high_human_escalations",
+      "pending_approvals",
+      "unresolved_complaints",
+      "open_attention",
+      "reservations_today",
+      "customer_interactions_today",
+    ]);
+    expect(result.operationalNotes).toContain("1 manager decision recorded today.");
+    expect(result.operationalNotes).toContain("1 attention item closed today.");
+  });
+
+  it("keeps all-branch and selected-branch views isolated", () => {
+    const allBranches = calculateDailyManagerBrief({
+      ...baseInput,
+      events: [event(), event({ branch_id: branchTwo })],
+      attentionItems: [attention(), attention({ branch_id: branchTwo })],
+      approvals: [],
+      activity: [],
+    });
+    const selectedBranch = calculateDailyManagerBrief({
+      ...baseInput,
+      branchId: branchOne,
+      events: [event(), event({ branch_id: branchTwo }), event({ branch_id: null })],
+      attentionItems: [attention(), attention({ branch_id: branchTwo })],
+      approvals: [approval(), approval({ branch_id: branchTwo })],
+      activity: [],
+    });
+
+    expect(allBranches).toMatchObject({
+      eventCount: 2,
+      attentionCount: 2,
+      scopeLabel: "All branches",
+    });
+    expect(selectedBranch).toMatchObject({
+      eventCount: 2,
+      attentionCount: 1,
+      approvalCount: 1,
+      branchId: branchOne,
+      scopeLabel: "Central",
+    });
+  });
+
+  it("uses a calm, non-invented zero state", () => {
+    const result = calculateDailyManagerBrief({
+      ...baseInput,
+      events: [],
+      attentionItems: [],
+      approvals: [],
+      activity: [],
+    });
+
+    expect(result.headline).toBe("No urgent issues need your attention right now.");
+    expect(result.actionableCount).toBe(0);
+    expect(result.priorityItems).toEqual([]);
+    expect(result.operationalNotes).toEqual([]);
+    expect(result.handledCount).toBe(0);
+  });
+
+  it("falls back to the same deterministic wording for identical facts", () => {
+    const input = {
+      ...baseInput,
+      events: [event()],
+      attentionItems: [],
+      approvals: [],
+      activity: [],
+    };
+    expect(calculateDailyManagerBrief(input)).toEqual(
+      calculateDailyManagerBrief(input),
+    );
+    expect(calculateDailyManagerBrief(input).priorityItems).toEqual([
+      {
+        kind: "customer_interactions_today",
+        count: 1,
+        label: "1 customer interaction recorded today",
+        priority: "info",
+      },
+      {
+        kind: "auto_handled_today",
+        count: 1,
+        label: "1 event handled automatically by Nexus",
+        priority: "info",
+      },
+    ]);
+  });
+
+  it("honors half-open day boundaries supplied by DST-safe timezone windows", () => {
+    const window = getRestaurantDayWindow("2026-03-29", "Europe/Copenhagen");
+    const result = calculateDailyManagerBrief({
+      ...baseInput,
+      generatedForDate: "2026-03-29",
+      ...window,
+      events: [
+        event({ occurred_at: window.startsAt }),
+        event({ occurred_at: "2026-03-29T21:59:59.999Z" }),
+        event({ occurred_at: window.endsAt }),
+      ],
+      attentionItems: [],
+      approvals: [],
+      activity: [],
+    });
+
+    expect(result.eventCount).toBe(2);
+    expect(result.handledCount).toBe(2);
+  });
+
+  it("only emits branch context supported by persisted high-priority work", () => {
+    const result = calculateDailyManagerBrief({
+      ...baseInput,
+      events: [],
+      attentionItems: [
+        attention({ branch_id: branchTwo, priority: "high" }),
+        attention({ branch_id: branchTwo, priority: "critical" }),
+        attention({ branch_id: branchOne, priority: "high" }),
+      ],
+      approvals: [],
+      activity: [],
+    });
+
+    expect(result.operationalNotes).toEqual([
+      "Marina has 2 high-priority attention items.",
+    ]);
+    expect(result.operationalNotes.join(" ")).not.toContain("anomaly");
   });
 });
