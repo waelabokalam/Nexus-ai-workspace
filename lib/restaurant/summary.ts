@@ -4,8 +4,10 @@ import type {
   RestaurantActivityRow,
   RestaurantBranchRow,
   RestaurantEventRow,
+  RestaurantReviewRow,
   RestaurantSeverity,
 } from "@/lib/supabase/database.types";
+import { detectRepeatedNegativeReviewTopics } from "@/lib/restaurant/reputation";
 
 export type RestaurantSummary = {
   eventsToday: number;
@@ -30,6 +32,9 @@ export type DailyManagerBriefItemKind =
   | "high_human_escalations"
   | "high_priority_attention"
   | "pending_approvals"
+  | "serious_reputation_issues"
+  | "negative_reviews"
+  | "reputation_topic_trend"
   | "unresolved_complaints"
   | "open_attention"
   | "reservations_today"
@@ -56,6 +61,9 @@ export type DailyManagerBrief = {
   reservationCount: number;
   customerInteractionCount: number;
   unresolvedComplaintCount: number;
+  negativeReviewCount: number;
+  seriousReputationCount: number;
+  repeatedNegativeTopics: ReturnType<typeof detectRepeatedNegativeReviewTopics>;
   actionableCount: number;
   operationalNotes: string[];
   generatedForDate: string;
@@ -69,6 +77,7 @@ export type DailyManagerBriefInput = RestaurantSummaryInput & {
   generatedForDate: string;
   branches: Pick<RestaurantBranchRow, "id" | "name">[];
   activity: RestaurantActivityRow[];
+  reviews?: RestaurantReviewRow[];
 };
 
 type OperationalRows = {
@@ -180,6 +189,29 @@ export function calculateDailyManagerBrief(
     (event) =>
       event.event_type === "complaint" && ACTIVE_EVENT_STATUSES.has(event.status),
   );
+  const reviews = input.reviews ?? [];
+  const reviewsToday = reviews.filter((review) => {
+    const reviewedAt = Date.parse(review.reviewed_at);
+    return (
+      reviewedAt >= Date.parse(input.startsAt) &&
+      reviewedAt < Date.parse(input.endsAt) &&
+      belongsToBranch(review, input.branchId)
+    );
+  });
+  const negativeReviews = reviewsToday.filter(
+    (review) => review.sentiment === "negative",
+  );
+  const seriousReviews = negativeReviews.filter(
+    (review) => review.severity === "high" || review.severity === "critical",
+  );
+  const seriousReviewEventIds = new Set(seriousReviews.map((review) => review.event_id));
+  const highHumanEscalationsOutsideReputation = highHumanEscalations.filter(
+    (event) => !seriousReviewEventIds.has(event.id),
+  );
+  const repeatedNegativeTopics = detectRepeatedNegativeReviewTopics(reviews, {
+    endsAt: input.endsAt,
+    branchId: input.branchId ?? undefined,
+  });
 
   const activeAttentionEventIds = new Set(
     activeAttention
@@ -209,15 +241,36 @@ export function calculateDailyManagerBrief(
   };
 
   addPriorityItem(
+    "serious_reputation_issues",
+    seriousReviews.length,
+    `${pluralize(seriousReviews.length, "serious reputation issue")} ${seriousReviews.length === 1 ? "was" : "were"} routed to human review`,
+    "critical",
+  );
+  addPriorityItem(
     "high_human_escalations",
-    highHumanEscalations.length,
-    `${pluralize(highHumanEscalations.length, "high-priority human escalation")} awaiting follow-up`,
+    highHumanEscalationsOutsideReputation.length,
+    `${pluralize(highHumanEscalationsOutsideReputation.length, "high-priority human escalation")} awaiting follow-up`,
     "critical",
   );
   addPriorityItem(
     "high_priority_attention",
     highPriorityAttentionOutsideEscalations.length,
     `${pluralize(highPriorityAttentionOutsideEscalations.length, "high-priority item")} in the attention queue`,
+    "high",
+  );
+  addPriorityItem(
+    "negative_reviews",
+    negativeReviews.length,
+    `${pluralize(negativeReviews.length, "negative review")} ${negativeReviews.length === 1 ? "was" : "were"} recorded today`,
+    "high",
+  );
+  const leadingReputationTrend = repeatedNegativeTopics[0];
+  addPriorityItem(
+    "reputation_topic_trend",
+    leadingReputationTrend?.count ?? 0,
+    leadingReputationTrend
+      ? `${leadingReputationTrend.topic.replaceAll("_", " ")} was mentioned negatively ${leadingReputationTrend.count} times in the last 7 days`
+      : "",
     "high",
   );
   addPriorityItem(
@@ -329,6 +382,9 @@ export function calculateDailyManagerBrief(
     reservationCount: summary.reservationsToday,
     customerInteractionCount: summary.customerInteractions,
     unresolvedComplaintCount: unresolvedComplaints.length,
+    negativeReviewCount: negativeReviews.length,
+    seriousReputationCount: seriousReviews.length,
+    repeatedNegativeTopics,
     actionableCount,
     operationalNotes,
     generatedForDate: input.generatedForDate,

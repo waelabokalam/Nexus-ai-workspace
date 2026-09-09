@@ -21,6 +21,7 @@ declare
   v_org_id constant uuid := '10000000-0000-4000-8000-000000000001';
   v_branch_central constant uuid := '20000000-0000-4000-8000-000000000001';
   v_branch_marina constant uuid := '20000000-0000-4000-8000-000000000002';
+  v_review record;
 begin
   if coalesce(current_setting('nexus.allow_restaurant_demo_seed', true), 'off') <> 'on' then
     raise notice 'Restaurant demo seed skipped. Set nexus.allow_restaurant_demo_seed=on explicitly to run it.';
@@ -202,6 +203,80 @@ begin
       now() - interval '9 minutes'
     )
   on conflict (id) do nothing;
+
+  -- Phase 2.2 reputation fixtures use the same trusted ingestion boundary that
+  -- future provider adapters will call. Existing dedupe keys keep seed reruns inert.
+  perform set_config('request.jwt.claim.role', 'service_role', true);
+  for v_review in
+    select * from (values
+      ('positive-food', v_branch_central, 5::smallint,
+        'The food was delicious and beautifully presented.',
+        'positive'::public.restaurant_review_sentiment,
+        array['food_quality']::public.restaurant_review_topic[],
+        'low'::public.restaurant_severity, null::text, interval '5 hours'),
+      ('positive-service', v_branch_marina, 4::smallint,
+        'Friendly staff and thoughtful service throughout dinner.',
+        'positive'::public.restaurant_review_sentiment,
+        array['service','staff']::public.restaurant_review_topic[],
+        'low'::public.restaurant_severity, null::text, interval '8 hours'),
+      ('slow-1', v_branch_central, 3::smallint,
+        'The service was slow and we waited too long for our mains.',
+        'negative'::public.restaurant_review_sentiment,
+        array['service','speed']::public.restaurant_review_topic[],
+        'medium'::public.restaurant_severity,
+        'Thank you for the feedback. We are sorry about the slow service and are reviewing the delay with our team.',
+        interval '6 days'),
+      ('slow-2', v_branch_central, 3::smallint,
+        'Good flavours, but service was delayed and the wait was disappointing.',
+        'negative'::public.restaurant_review_sentiment,
+        array['food_quality','service','speed']::public.restaurant_review_topic[],
+        'medium'::public.restaurant_severity,
+        'Thank you for telling us. We are sorry about the delay and are working with the team to improve service speed.',
+        interval '4 days'),
+      ('slow-3', v_branch_central, 2::smallint,
+        'Very slow service. We waited nearly an hour.',
+        'negative'::public.restaurant_review_sentiment,
+        array['service','speed']::public.restaurant_review_topic[],
+        'medium'::public.restaurant_severity,
+        'We are sorry you experienced such a long wait. The team is reviewing what caused the service delay.',
+        interval '2 days'),
+      ('slow-4', v_branch_central, 3::smallint,
+        'The staff were polite but service was slow again tonight.',
+        'negative'::public.restaurant_review_sentiment,
+        array['service','speed','staff']::public.restaurant_review_topic[],
+        'medium'::public.restaurant_severity,
+        'Thank you for your feedback. We are sorry the service was slow and are following up with the team.',
+        interval '1 day'),
+      ('cold-food', v_branch_marina, 2::smallint,
+        'Our food arrived cold and the meal was disappointing.',
+        'negative'::public.restaurant_review_sentiment,
+        array['food_quality']::public.restaurant_review_topic[],
+        'medium'::public.restaurant_severity,
+        'We are sorry your meal arrived cold. We are reviewing the food-temperature issue with the kitchen team.',
+        interval '3 hours'),
+      ('serious-safety', v_branch_marina, 1::smallint,
+        'I had an allergic reaction and was hospitalized after the meal.',
+        'negative'::public.restaurant_review_sentiment,
+        array['food_quality']::public.restaurant_review_topic[],
+        'critical'::public.restaurant_severity, null::text, interval '90 minutes')
+    ) as fixture(
+      suffix, branch_id, rating, review_text, sentiment, topics,
+      severity, proposed_response, age
+    )
+  loop
+    if not exists (
+      select 1 from public.restaurant_reviews
+      where organization_id = v_org_id and dedupe_key = 'demo:review:' || v_review.suffix
+    ) then
+      perform public.ingest_restaurant_review(
+        v_user_id, v_org_id, v_review.branch_id, now() - v_review.age,
+        'direct_feedback', 'demo-' || v_review.suffix,
+        'Demo guest', v_review.rating, v_review.review_text, 'en',
+        v_review.sentiment, v_review.topics, v_review.severity,
+        'demo:review:' || v_review.suffix, v_review.proposed_response
+      );
+    end if;
+  end loop;
 
   raise notice 'Restaurant V1 demo seeded for auth user %.', v_user_id;
 end;

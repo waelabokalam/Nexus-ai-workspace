@@ -40,6 +40,23 @@ export type RestaurantEventStatus =
 export type RestaurantAttentionStatus = "open" | "assigned" | "resolved" | "dismissed";
 export type RestaurantApprovalStatus = "pending" | "approved" | "edited" | "rejected" | "expired";
 export type RestaurantActorType = "nexus" | "user" | "system";
+export type RestaurantReviewSentiment = "positive" | "neutral" | "negative";
+export type RestaurantReviewTopic =
+  | "food_quality"
+  | "service"
+  | "speed"
+  | "delivery"
+  | "cleanliness"
+  | "staff"
+  | "price"
+  | "reservation"
+  | "atmosphere"
+  | "other";
+export type RestaurantReviewResponseStatus =
+  | "none"
+  | "pending"
+  | "approved"
+  | "rejected";
 
 export type RestaurantOrganizationRow = {
   id: string;
@@ -142,6 +159,29 @@ export type RestaurantActivityRow = {
   description: string;
   metadata: Json;
   created_at: string;
+};
+
+export type RestaurantReviewRow = {
+  id: string;
+  organization_id: string;
+  branch_id: string | null;
+  event_id: string;
+  source: string;
+  external_review_id: string | null;
+  customer_display_name: string | null;
+  rating: number;
+  review_text: string;
+  reviewed_at: string;
+  language: string | null;
+  sentiment: RestaurantReviewSentiment;
+  topics: RestaurantReviewTopic[];
+  severity: Exclude<RestaurantSeverity, "info">;
+  response_status: RestaurantReviewResponseStatus;
+  proposed_response: string | null;
+  approved_response: string | null;
+  dedupe_key: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export type Database = {
@@ -340,6 +380,60 @@ export type Database = {
           },
         ]
       >;
+      restaurant_reviews: Table<
+        RestaurantReviewRow,
+        Pick<
+          RestaurantReviewRow,
+          | "organization_id"
+          | "event_id"
+          | "source"
+          | "rating"
+          | "review_text"
+          | "reviewed_at"
+          | "sentiment"
+          | "topics"
+          | "severity"
+          | "dedupe_key"
+        > &
+          Partial<
+            Omit<
+              RestaurantReviewRow,
+              | "organization_id"
+              | "event_id"
+              | "source"
+              | "rating"
+              | "review_text"
+              | "reviewed_at"
+              | "sentiment"
+              | "topics"
+              | "severity"
+              | "dedupe_key"
+            >
+          >,
+        [
+          {
+            foreignKeyName: "restaurant_reviews_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "restaurant_organizations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "restaurant_reviews_branch_organization_fk";
+            columns: ["branch_id", "organization_id"];
+            isOneToOne: false;
+            referencedRelation: "restaurant_branches";
+            referencedColumns: ["id", "organization_id"];
+          },
+          {
+            foreignKeyName: "restaurant_reviews_event_organization_fk";
+            columns: ["event_id", "organization_id"];
+            isOneToOne: true;
+            referencedRelation: "restaurant_events";
+            referencedColumns: ["id", "organization_id"];
+          },
+        ]
+      >;
     };
     Views: Record<never, never>;
     Functions: {
@@ -368,6 +462,26 @@ export type Database = {
           p_approval_required: boolean;
           p_approval_action_type: string | null;
           p_proposed_action: Json;
+        };
+        Returns: Json;
+      };
+      ingest_restaurant_review: {
+        Args: {
+          p_actor_id: string;
+          p_organization_id: string;
+          p_branch_id: string | null;
+          p_reviewed_at: string;
+          p_source: string;
+          p_external_review_id: string | null;
+          p_customer_display_name: string | null;
+          p_rating: number;
+          p_review_text: string;
+          p_language: string | null;
+          p_sentiment: RestaurantReviewSentiment;
+          p_topics: RestaurantReviewTopic[];
+          p_severity: Exclude<RestaurantSeverity, "info">;
+          p_dedupe_key: string;
+          p_proposed_response: string | null;
         };
         Returns: Json;
       };
@@ -457,6 +571,9 @@ export type Database = {
       restaurant_attention_status: RestaurantAttentionStatus;
       restaurant_approval_status: RestaurantApprovalStatus;
       restaurant_actor_type: RestaurantActorType;
+      restaurant_review_sentiment: RestaurantReviewSentiment;
+      restaurant_review_topic: RestaurantReviewTopic;
+      restaurant_review_response_status: RestaurantReviewResponseStatus;
     };
     CompositeTypes: Record<never, never>;
   };

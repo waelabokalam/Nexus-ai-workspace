@@ -85,6 +85,30 @@ export const restaurantStructuredDataSchema = boundedObject(
     language: z.string().trim().min(2).max(35).optional(),
     action_type: restaurantApprovalActionTypeSchema.optional(),
     proposed_action: restaurantProposedActionSchema.optional(),
+    review_id: z.uuid().optional(),
+    rating: z.number().int().min(1).max(5).optional(),
+    sentiment: z.enum(["positive", "neutral", "negative"]).optional(),
+    topics: z
+      .array(
+        z.enum([
+          "food_quality",
+          "service",
+          "speed",
+          "delivery",
+          "cleanliness",
+          "staff",
+          "price",
+          "reservation",
+          "atmosphere",
+          "other",
+        ]),
+      )
+      .min(1)
+      .max(10)
+      .optional(),
+    provider: slug.optional(),
+    trend_count: z.number().int().min(2).max(10_000).optional(),
+    rolling_days: z.number().int().min(1).max(365).optional(),
   },
   12_288,
 );

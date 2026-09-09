@@ -13,3 +13,25 @@ All reads and writes require an authenticated organization membership. Browser-p
 Membership changes use the owner-only `manage_restaurant_member` RPC. Direct member-table writes are not granted to application roles, and the serialized workflow prevents removal or demotion of an organization's final owner while recording each successful change in activity history.
 
 The development seed is explicitly guarded and idempotent. Re-running it fills missing fixed demo fixtures but does not overwrite event, attention, approval, activity, or membership state, so completed demo workflows stay completed.
+
+## Reviews and reputation
+
+Phase 2.2 adds a second provider-neutral boundary: `normalizeRestaurantReview`,
+`classifyRestaurantReview`, and the server-only `ingestRestaurantReview` service.
+Future Google, delivery-platform, survey, QR-feedback, and manual-entry adapters
+must translate provider payloads into this contract. Core logic does not contain
+provider authentication or provider-specific behavior.
+
+Ratings and deterministic keyword rules are authoritative for sentiment, topics,
+severity, and handling. A positive review is recorded without attention. A medium
+negative review creates attention plus a proposed `customer_response` in the
+existing approval queue. High or critical risk language creates a HUMAN escalation
+and deliberately omits a response draft. Approval records only internal approval;
+no Phase 2.2 code publishes a reply.
+
+`restaurant_reviews` keeps provider identifiers, rating, original text,
+classification, deduplication, and response history while linking one-to-one to the
+generic operational event. Four negative mentions of the same non-`other` topic at
+one branch within seven days create a reputation trend attention event. An existing
+open or assigned alert for that branch/topic is reused, preventing duplicate active
+alerts.

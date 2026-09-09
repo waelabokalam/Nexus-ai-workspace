@@ -16,6 +16,10 @@ import {
 } from "@/lib/restaurant/domain";
 import { RestaurantDatabaseError } from "@/lib/restaurant/errors";
 import {
+  classifyRestaurantReview,
+  normalizeRestaurantReview,
+} from "@/lib/restaurant/reputation";
+import {
   calculateDailyManagerBrief,
   calculateRestaurantSummary,
   isAutomaticallyHandledEvent,
@@ -122,18 +126,40 @@ export async function getRestaurantCommandCenter(
   )
     .order("created_at", { ascending: false })
     .limit(40);
+  const reputationStartsAt = new Date(
+    Date.parse(endsAt) - 7 * 24 * 60 * 60 * 1_000,
+  ).toISOString();
+  const reviewsQuery = branchFilter(
+    database
+      .from("restaurant_reviews")
+      .select("*")
+      .eq("organization_id", input.organizationId)
+      .gte("reviewed_at", reputationStartsAt)
+      .lt("reviewed_at", endsAt),
+    input.branchId,
+  )
+    .order("reviewed_at", { ascending: false })
+    .limit(50);
 
-  const [eventsResult, attentionResult, approvalsResult, activityResult] =
-    await Promise.all([eventsQuery, attentionQuery, approvalsQuery, activityQuery]);
+  const [eventsResult, attentionResult, approvalsResult, activityResult, reviewsResult] =
+    await Promise.all([
+      eventsQuery,
+      attentionQuery,
+      approvalsQuery,
+      activityQuery,
+      reviewsQuery,
+    ]);
   throwDatabaseError("Could not load restaurant events", eventsResult.error);
   throwDatabaseError("Could not load manager attention", attentionResult.error);
   throwDatabaseError("Could not load approvals", approvalsResult.error);
   throwDatabaseError("Could not load activity", activityResult.error);
+  throwDatabaseError("Could not load restaurant reviews", reviewsResult.error);
 
   const events = eventsResult.data ?? [];
   const attentionItems = attentionResult.data ?? [];
   const approvals = approvalsResult.data ?? [];
   const activity = activityResult.data ?? [];
+  const reviews = reviewsResult.data ?? [];
   const relatedEventIds = Array.from(
     new Set(
       [...attentionItems, ...approvals]
@@ -174,6 +200,7 @@ export async function getRestaurantCommandCenter(
       attentionItems,
       approvals,
       activity,
+      reviews,
       startsAt,
       endsAt,
       branchId: input.branchId,
@@ -185,7 +212,45 @@ export async function getRestaurantCommandCenter(
       .filter(isAutomaticallyHandledEvent)
       .slice(0, 12),
     activity,
+    reviews,
   };
+}
+
+export async function ingestRestaurantReview(
+  input: unknown,
+  clients?: {
+    user?: SupabaseClient<Database>;
+    service?: SupabaseClient<Database>;
+  },
+) {
+  const userDatabase = clients?.user ?? (await createSupabaseServerClient());
+  const review = normalizeRestaurantReview(input);
+  const classification = classifyRestaurantReview(review);
+  const { user } = await requireRestaurantAccess(
+    review.organizationId,
+    undefined,
+    userDatabase,
+  );
+  const database = clients?.service ?? createSupabaseServiceRoleClient();
+  const { data, error } = await database.rpc("ingest_restaurant_review", {
+    p_actor_id: user.id,
+    p_organization_id: review.organizationId,
+    p_branch_id: review.branchId,
+    p_reviewed_at: review.reviewedAt,
+    p_source: review.source,
+    p_external_review_id: review.externalReviewId,
+    p_customer_display_name: review.customerDisplayName,
+    p_rating: review.rating,
+    p_review_text: review.reviewText,
+    p_language: review.language,
+    p_sentiment: classification.sentiment,
+    p_topics: classification.topics,
+    p_severity: classification.severity,
+    p_dedupe_key: review.dedupeKey,
+    p_proposed_response: classification.proposedResponse,
+  });
+  throwDatabaseError("Could not ingest restaurant review", error);
+  return data;
 }
 
 export async function ingestRestaurantEvent(
