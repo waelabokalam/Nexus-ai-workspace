@@ -35,3 +35,25 @@ generic operational event. Four negative mentions of the same non-`other` topic 
 one branch within seven days create a reputation trend attention event. An existing
 open or assigned alert for that branch/topic is reused, preventing duplicate active
 alerts.
+
+## Supplier invoice intelligence
+
+Phase 2.3 stores supplier invoices in the private `restaurant-supplier-invoices`
+Supabase Storage bucket. Browser clients have no direct object policy; authenticated
+members receive a one-minute signed URL only after the server verifies invoice RLS
+and organization membership.
+
+`SupplierInvoiceExtractor` is the provider-neutral extraction boundary. No safe
+document model is configured in this frontend, so the current upload uses
+`ManualSupplierInvoiceExtractor`: managers upload the original PDF/image and enter
+the extracted fields in a validated structured form. A future OCR/document adapter
+can replace that extractor without changing matching, persistence, events, or UI.
+
+Supplier and item matching auto-links exact deterministic normalizations only.
+Similar names and incompatible units stay unresolved for manager review. Price
+comparisons require the same supplier item, normalized unit, and currency. The
+thresholds in `invoices.ts` suppress rounding noise and flag explainable increases,
+suspicious decreases, currency changes, and total mismatches.
+
+Invoice review reuses Restaurant events, manager attention, and activity history.
+It does not create purchasing, accounting, inventory, payment, or menu-price actions.

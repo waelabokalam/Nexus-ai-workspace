@@ -6,6 +6,8 @@ import type {
   RestaurantEventRow,
   RestaurantReviewRow,
   RestaurantSeverity,
+  RestaurantSupplierInvoiceItemRow,
+  RestaurantSupplierInvoiceRow,
 } from "@/lib/supabase/database.types";
 import { detectRepeatedNegativeReviewTopics } from "@/lib/restaurant/reputation";
 
@@ -35,6 +37,9 @@ export type DailyManagerBriefItemKind =
   | "serious_reputation_issues"
   | "negative_reviews"
   | "reputation_topic_trend"
+  | "supplier_invoices_need_review"
+  | "supplier_price_increases"
+  | "supplier_invoice_mismatches"
   | "unresolved_complaints"
   | "open_attention"
   | "reservations_today"
@@ -64,6 +69,9 @@ export type DailyManagerBrief = {
   negativeReviewCount: number;
   seriousReputationCount: number;
   repeatedNegativeTopics: ReturnType<typeof detectRepeatedNegativeReviewTopics>;
+  supplierInvoiceReviewCount: number;
+  supplierInvoiceMismatchCount: number;
+  materialSupplierIncreaseCount: number;
   actionableCount: number;
   operationalNotes: string[];
   generatedForDate: string;
@@ -78,6 +86,8 @@ export type DailyManagerBriefInput = RestaurantSummaryInput & {
   branches: Pick<RestaurantBranchRow, "id" | "name">[];
   activity: RestaurantActivityRow[];
   reviews?: RestaurantReviewRow[];
+  invoices?: RestaurantSupplierInvoiceRow[];
+  invoiceItems?: RestaurantSupplierInvoiceItemRow[];
 };
 
 type OperationalRows = {
@@ -205,8 +215,30 @@ export function calculateDailyManagerBrief(
     (review) => review.severity === "high" || review.severity === "critical",
   );
   const seriousReviewEventIds = new Set(seriousReviews.map((review) => review.event_id));
+  const invoices = (input.invoices ?? []).filter((invoice) =>
+    belongsToBranch(invoice, input.branchId),
+  );
+  const pendingInvoices = invoices.filter((invoice) => invoice.review_status === "pending");
+  const invoiceIdsProcessedToday = new Set(
+    invoices
+      .filter((invoice) => {
+        const createdAt = Date.parse(invoice.created_at);
+        return createdAt >= Date.parse(input.startsAt) && createdAt < Date.parse(input.endsAt);
+      })
+      .map((invoice) => invoice.id),
+  );
+  const supplierInvoiceEventIds = new Set(invoices.map((invoice) => invoice.event_id));
+  const invoiceMismatches = pendingInvoices.filter((invoice) =>
+    invoice.anomalies.includes("invoice_total_mismatch"),
+  );
+  const materialSupplierIncreases = (input.invoiceItems ?? []).filter(
+    (item) =>
+      invoiceIdsProcessedToday.has(item.invoice_id) &&
+      item.anomalies.includes("price_increase") &&
+      (item.percentage_change ?? 0) >= 10,
+  );
   const highHumanEscalationsOutsideReputation = highHumanEscalations.filter(
-    (event) => !seriousReviewEventIds.has(event.id),
+    (event) => !seriousReviewEventIds.has(event.id) && !supplierInvoiceEventIds.has(event.id),
   );
   const repeatedNegativeTopics = detectRepeatedNegativeReviewTopics(reviews, {
     endsAt: input.endsAt,
@@ -245,6 +277,24 @@ export function calculateDailyManagerBrief(
     seriousReviews.length,
     `${pluralize(seriousReviews.length, "serious reputation issue")} ${seriousReviews.length === 1 ? "was" : "were"} routed to human review`,
     "critical",
+  );
+  addPriorityItem(
+    "supplier_invoices_need_review",
+    pendingInvoices.length,
+    `${pluralize(pendingInvoices.length, "supplier invoice")} ${pendingInvoices.length === 1 ? "needs" : "need"} review`,
+    "high",
+  );
+  addPriorityItem(
+    "supplier_price_increases",
+    materialSupplierIncreases.length,
+    `${pluralize(materialSupplierIncreases.length, "supplier item")} increased materially`,
+    "high",
+  );
+  addPriorityItem(
+    "supplier_invoice_mismatches",
+    invoiceMismatches.length,
+    `${pluralize(invoiceMismatches.length, "invoice total")} ${invoiceMismatches.length === 1 ? "has" : "have"} a mismatch`,
+    "high",
   );
   addPriorityItem(
     "high_human_escalations",
@@ -385,6 +435,9 @@ export function calculateDailyManagerBrief(
     negativeReviewCount: negativeReviews.length,
     seriousReputationCount: seriousReviews.length,
     repeatedNegativeTopics,
+    supplierInvoiceReviewCount: pendingInvoices.length,
+    supplierInvoiceMismatchCount: invoiceMismatches.length,
+    materialSupplierIncreaseCount: materialSupplierIncreases.length,
     actionableCount,
     operationalNotes,
     generatedForDate: input.generatedForDate,

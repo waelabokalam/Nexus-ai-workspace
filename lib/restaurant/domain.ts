@@ -109,6 +109,12 @@ export const restaurantStructuredDataSchema = boundedObject(
     provider: slug.optional(),
     trend_count: z.number().int().min(2).max(10_000).optional(),
     rolling_days: z.number().int().min(1).max(365).optional(),
+    invoice_id: z.uuid().optional(),
+    supplier_id: z.uuid().optional(),
+    anomaly_count: z.number().int().min(0).max(1_000).optional(),
+    material_price_change_count: z.number().int().min(0).max(1_000).optional(),
+    currency: z.string().regex(/^[A-Z]{3}$/).optional(),
+    invoice_total: z.number().finite().positive().max(100_000_000).optional(),
   },
   12_288,
 );

@@ -15,6 +15,7 @@ import {
   serializeMembershipManagement,
 } from "@/lib/restaurant/domain";
 import { RestaurantDatabaseError } from "@/lib/restaurant/errors";
+import { getSupplierInvoiceCommandCenterData } from "@/lib/restaurant/invoice-services";
 import {
   classifyRestaurantReview,
   normalizeRestaurantReview,
@@ -140,14 +141,20 @@ export async function getRestaurantCommandCenter(
   )
     .order("reviewed_at", { ascending: false })
     .limit(50);
+  const supplierInvoiceData = getSupplierInvoiceCommandCenterData(
+    input.organizationId,
+    input.branchId,
+    database,
+  );
 
-  const [eventsResult, attentionResult, approvalsResult, activityResult, reviewsResult] =
+  const [eventsResult, attentionResult, approvalsResult, activityResult, reviewsResult, invoiceData] =
     await Promise.all([
       eventsQuery,
       attentionQuery,
       approvalsQuery,
       activityQuery,
       reviewsQuery,
+      supplierInvoiceData,
     ]);
   throwDatabaseError("Could not load restaurant events", eventsResult.error);
   throwDatabaseError("Could not load manager attention", attentionResult.error);
@@ -201,6 +208,8 @@ export async function getRestaurantCommandCenter(
       approvals,
       activity,
       reviews,
+      invoices: invoiceData.invoices,
+      invoiceItems: invoiceData.invoiceItems,
       startsAt,
       endsAt,
       branchId: input.branchId,
@@ -213,6 +222,8 @@ export async function getRestaurantCommandCenter(
       .slice(0, 12),
     activity,
     reviews,
+    invoices: invoiceData.invoices,
+    invoiceItems: invoiceData.invoiceItems,
   };
 }
 

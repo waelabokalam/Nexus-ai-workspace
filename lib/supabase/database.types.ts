@@ -57,6 +57,9 @@ export type RestaurantReviewResponseStatus =
   | "pending"
   | "approved"
   | "rejected";
+export type SupplierInvoiceExtractionStatus = "processed" | "failed";
+export type SupplierInvoiceReviewStatus = "pending" | "reviewed" | "dismissed";
+export type SupplierInvoiceSourceType = "manual_upload" | "provider_import";
 
 export type RestaurantOrganizationRow = {
   id: string;
@@ -182,6 +185,80 @@ export type RestaurantReviewRow = {
   dedupe_key: string;
   created_at: string;
   updated_at: string;
+};
+
+export type RestaurantSupplierRow = {
+  id: string;
+  organization_id: string;
+  name: string;
+  normalized_name: string;
+  tax_identifier: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type RestaurantSupplierItemRow = {
+  id: string;
+  organization_id: string;
+  supplier_id: string;
+  canonical_name: string;
+  normalized_name: string;
+  unit: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type RestaurantSupplierInvoiceRow = {
+  id: string;
+  organization_id: string;
+  branch_id: string | null;
+  supplier_id: string | null;
+  event_id: string;
+  supplier_name: string;
+  supplier_normalized_name: string;
+  invoice_number: string | null;
+  invoice_date: string;
+  currency: string;
+  subtotal: number | null;
+  tax_total: number | null;
+  total: number;
+  extraction_status: SupplierInvoiceExtractionStatus;
+  review_status: SupplierInvoiceReviewStatus;
+  source_type: SupplierInvoiceSourceType;
+  extractor: string;
+  original_filename: string;
+  storage_path: string;
+  file_hash: string;
+  raw_extraction: Json;
+  confidence: number;
+  supplier_match_confidence: number;
+  supplier_requires_review: boolean;
+  anomalies: string[];
+  reviewed_at: string | null;
+  reviewed_by: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type RestaurantSupplierInvoiceItemRow = {
+  id: string;
+  organization_id: string;
+  invoice_id: string;
+  matched_supplier_item_id: string | null;
+  raw_description: string;
+  normalized_name: string;
+  quantity: number;
+  unit: string;
+  unit_price: number;
+  line_total: number;
+  extraction_confidence: number;
+  match_confidence: number;
+  requires_review: boolean;
+  previous_unit_price: number | null;
+  absolute_change: number | null;
+  percentage_change: number | null;
+  anomalies: string[];
+  created_at: string;
 };
 
 export type Database = {
@@ -434,6 +511,87 @@ export type Database = {
           },
         ]
       >;
+      restaurant_suppliers: Table<
+        RestaurantSupplierRow,
+        Pick<RestaurantSupplierRow, "organization_id" | "name" | "normalized_name"> &
+          Partial<Omit<RestaurantSupplierRow, "organization_id" | "name" | "normalized_name">>
+      >;
+      restaurant_supplier_items: Table<
+        RestaurantSupplierItemRow,
+        Pick<
+          RestaurantSupplierItemRow,
+          "organization_id" | "supplier_id" | "canonical_name" | "normalized_name" | "unit"
+        > & Partial<Omit<
+          RestaurantSupplierItemRow,
+          "organization_id" | "supplier_id" | "canonical_name" | "normalized_name" | "unit"
+        >>
+      >;
+      restaurant_supplier_invoices: Table<
+        RestaurantSupplierInvoiceRow,
+        Pick<
+          RestaurantSupplierInvoiceRow,
+          | "organization_id"
+          | "event_id"
+          | "supplier_name"
+          | "supplier_normalized_name"
+          | "invoice_date"
+          | "currency"
+          | "total"
+          | "review_status"
+          | "source_type"
+          | "extractor"
+          | "original_filename"
+          | "storage_path"
+          | "file_hash"
+          | "confidence"
+          | "supplier_match_confidence"
+        > & Partial<Omit<
+          RestaurantSupplierInvoiceRow,
+          | "organization_id"
+          | "event_id"
+          | "supplier_name"
+          | "supplier_normalized_name"
+          | "invoice_date"
+          | "currency"
+          | "total"
+          | "review_status"
+          | "source_type"
+          | "extractor"
+          | "original_filename"
+          | "storage_path"
+          | "file_hash"
+          | "confidence"
+          | "supplier_match_confidence"
+        >>
+      >;
+      restaurant_supplier_invoice_items: Table<
+        RestaurantSupplierInvoiceItemRow,
+        Pick<
+          RestaurantSupplierInvoiceItemRow,
+          | "organization_id"
+          | "invoice_id"
+          | "raw_description"
+          | "normalized_name"
+          | "quantity"
+          | "unit"
+          | "unit_price"
+          | "line_total"
+          | "extraction_confidence"
+          | "match_confidence"
+        > & Partial<Omit<
+          RestaurantSupplierInvoiceItemRow,
+          | "organization_id"
+          | "invoice_id"
+          | "raw_description"
+          | "normalized_name"
+          | "quantity"
+          | "unit"
+          | "unit_price"
+          | "line_total"
+          | "extraction_confidence"
+          | "match_confidence"
+        >>
+      >;
     };
     Views: Record<never, never>;
     Functions: {
@@ -482,6 +640,24 @@ export type Database = {
           p_severity: Exclude<RestaurantSeverity, "info">;
           p_dedupe_key: string;
           p_proposed_response: string | null;
+        };
+        Returns: Json;
+      };
+      ingest_supplier_invoice: {
+        Args: {
+          p_actor_id: string;
+          p_organization_id: string;
+          p_branch_id: string | null;
+          p_invoice: Json;
+          p_items: Json;
+        };
+        Returns: Json;
+      };
+      review_supplier_invoice: {
+        Args: {
+          p_organization_id: string;
+          p_invoice_id: string;
+          p_decision: "reviewed" | "dismissed";
         };
         Returns: Json;
       };

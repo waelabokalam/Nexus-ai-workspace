@@ -8,6 +8,11 @@ import {
   updateManagerAttentionItem,
 } from "@/lib/restaurant/services";
 import { isRestaurantMutationAlreadyApplied } from "@/lib/restaurant/errors";
+import {
+  processSupplierInvoice,
+  reviewSupplierInvoice,
+} from "@/lib/restaurant/invoice-services";
+import { parseManualInvoiceItems } from "@/lib/restaurant/invoices";
 
 const attentionActionSchema = z.object({
   organizationId: z.uuid(),
@@ -24,6 +29,71 @@ const approvalActionSchema = z.object({
   editedActionJson: z.string().max(12_000).nullable(),
   editedMessage: z.string().trim().max(4_000).nullable(),
 });
+
+const invoiceReviewActionSchema = z.object({
+  organizationId: z.uuid(),
+  invoiceId: z.uuid(),
+  decision: z.enum(["reviewed", "dismissed"]),
+});
+
+export type InvoiceUploadActionState = {
+  status: "idle" | "success" | "error";
+  message: string;
+};
+
+function optionalNumber(value: FormDataEntryValue | null) {
+  return value === null || value === "" ? null : Number(value);
+}
+
+export async function uploadSupplierInvoiceAction(
+  _previousState: InvoiceUploadActionState,
+  formData: FormData,
+): Promise<InvoiceUploadActionState> {
+  try {
+    const file = formData.get("invoiceFile");
+    if (!(file instanceof File)) throw new Error("Select an invoice file.");
+    const branchValue = formData.get("branchId");
+    await processSupplierInvoice({
+      organizationId: formData.get("organizationId"),
+      branchId: branchValue || null,
+      file,
+      manualExtraction: {
+        supplierName: formData.get("supplierName"),
+        taxIdentifier: formData.get("taxIdentifier") || null,
+        invoiceNumber: formData.get("invoiceNumber") || null,
+        invoiceDate: formData.get("invoiceDate"),
+        currency: formData.get("currency"),
+        subtotal: optionalNumber(formData.get("subtotal")),
+        taxTotal: optionalNumber(formData.get("taxTotal")),
+        total: Number(formData.get("total")),
+        confidence: 1,
+        lineItems: parseManualInvoiceItems(String(formData.get("lineItems") ?? "")),
+        rawExtraction: { mode: "manual_structured_v1" },
+      },
+    });
+    revalidatePath("/restaurant");
+    return { status: "success", message: "Invoice uploaded and processed." };
+  } catch (error) {
+    return {
+      status: "error",
+      message: error instanceof Error ? error.message : "Invoice processing failed safely.",
+    };
+  }
+}
+
+export async function reviewSupplierInvoiceAction(formData: FormData) {
+  const input = invoiceReviewActionSchema.parse({
+    organizationId: formData.get("organizationId"),
+    invoiceId: formData.get("invoiceId"),
+    decision: formData.get("decision"),
+  });
+  try {
+    await reviewSupplierInvoice(input);
+  } catch (error) {
+    if (!isRestaurantMutationAlreadyApplied(error)) throw error;
+  }
+  revalidatePath("/restaurant");
+}
 
 export async function updateAttentionAction(formData: FormData) {
   const status = formData.get("status");

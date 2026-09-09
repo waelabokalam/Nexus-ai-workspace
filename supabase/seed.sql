@@ -22,6 +22,9 @@ declare
   v_branch_central constant uuid := '20000000-0000-4000-8000-000000000001';
   v_branch_marina constant uuid := '20000000-0000-4000-8000-000000000002';
   v_review record;
+  v_invoice_result jsonb;
+  v_supplier_id uuid;
+  v_supplier_item_id uuid;
 begin
   if coalesce(current_setting('nexus.allow_restaurant_demo_seed', true), 'off') <> 'on' then
     raise notice 'Restaurant demo seed skipped. Set nexus.allow_restaurant_demo_seed=on explicitly to run it.';
@@ -277,6 +280,188 @@ begin
       );
     end if;
   end loop;
+
+  -- Phase 2.3 supplier-cost fixtures use placeholder private storage paths.
+  -- The live verifier exercises actual private-object upload and signed access.
+  v_invoice_result := public.ingest_supplier_invoice(
+    v_user_id, v_org_id, v_branch_central,
+    jsonb_build_object(
+      'supplier_name', 'Bosporus Foods LLC', 'supplier_normalized_name', 'bosporus foods',
+      'tax_identifier', 'TR-DEMO-1001', 'supplier_id', null,
+      'supplier_match_confidence', 1, 'supplier_requires_review', false,
+      'invoice_number', 'DEV-SUP-1001', 'invoice_date', (current_date - 21)::text,
+      'currency', 'AED', 'subtotal', 180, 'tax_total', 9, 'total', 189,
+      'source_type', 'manual_upload', 'extractor', 'manual_structured_v1',
+      'original_filename', 'dev-first-invoice.pdf',
+      'storage_path', v_org_id::text || '/dev-seed/dev-first-invoice.pdf',
+      'file_hash', repeat('1', 64), 'raw_extraction', jsonb_build_object('demo', true),
+      'confidence', 1, 'anomalies', '[]'::jsonb
+    ),
+    jsonb_build_array(jsonb_build_object(
+      'raw_description', 'Chicken Breast 5KG', 'normalized_name', 'chicken breast 5 kg',
+      'quantity', 10, 'unit', 'kg', 'unit_price', 18, 'line_total', 180,
+      'extraction_confidence', 1, 'matched_supplier_item_id', null,
+      'match_confidence', 1, 'requires_review', false,
+      'previous_unit_price', null, 'absolute_change', null, 'percentage_change', null,
+      'severity', 'none', 'anomaly', null, 'anomalies', '[]'::jsonb
+    ))
+  );
+  v_supplier_id := (v_invoice_result->>'supplier_id')::uuid;
+  select id into v_supplier_item_id from public.restaurant_supplier_items
+  where organization_id = v_org_id and supplier_id = v_supplier_id
+    and normalized_name = 'chicken breast 5 kg' and unit = 'kg';
+
+  perform public.ingest_supplier_invoice(
+    v_user_id, v_org_id, v_branch_central,
+    jsonb_build_object(
+      'supplier_name', 'Bosporus Foods L.L.C.', 'supplier_normalized_name', 'bosporus foods',
+      'tax_identifier', 'TR-DEMO-1001', 'supplier_id', v_supplier_id,
+      'supplier_match_confidence', 1, 'supplier_requires_review', false,
+      'invoice_number', 'DEV-SUP-1002', 'invoice_date', (current_date - 14)::text,
+      'currency', 'AED', 'subtotal', 181, 'tax_total', 9.05, 'total', 190.05,
+      'source_type', 'manual_upload', 'extractor', 'manual_structured_v1',
+      'original_filename', 'dev-stable-invoice.pdf',
+      'storage_path', v_org_id::text || '/dev-seed/dev-stable-invoice.pdf',
+      'file_hash', repeat('2', 64), 'raw_extraction', jsonb_build_object('demo', true),
+      'confidence', 1, 'anomalies', '[]'::jsonb
+    ),
+    jsonb_build_array(jsonb_build_object(
+      'raw_description', 'Chicken Breast - 5 kg', 'normalized_name', 'chicken breast 5 kg',
+      'quantity', 10, 'unit', 'kg', 'unit_price', 18.1, 'line_total', 181,
+      'extraction_confidence', 1, 'matched_supplier_item_id', v_supplier_item_id,
+      'match_confidence', 1, 'requires_review', false,
+      'previous_unit_price', 18, 'absolute_change', 0.1, 'percentage_change', 0.56,
+      'severity', 'none', 'anomaly', null, 'anomalies', '[]'::jsonb
+    ))
+  );
+
+  perform public.ingest_supplier_invoice(
+    v_user_id, v_org_id, v_branch_central,
+    jsonb_build_object(
+      'supplier_name', 'Bosporus Foods LLC', 'supplier_normalized_name', 'bosporus foods',
+      'tax_identifier', 'TR-DEMO-1001', 'supplier_id', v_supplier_id,
+      'supplier_match_confidence', 1, 'supplier_requires_review', false,
+      'invoice_number', 'DEV-SUP-1003', 'invoice_date', (current_date - 7)::text,
+      'currency', 'AED', 'subtotal', 216, 'tax_total', 10.8, 'total', 226.8,
+      'source_type', 'manual_upload', 'extractor', 'manual_structured_v1',
+      'original_filename', 'dev-price-increase.pdf',
+      'storage_path', v_org_id::text || '/dev-seed/dev-price-increase.pdf',
+      'file_hash', repeat('3', 64), 'raw_extraction', jsonb_build_object('demo', true),
+      'confidence', 1, 'anomalies', '[]'::jsonb
+    ),
+    jsonb_build_array(jsonb_build_object(
+      'raw_description', 'Chicken Breast 5KG', 'normalized_name', 'chicken breast 5 kg',
+      'quantity', 10, 'unit', 'kg', 'unit_price', 21.6, 'line_total', 216,
+      'extraction_confidence', 1, 'matched_supplier_item_id', v_supplier_item_id,
+      'match_confidence', 1, 'requires_review', true,
+      'previous_unit_price', 18.1, 'absolute_change', 3.5, 'percentage_change', 19.34,
+      'severity', 'medium', 'anomaly', 'price_increase',
+      'anomalies', jsonb_build_array('price_increase')
+    ))
+  );
+
+  perform public.ingest_supplier_invoice(
+    v_user_id, v_org_id, v_branch_central,
+    jsonb_build_object(
+      'supplier_name', 'Bosporus Foods LLC', 'supplier_normalized_name', 'bosporus foods',
+      'supplier_id', v_supplier_id, 'supplier_match_confidence', 1,
+      'supplier_requires_review', false, 'invoice_number', 'DEV-SUP-1004',
+      'invoice_date', (current_date - 5)::text, 'currency', 'AED',
+      'subtotal', 90, 'tax_total', 4.5, 'total', 94.5,
+      'source_type', 'manual_upload', 'extractor', 'manual_structured_v1',
+      'original_filename', 'dev-unit-mismatch.pdf',
+      'storage_path', v_org_id::text || '/dev-seed/dev-unit-mismatch.pdf',
+      'file_hash', repeat('4', 64), 'raw_extraction', jsonb_build_object('demo', true),
+      'confidence', 1, 'anomalies', '[]'::jsonb
+    ),
+    jsonb_build_array(jsonb_build_object(
+      'raw_description', 'Chicken Breast 5KG', 'normalized_name', 'chicken breast 5 kg',
+      'quantity', 1, 'unit', 'box', 'unit_price', 90, 'line_total', 90,
+      'extraction_confidence', 1, 'matched_supplier_item_id', null,
+      'match_confidence', 0, 'requires_review', true,
+      'previous_unit_price', 21.6, 'absolute_change', null, 'percentage_change', null,
+      'severity', 'medium', 'anomaly', 'unit_mismatch',
+      'anomalies', jsonb_build_array('unit_mismatch')
+    ))
+  );
+
+  perform public.ingest_supplier_invoice(
+    v_user_id, v_org_id, v_branch_marina,
+    jsonb_build_object(
+      'supplier_name', 'Bosporus Foods LLC', 'supplier_normalized_name', 'bosporus foods',
+      'supplier_id', v_supplier_id, 'supplier_match_confidence', 1,
+      'supplier_requires_review', false, 'invoice_number', 'DEV-SUP-1005',
+      'invoice_date', (current_date - 3)::text, 'currency', 'AED',
+      'subtotal', 100, 'tax_total', 5, 'total', 130,
+      'source_type', 'manual_upload', 'extractor', 'manual_structured_v1',
+      'original_filename', 'dev-total-mismatch.pdf',
+      'storage_path', v_org_id::text || '/dev-seed/dev-total-mismatch.pdf',
+      'file_hash', repeat('5', 64), 'raw_extraction', jsonb_build_object('demo', true),
+      'confidence', 1, 'anomalies', jsonb_build_array('invoice_total_mismatch')
+    ),
+    jsonb_build_array(jsonb_build_object(
+      'raw_description', 'Mozzarella 2KG', 'normalized_name', 'mozzarella 2 kg',
+      'quantity', 5, 'unit', 'kg', 'unit_price', 20, 'line_total', 100,
+      'extraction_confidence', 1, 'matched_supplier_item_id', null,
+      'match_confidence', 1, 'requires_review', false,
+      'previous_unit_price', null, 'absolute_change', null, 'percentage_change', null,
+      'severity', 'none', 'anomaly', null, 'anomalies', '[]'::jsonb
+    ))
+  );
+
+  perform public.ingest_supplier_invoice(
+    v_user_id, v_org_id, v_branch_central,
+    jsonb_build_object(
+      'supplier_name', 'Bosporus Fresh Foods', 'supplier_normalized_name', 'bosporus fresh foods',
+      'supplier_id', null, 'supplier_match_confidence', 0.67,
+      'supplier_requires_review', true, 'invoice_number', 'DEV-SUP-1006',
+      'invoice_date', (current_date - 2)::text, 'currency', 'AED',
+      'subtotal', 100, 'tax_total', 5, 'total', 105,
+      'source_type', 'manual_upload', 'extractor', 'manual_structured_v1',
+      'original_filename', 'dev-uncertain-supplier.pdf',
+      'storage_path', v_org_id::text || '/dev-seed/dev-uncertain-supplier.pdf',
+      'file_hash', repeat('6', 64), 'raw_extraction', jsonb_build_object('demo', true),
+      'confidence', 0.72, 'anomalies', jsonb_build_array('uncertain_supplier_match')
+    ),
+    jsonb_build_array(jsonb_build_object(
+      'raw_description', 'Premium Chicken Breast 5KG',
+      'normalized_name', 'premium chicken breast 5 kg', 'quantity', 5, 'unit', 'kg',
+      'unit_price', 20, 'line_total', 100, 'extraction_confidence', 0.72,
+      'matched_supplier_item_id', null, 'match_confidence', 0.8,
+      'requires_review', true, 'previous_unit_price', null,
+      'absolute_change', null, 'percentage_change', null, 'severity', 'medium',
+      'anomaly', 'uncertain_item_match',
+      'anomalies', jsonb_build_array('uncertain_item_match', 'low_extraction_confidence')
+    ))
+  );
+
+  begin
+    perform public.ingest_supplier_invoice(
+      v_user_id, v_org_id, v_branch_central,
+      jsonb_build_object(
+        'supplier_name', 'Bosporus Foods LLC', 'supplier_normalized_name', 'bosporus foods',
+        'supplier_id', v_supplier_id, 'supplier_match_confidence', 1,
+        'supplier_requires_review', false, 'invoice_number', 'DEV-SUP-1001',
+        'invoice_date', current_date::text, 'currency', 'AED', 'total', 189,
+        'source_type', 'manual_upload', 'extractor', 'manual_structured_v1',
+        'original_filename', 'dev-duplicate-reference.pdf',
+        'storage_path', v_org_id::text || '/dev-seed/dev-duplicate-reference.pdf',
+        'file_hash', repeat('7', 64), 'raw_extraction', jsonb_build_object('demo', true),
+        'confidence', 1, 'anomalies', '[]'::jsonb
+      ),
+      jsonb_build_array(jsonb_build_object(
+        'raw_description', 'Chicken Breast 5KG', 'normalized_name', 'chicken breast 5 kg',
+        'quantity', 10, 'unit', 'kg', 'unit_price', 18, 'line_total', 180,
+        'extraction_confidence', 1, 'matched_supplier_item_id', v_supplier_item_id,
+        'match_confidence', 1, 'requires_review', false, 'previous_unit_price', 18,
+        'absolute_change', 0, 'percentage_change', 0, 'severity', 'none',
+        'anomaly', null, 'anomalies', '[]'::jsonb
+      ))
+    );
+    raise exception 'Duplicate supplier invoice fixture unexpectedly succeeded.';
+  exception when unique_violation then
+    raise notice 'Duplicate supplier invoice fixture was prevented as expected.';
+  end;
 
   raise notice 'Restaurant V1 demo seeded for auth user %.', v_user_id;
 end;
