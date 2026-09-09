@@ -13,6 +13,7 @@ import {
   reviewSupplierInvoice,
 } from "@/lib/restaurant/invoice-services";
 import { parseManualInvoiceItems } from "@/lib/restaurant/invoices";
+import { ReviewedPaddleDraftSupplierInvoiceExtractor } from "@/lib/restaurant/paddle-invoice";
 
 const attentionActionSchema = z.object({
   organizationId: z.uuid(),
@@ -45,6 +46,17 @@ function optionalNumber(value: FormDataEntryValue | null) {
   return value === null || value === "" ? null : Number(value);
 }
 
+function automaticRawExtraction(value: FormDataEntryValue | null) {
+  if (typeof value !== "string" || value.length > 60_000) {
+    throw new Error("The automatic extraction evidence is invalid. Extract the invoice again.");
+  }
+  const parsed = JSON.parse(value) as unknown;
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new Error("The automatic extraction evidence is invalid. Extract the invoice again.");
+  }
+  return parsed;
+}
+
 export async function uploadSupplierInvoiceAction(
   _previousState: InvoiceUploadActionState,
   formData: FormData,
@@ -53,30 +65,47 @@ export async function uploadSupplierInvoiceAction(
     const file = formData.get("invoiceFile");
     if (!(file instanceof File)) throw new Error("Select an invoice file.");
     const branchValue = formData.get("branchId");
+    const extractionMode = formData.get("extractionMode") === "manual" ? "manual" : "automatic";
+    if (extractionMode === "automatic" && formData.get("automaticDraft") !== "reviewed") {
+      throw new Error("Extract and review the automatic draft before processing it.");
+    }
+    const manualExtraction = {
+      supplierName: formData.get("supplierName"),
+      taxIdentifier: formData.get("taxIdentifier") || null,
+      invoiceNumber: formData.get("invoiceNumber") || null,
+      invoiceDate: formData.get("invoiceDate"),
+      currency: formData.get("currency"),
+      subtotal: optionalNumber(formData.get("subtotal")),
+      taxTotal: optionalNumber(formData.get("taxTotal")),
+      total: Number(formData.get("total")),
+      confidence: extractionMode === "automatic" ? Number(formData.get("extractionConfidence")) : 1,
+      lineItems: parseManualInvoiceItems(String(formData.get("lineItems") ?? "")),
+      rawExtraction: extractionMode === "automatic"
+        ? automaticRawExtraction(formData.get("rawExtraction"))
+        : { mode: "manual_structured_v1" },
+    };
     await processSupplierInvoice({
       organizationId: formData.get("organizationId"),
       branchId: branchValue || null,
       file,
-      manualExtraction: {
-        supplierName: formData.get("supplierName"),
-        taxIdentifier: formData.get("taxIdentifier") || null,
-        invoiceNumber: formData.get("invoiceNumber") || null,
-        invoiceDate: formData.get("invoiceDate"),
-        currency: formData.get("currency"),
-        subtotal: optionalNumber(formData.get("subtotal")),
-        taxTotal: optionalNumber(formData.get("taxTotal")),
-        total: Number(formData.get("total")),
-        confidence: 1,
-        lineItems: parseManualInvoiceItems(String(formData.get("lineItems") ?? "")),
-        rawExtraction: { mode: "manual_structured_v1" },
-      },
-    });
+      manualExtraction,
+      languageHint: extractionMode === "automatic" ? formData.get("languageHint") : "auto",
+      defaultCurrency: extractionMode === "automatic" ? formData.get("currencyHint") : undefined,
+    }, extractionMode === "automatic"
+      ? { extractor: new ReviewedPaddleDraftSupplierInvoiceExtractor() }
+      : undefined);
     revalidatePath("/restaurant");
-    return { status: "success", message: "Invoice uploaded and processed." };
+    return {
+      status: "success",
+      message: extractionMode === "automatic"
+        ? "Reviewed automatic draft validated and processed. Check any remaining price or match flags below."
+        : "Invoice uploaded and processed with manual structured entry.",
+    };
   } catch (error) {
+    const detail = error instanceof Error ? error.message : "Invoice processing failed safely.";
     return {
       status: "error",
-      message: error instanceof Error ? error.message : "Invoice processing failed safely.",
+      message: `${detail} The source was not persisted; use manual fallback if needed.`,
     };
   }
 }

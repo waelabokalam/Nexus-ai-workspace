@@ -43,11 +43,18 @@ Supabase Storage bucket. Browser clients have no direct object policy; authentic
 members receive a one-minute signed URL only after the server verifies invoice RLS
 and organization membership.
 
-`SupplierInvoiceExtractor` is the provider-neutral extraction boundary. No safe
-document model is configured in this frontend, so the current upload uses
-`ManualSupplierInvoiceExtractor`: managers upload the original PDF/image and enter
-the extracted fields in a validated structured form. A future OCR/document adapter
-can replace that extractor without changing matching, persistence, events, or UI.
+`SupplierInvoiceExtractor` remains the provider-neutral extraction boundary.
+`PaddleSupplierInvoiceExtractor` sends the selected file from an authenticated
+server route to the internal PP-StructureV3 service, then maps bounded document,
+table, text, and confidence evidence into the normalized invoice schema. The
+source is not persisted during extraction. Managers compare and correct that
+draft before `ReviewedPaddleDraftSupplierInvoiceExtractor` passes it through the
+existing validation, matching, persistence, event, and anomaly flow.
+
+`ManualSupplierInvoiceExtractor` remains available in the same upload form when
+automatic extraction is unavailable or incomplete. OCR endpoint and token values
+are server-only; the browser never receives service credentials. The private
+original invoice remains the source of truth after the reviewed draft is saved.
 
 Supplier and item matching auto-links exact deterministic normalizations only.
 Similar names and incompatible units stay unresolved for manager review. Price

@@ -41,3 +41,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# isolated Python service environments and model caches
+/services/invoice-ocr/.venv/
+/services/invoice-ocr/.paddlex/
+__pycache__/
+*.py[cod]

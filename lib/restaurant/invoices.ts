@@ -66,6 +66,8 @@ export type InvoiceExtractorInput = {
   mimeType: string;
   bytes: Uint8Array;
   manualExtraction?: unknown;
+  languageHint?: "auto" | "en" | "ar" | "mixed";
+  defaultCurrency?: string;
 };
 
 export interface SupplierInvoiceExtractor {
@@ -324,7 +326,7 @@ export function parseManualInvoiceItems(value: string) {
   const lines = value.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
   return lines.map((line, index) => {
     const parts = line.split("|").map((part) => part.trim());
-    if (parts.length !== 5) {
+    if (parts.length !== 5 && parts.length !== 6) {
       throw new Error(`Invoice line ${index + 1} must contain description, quantity, unit, unit price, and line total.`);
     }
     return {
@@ -333,7 +335,7 @@ export function parseManualInvoiceItems(value: string) {
       unit: parts[2],
       unitPrice: Number(parts[3]),
       lineTotal: Number(parts[4]),
-      extractionConfidence: 1,
+      extractionConfidence: parts[5] === undefined ? 1 : Number(parts[5]),
     };
   });
 }

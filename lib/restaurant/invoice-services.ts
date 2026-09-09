@@ -34,7 +34,9 @@ const processInvoiceSchema = z.object({
   organizationId: z.uuid(),
   branchId: z.uuid().nullable().optional().default(null),
   file: z.custom<File>((value) => value instanceof File, "An invoice file is required."),
-  manualExtraction: z.unknown(),
+  manualExtraction: z.unknown().optional(),
+  languageHint: z.enum(["auto", "en", "ar", "mixed"]).optional().default("auto"),
+  defaultCurrency: z.string().trim().toUpperCase().regex(/^[A-Z]{3}$/).optional(),
 });
 
 const reviewInvoiceSchema = z.object({
@@ -121,6 +123,8 @@ export async function processSupplierInvoice(
       mimeType: input.file.type,
       bytes,
       manualExtraction: input.manualExtraction,
+      languageHint: input.languageHint,
+      defaultCurrency: input.defaultCurrency,
     });
     const { data: suppliers, error: suppliersError } = await service
       .from("restaurant_suppliers")
