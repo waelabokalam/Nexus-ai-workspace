@@ -1,66 +1,104 @@
-# Restaurant V1 application boundary
+# Restaurant V1 architecture
 
-Restaurant V1 remains in this Next.js/Supabase application. The separate Nexus Agent backend keeps ownership of RAG, memory, scheduling, SSE, and model orchestration.
+Restaurant V1 lives in this Next.js/Supabase repository. The separate
+`nexus-backend` repository owns conversational AI, RAG, memory, scheduling, and
+model orchestration; Restaurant code and the invoice OCR worker do not belong
+there.
 
-The integration boundary is the provider-neutral input accepted by `normalizeRestaurantEvent` and `ingestRestaurantEvent`. A future authenticated backend endpoint should translate an Agent outcome into that contract only after the outcome is known (for example, answered automatically, requested approval, or handed off). The Agent must not write command-center tables individually; ingestion atomically creates the event, attention/approval work, and activity entry through the database RPC.
+## Module ownership
 
-Ingestion and explicit activity writes are server-only operations. The Next.js service first authenticates the user with the cookie-bound Supabase client, verifies organization membership, and only then invokes the RPC with the server-only service-role client and authenticated actor ID. The database independently verifies that actor membership. `SUPABASE_SERVICE_ROLE_KEY` must exist only in server environment configuration and must never use a `NEXT_PUBLIC_` prefix.
+- `auth.ts` owns authenticated organization membership and role checks.
+- `core/operations.ts` owns generic event ingestion, attention, approvals,
+  membership management, and activity workflows.
+- `core/data-access.ts` contains the database error and branch-query helpers
+  genuinely shared by multiple server-side modules.
+- `command-center/service.ts` authorizes and loads the persisted read model,
+  then composes feature data without owning feature rules.
+- `summary.ts` contains pure, feature-neutral operational selection and summary
+  calculations.
+- `daily-brief.ts` owns Daily Manager Brief types, prioritization, feature-fact
+  aggregation, headline construction, and operational notes.
+- `reputation.ts` owns pure review normalization, classification, topic rules,
+  severity, and trend detection. `reputation/service.ts` owns authenticated
+  review persistence, while `reputation/brief-facts.ts` exposes only the facts
+  needed by Daily Brief.
+- `invoices.ts` owns extraction contracts, normalization, matching, price rules,
+  total anomalies, and manual extraction. `paddle-invoice.ts` is the server-only
+  automatic extraction adapter and deterministic OCR parser.
+- `invoice-services.ts` owns the authenticated invoice workflow, private
+  storage, matching/history queries, persistence, review, and signed downloads.
+  `invoices/brief-facts.ts` exposes invoice review/anomaly counts without leaking
+  those rules into Daily Brief.
+- `services.ts` is a compatibility facade for existing callers; new internal
+  code should import the owning module directly.
 
-Provider-specific IDs and payload fragments belong in `sourceReference`, `dedupeKey`, and the allowlisted `structuredData` object. Secrets, prompts, model reasoning traces, raw credentials, and unrelated customer payloads must never be included. The V1 rule engine is deterministic and remains the source of handling/status decisions until an explicitly reviewed classifier is introduced.
+React components do not query Supabase. `RestaurantCommandCenter.tsx` composes
+the page shell and feature sections under `components/restaurant/`. Server
+actions call the owning application service, which performs authorization before
+database access. Pure rules remain callable from tests without React or network
+access.
 
-All reads and writes require an authenticated organization membership. Browser-provided organization and branch IDs are validated by the server data-access layer and must also be enforced by RLS/RPC authorization in the migration.
+## Core event boundary
 
-Membership changes use the owner-only `manage_restaurant_member` RPC. Direct member-table writes are not granted to application roles, and the serialized workflow prevents removal or demotion of an organization's final owner while recording each successful change in activity history.
+The provider-neutral boundary is `normalizeRestaurantEvent` followed by the
+server-only `ingestRestaurantEvent`. A future integration translates its payload
+into that contract after an outcome is known; it must not write event,
+attention, approval, or activity tables individually. The existing database RPC
+creates those records atomically.
 
-The development seed is explicitly guarded and idempotent. Re-running it fills missing fixed demo fixtures but does not overwrite event, attention, approval, activity, or membership state, so completed demo workflows stay completed.
+Provider IDs and safe payload fragments belong in `sourceReference`,
+`dedupeKey`, and allowlisted `structuredData`. Credentials, prompts, reasoning
+traces, and unrelated customer data do not. Deterministic Restaurant rules remain
+the source of handling and status decisions.
+
+All reads and writes require authenticated organization membership. Browser
+organization and branch IDs are validated server-side and independently enforced
+by RLS/RPC authorization. Service-role credentials are server-only and must never
+use a `NEXT_PUBLIC_` name.
+
+## Daily Manager Brief
+
+The brief consumes normalized operational rows plus review and invoice facts. It
+does not ingest reviews, classify reputation, match suppliers, or calculate price
+changes. Reputation and Invoice modules remain independent of the brief.
 
 ## Reviews and reputation
 
-Phase 2.2 adds a second provider-neutral boundary: `normalizeRestaurantReview`,
-`classifyRestaurantReview`, and the server-only `ingestRestaurantReview` service.
-Future Google, delivery-platform, survey, QR-feedback, and manual-entry adapters
-must translate provider payloads into this contract. Core logic does not contain
-provider authentication or provider-specific behavior.
+Future review-provider adapters normalize into `normalizeRestaurantReview` and
+`classifyRestaurantReview`, then use `ingestRestaurantReview`. Core logic contains
+no provider authentication.
 
-Ratings and deterministic keyword rules are authoritative for sentiment, topics,
-severity, and handling. A positive review is recorded without attention. A medium
-negative review creates attention plus a proposed `customer_response` in the
-existing approval queue. High or critical risk language creates a HUMAN escalation
-and deliberately omits a response draft. Approval records only internal approval;
-no Phase 2.2 code publishes a reply.
+Ratings and deterministic terms decide sentiment, topics, severity, and
+handling. Medium negative reviews create attention and a proposed response in the
+existing approval queue. High/critical risk creates a HUMAN escalation without a
+response draft. Approval records an internal decision only; Restaurant V1 does
+not publish external replies.
 
-`restaurant_reviews` keeps provider identifiers, rating, original text,
-classification, deduplication, and response history while linking one-to-one to the
-generic operational event. Four negative mentions of the same non-`other` topic at
-one branch within seven days create a reputation trend attention event. An existing
-open or assigned alert for that branch/topic is reused, preventing duplicate active
-alerts.
+Repeated negative topics use the existing seven-day threshold and reuse an open
+branch/topic alert instead of duplicating it.
 
-## Supplier invoice intelligence
+## Supplier invoices and OCR
 
-Phase 2.3 stores supplier invoices in the private `restaurant-supplier-invoices`
-Supabase Storage bucket. Browser clients have no direct object policy; authenticated
-members receive a one-minute signed URL only after the server verifies invoice RLS
-and organization membership.
+`SupplierInvoiceExtractor` is the provider-neutral extraction boundary.
+`ManualSupplierInvoiceExtractor` and `PaddleSupplierInvoiceExtractor` implement
+the same contract. The Paddle adapter sends a private file from an authenticated
+server route to the isolated FastAPI/PP-StructureV3 worker in
+`services/invoice-ocr`; application and domain code do not import PaddleOCR.
 
-`SupplierInvoiceExtractor` remains the provider-neutral extraction boundary.
-`PaddleSupplierInvoiceExtractor` sends the selected file from an authenticated
-server route to the internal PP-StructureV3 service, then maps bounded document,
-table, text, and confidence evidence into the normalized invoice schema. The
-source is not persisted during extraction. Managers compare and correct that
-draft before `ReviewedPaddleDraftSupplierInvoiceExtractor` passes it through the
-existing validation, matching, persistence, event, and anomaly flow.
-
-`ManualSupplierInvoiceExtractor` remains available in the same upload form when
-automatic extraction is unavailable or incomplete. OCR endpoint and token values
-are server-only; the browser never receives service credentials. The private
-original invoice remains the source of truth after the reviewed draft is saved.
+Automatic extraction creates an editable draft only. After manager correction,
+`ReviewedPaddleDraftSupplierInvoiceExtractor` sends the normalized result through
+the existing validation, matching, persistence, event, anomaly, and review flow.
+The manual fallback remains available.
 
 Supplier and item matching auto-links exact deterministic normalizations only.
-Similar names and incompatible units stay unresolved for manager review. Price
-comparisons require the same supplier item, normalized unit, and currency. The
-thresholds in `invoices.ts` suppress rounding noise and flag explainable increases,
-suspicious decreases, currency changes, and total mismatches.
+Ambiguous names, incompatible units, material price changes, currency changes,
+and total mismatches remain reviewable. Invoice workflows do not perform
+purchasing, accounting, inventory, payment, or menu-price actions.
 
-Invoice review reuses Restaurant events, manager attention, and activity history.
-It does not create purchasing, accounting, inventory, payment, or menu-price actions.
+## Adding a future integration
+
+Add a provider adapter at the edge, normalize its data into a stable Restaurant
+contract, and call the owning application service. Add provider-neutral facts to
+the Command Center read model only when the UI or Daily Brief needs them. Do not
+put delivery/POS behavior inside Reputation, Invoice, or Daily Brief modules, and
+do not bypass core authorization, RLS, or atomic workflow RPCs.

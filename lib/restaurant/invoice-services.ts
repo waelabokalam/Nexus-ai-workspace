@@ -6,7 +6,10 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
 
 import { requireRestaurantAccess } from "@/lib/restaurant/auth";
-import { RestaurantDatabaseError } from "@/lib/restaurant/errors";
+import {
+  filterRestaurantBranch,
+  throwRestaurantDatabaseError,
+} from "@/lib/restaurant/core/data-access";
 import {
   compareSupplierItemPrice,
   detectInvoiceTotalAnomalies,
@@ -44,13 +47,6 @@ const reviewInvoiceSchema = z.object({
   invoiceId: z.uuid(),
   decision: z.enum(["reviewed", "dismissed"]),
 });
-
-function throwDatabaseError(
-  context: string,
-  error: { message: string; code?: string } | null,
-) {
-  if (error) throw new RestaurantDatabaseError(`${context}: ${error.message}`, error.code);
-}
 
 function jsonValue(value: unknown): Json {
   return JSON.parse(JSON.stringify(value)) as Json;
@@ -90,7 +86,7 @@ export async function processSupplierInvoice(
       .eq("organization_id", input.organizationId)
       .eq("is_active", true)
       .maybeSingle();
-    throwDatabaseError("Could not validate invoice branch", error);
+    throwRestaurantDatabaseError("Could not validate invoice branch", error);
     if (!branch) throw new Error("The selected invoice branch is not active in this restaurant.");
   }
 
@@ -102,7 +98,7 @@ export async function processSupplierInvoice(
     .eq("organization_id", input.organizationId)
     .eq("file_hash", fileHash)
     .maybeSingle();
-  throwDatabaseError("Could not check invoice duplicate", existingError);
+  throwRestaurantDatabaseError("Could not check invoice duplicate", existingError);
   if (existing) return { ...existing, created: false };
 
   const service = options?.service ?? createSupabaseServiceRoleClient();
@@ -114,7 +110,7 @@ export async function processSupplierInvoice(
       upsert: false,
       cacheControl: "private, max-age=0, no-store",
     });
-  throwDatabaseError("Could not upload the private invoice file", uploaded.error);
+  throwRestaurantDatabaseError("Could not upload the private invoice file", uploaded.error);
 
   try {
     const extractor = options?.extractor ?? new ManualSupplierInvoiceExtractor();
@@ -130,7 +126,7 @@ export async function processSupplierInvoice(
       .from("restaurant_suppliers")
       .select("*")
       .eq("organization_id", input.organizationId);
-    throwDatabaseError("Could not load suppliers for matching", suppliersError);
+    throwRestaurantDatabaseError("Could not load suppliers for matching", suppliersError);
     const supplierMatch = matchSupplier(
       extraction.supplierName,
       (suppliers ?? []).map((supplier) => ({
@@ -148,7 +144,7 @@ export async function processSupplierInvoice(
           .eq("organization_id", input.organizationId)
           .eq("supplier_id", supplierId)
       : { data: [], error: null };
-    throwDatabaseError("Could not load supplier items for matching", supplierItemsError);
+    throwRestaurantDatabaseError("Could not load supplier items for matching", supplierItemsError);
     const itemCandidates = (supplierItems ?? []).map((item) => ({
       id: item.id,
       normalizedName: item.normalized_name,
@@ -164,7 +160,7 @@ export async function processSupplierInvoice(
           .order("created_at", { ascending: false })
           .limit(500)
       : { data: [], error: null };
-    throwDatabaseError("Could not load supplier price history", historyItemsError);
+    throwRestaurantDatabaseError("Could not load supplier price history", historyItemsError);
     const historicalInvoiceIds = Array.from(
       new Set((historicalItems ?? []).map((item) => item.invoice_id)),
     );
@@ -176,7 +172,7 @@ export async function processSupplierInvoice(
           .eq("review_status", "reviewed")
           .in("id", historicalInvoiceIds)
       : { data: [], error: null };
-    throwDatabaseError("Could not load historical invoices", historyInvoicesError);
+    throwRestaurantDatabaseError("Could not load historical invoices", historyInvoicesError);
     const invoiceById = new Map(
       (historicalInvoices ?? []).map((invoice) => [invoice.id, invoice]),
     );
@@ -267,7 +263,7 @@ export async function processSupplierInvoice(
       p_invoice: jsonValue(invoicePayload),
       p_items: jsonValue(itemPayload),
     });
-    throwDatabaseError("Could not process supplier invoice", error);
+    throwRestaurantDatabaseError("Could not process supplier invoice", error);
     const result = data && typeof data === "object" && !Array.isArray(data) ? data : {};
     if (result.created === false) {
       await service.storage.from(SUPPLIER_INVOICE_BUCKET).remove([storagePath]);
@@ -284,16 +280,18 @@ export async function getSupplierInvoiceCommandCenterData(
   branchId: string | null,
   database: SupabaseClient<Database>,
 ) {
-  let invoiceQuery = database
-    .from("restaurant_supplier_invoices")
-    .select("*")
-    .eq("organization_id", organizationId);
-  if (branchId) invoiceQuery = invoiceQuery.or(`branch_id.eq.${branchId},branch_id.is.null`);
+  const invoiceQuery = filterRestaurantBranch(
+    database
+      .from("restaurant_supplier_invoices")
+      .select("*")
+      .eq("organization_id", organizationId),
+    branchId,
+  );
   const invoicesResult = await invoiceQuery
     .order("invoice_date", { ascending: false })
     .order("created_at", { ascending: false })
     .limit(30);
-  throwDatabaseError("Could not load supplier invoices", invoicesResult.error);
+  throwRestaurantDatabaseError("Could not load supplier invoices", invoicesResult.error);
   const invoices = invoicesResult.data ?? [];
   const invoiceIds = invoices.map((invoice) => invoice.id);
   const itemsResult = invoiceIds.length
@@ -304,7 +302,7 @@ export async function getSupplierInvoiceCommandCenterData(
         .in("invoice_id", invoiceIds)
         .order("created_at", { ascending: true })
     : { data: [], error: null };
-  throwDatabaseError("Could not load supplier invoice items", itemsResult.error);
+  throwRestaurantDatabaseError("Could not load supplier invoice items", itemsResult.error);
   return { invoices, invoiceItems: itemsResult.data ?? [] };
 }
 
@@ -320,7 +318,7 @@ export async function reviewSupplierInvoice(
     p_invoice_id: input.invoiceId,
     p_decision: input.decision,
   });
-  throwDatabaseError("Could not review supplier invoice", error);
+  throwRestaurantDatabaseError("Could not review supplier invoice", error);
   return data;
 }
 
@@ -335,14 +333,14 @@ export async function createSupplierInvoiceDownloadUrl(
     .select("organization_id, storage_path")
     .eq("id", id)
     .single();
-  throwDatabaseError("Could not load supplier invoice file", error);
+  throwRestaurantDatabaseError("Could not load supplier invoice file", error);
   if (!invoice) throw new Error("Supplier invoice was not found.");
   await requireRestaurantAccess(invoice.organization_id, undefined, database);
   const service = createSupabaseServiceRoleClient();
   const signed = await service.storage
     .from(SUPPLIER_INVOICE_BUCKET)
     .createSignedUrl(invoice.storage_path, 60);
-  throwDatabaseError("Could not authorize supplier invoice download", signed.error);
+  throwRestaurantDatabaseError("Could not authorize supplier invoice download", signed.error);
   if (!signed.data?.signedUrl) throw new Error("Supplier invoice download is unavailable.");
   return signed.data.signedUrl;
 }

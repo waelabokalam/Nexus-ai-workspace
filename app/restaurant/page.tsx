@@ -7,7 +7,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import NexusCore from "@/components/ui/NexusCore";
 import { listRestaurantWorkspaces } from "@/lib/restaurant/auth";
 import { signOutRestaurant } from "@/lib/restaurant/auth-actions";
-import { getRestaurantCommandCenter } from "@/lib/restaurant/services";
+import { getRestaurantCommandCenter } from "@/lib/restaurant/command-center/service";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";

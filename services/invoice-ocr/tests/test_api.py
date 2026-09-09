@@ -1,6 +1,7 @@
+from fastapi.testclient import TestClient
+
 from app.contracts import OcrDocument, OcrEngineInfo, OcrPage
 from app.main import app, engine
-from fastapi.testclient import TestClient
 
 client = TestClient(app)
 

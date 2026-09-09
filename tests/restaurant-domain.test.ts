@@ -13,9 +13,9 @@ import {
 } from "@/lib/restaurant/domain";
 import {
   belongsToBranch,
-  calculateDailyManagerBrief,
   calculateRestaurantSummary,
 } from "@/lib/restaurant/summary";
+import { calculateDailyManagerBrief } from "@/lib/restaurant/daily-brief";
 import {
   getRestaurantDayWindow,
   getRestaurantLocalDate,

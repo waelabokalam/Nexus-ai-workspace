@@ -11,7 +11,7 @@ import {
   parseManualInvoiceItems,
   validateInvoiceFile,
 } from "@/lib/restaurant/invoices";
-import { calculateDailyManagerBrief } from "@/lib/restaurant/summary";
+import { calculateDailyManagerBrief } from "@/lib/restaurant/daily-brief";
 import type {
   ManagerAttentionItemRow,
   RestaurantEventRow,

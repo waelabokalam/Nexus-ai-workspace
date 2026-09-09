@@ -5,7 +5,7 @@ import {
   detectRepeatedNegativeReviewTopics,
   normalizeRestaurantReview,
 } from "@/lib/restaurant/reputation";
-import { calculateDailyManagerBrief } from "@/lib/restaurant/summary";
+import { calculateDailyManagerBrief } from "@/lib/restaurant/daily-brief";
 import type {
   ManagerApprovalRow,
   ManagerAttentionItemRow,

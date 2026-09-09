@@ -6,7 +6,7 @@ import { z } from "zod";
 import {
   processManagerApproval,
   updateManagerAttentionItem,
-} from "@/lib/restaurant/services";
+} from "@/lib/restaurant/core/operations";
 import { isRestaurantMutationAlreadyApplied } from "@/lib/restaurant/errors";
 import {
   processSupplierInvoice,
