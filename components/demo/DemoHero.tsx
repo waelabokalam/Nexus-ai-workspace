@@ -3,10 +3,10 @@
 import { motion } from "framer-motion";
 
 const metadata = [
-  "One live workspace",
+  "Real request paths",
   "Business knowledge",
   "Conversation memory",
-  "Calendar workflows",
+  "Visible workflow events",
 ];
 
 export default function DemoHero() {
@@ -17,17 +17,17 @@ export default function DemoHero() {
       initial={false}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
-      <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">
-        Live product experience
+      <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">
+        Product experiences
       </p>
-      <h1 className="mt-6 font-heading text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl md:text-7xl">
-        Experience Nexus
+      <h1 className="nexus-heading mt-6 font-heading text-5xl font-semibold tracking-[-0.06em] sm:text-6xl md:text-7xl">
+        See the systems at work.
       </h1>
-      <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-zinc-400 sm:text-lg">
-        Explore the live Customer Support workspace, then see the business scenarios planned for future releases.
+      <p className="nexus-copy mx-auto mt-6 max-w-2xl text-base leading-7 sm:text-lg">
+        These public workspaces demonstrate real Nexus capabilities and one clearly labeled concept integration. No scripted conversations or invented results.
       </p>
-      <p className="mt-3 text-sm tracking-[-0.01em] text-zinc-500">
-        Customer Support is available now. The remaining scenarios are planned product directions, not functioning demos.
+      <p className="nexus-subtle mt-3 text-sm tracking-[-0.01em]">
+        The Nexus Agent and Restaurant Guest Assistant use live request paths. PGPara is an independent concept prototype with no implied endorsement.
       </p>
 
       <motion.div
@@ -41,7 +41,7 @@ export default function DemoHero() {
       >
         {metadata.map((item) => (
           <motion.span
-            className="rounded-full border border-white/[0.1] bg-white/[0.035] px-3 py-1.5 text-xs font-medium text-zinc-300"
+            className="nexus-status rounded-full px-3 py-1.5 text-xs font-medium"
             key={item}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0 } }}

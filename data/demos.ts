@@ -24,20 +24,10 @@ export type Demo = {
 
 export const demos: Demo[] = [
   {
-    id: "pgpara",
-    title: "PGPara AI Assistant",
-    description: "A concept demo for multilingual product guidance, merchant inquiries and safe financial support responses.",
-    capabilities: ["Turkish, Arabic & English", "Merchant Inquiries", "Product Guidance", "Safe Support"],
-    availability: { label: "Demo status", values: ["Concept prototype"] },
-    href: "/demo/pgpara",
-    icon: "pgpara",
-    status: "prototype",
-  },
-  {
     id: "customer-support",
-    title: "Customer Support",
+    title: "Nexus Agent",
     description:
-      "Answer customer questions, search company knowledge and book appointments.",
+      "Talk to the same agent architecture Nexus uses for grounded answers, memory, intent handling and scheduling.",
     capabilities: [
       "Multi-language",
       "Google Calendar",
@@ -51,8 +41,8 @@ export const demos: Demo[] = [
   },
   {
     id: "restaurant",
-    title: "Restaurant",
-    description: "Guest support for Saray Sofrasi: menu questions in three languages and live table reservations.",
+    title: "Restaurant Guest Assistant",
+    description: "Experience the guest-facing side of the Restaurant vertical with menu knowledge and reservation workflows.",
     capabilities: ["Reservations", "Menu Q&A", "Business Knowledge"],
     availability: { label: "Live today", values: ["Website workspace"] },
     href: "/demo/restaurant",
@@ -60,30 +50,13 @@ export const demos: Demo[] = [
     status: "available",
   },
   {
-    id: "healthcare",
-    title: "Healthcare",
-    description: "A future service-information and appointment-request configuration for healthcare teams.",
-    capabilities: ["Appointments", "Service FAQ", "Calendar Workflows"],
-    availability: { label: "Release status", values: ["Planned scenario"] },
-    icon: "healthcare",
-    status: "coming-soon",
-  },
-  {
-    id: "real-estate",
-    title: "Real Estate",
-    description: "A future property-information and viewing-request configuration for real estate teams.",
-    capabilities: ["Property Search", "Viewing Requests", "Business Knowledge"],
-    availability: { label: "Release status", values: ["Planned scenario"] },
-    icon: "real-estate",
-    status: "coming-soon",
-  },
-  {
-    id: "custom-business",
-    title: "Custom Business",
-    description: "Nexus is designed to adapt to a company’s knowledge, communication style, languages, policies and enabled workflows.",
-    capabilities: ["Business Knowledge", "Communication Style", "Languages", "Workflows & Tools"],
-    availability: { label: "Configuration model", values: ["Planned capability"] },
-    icon: "custom-business",
-    status: "planned",
+    id: "pgpara",
+    title: "PGPara AI Assistant",
+    description: "A clearly disclosed concept prototype for multilingual product guidance, merchant inquiries and safe financial support responses.",
+    capabilities: ["Turkish, Arabic & English", "Merchant Inquiries", "Product Guidance", "Safe Support"],
+    availability: { label: "Demo status", values: ["Independent concept prototype"] },
+    href: "/demo/pgpara",
+    icon: "pgpara",
+    status: "prototype",
   },
 ];

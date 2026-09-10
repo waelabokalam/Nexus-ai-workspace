@@ -1,5 +1,8 @@
 const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
 const rawContactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim();
+const contactEmail = rawContactEmail && !/(^hello@your-domain\.com$|example\.(com|test)$)/i.test(rawContactEmail)
+  ? rawContactEmail
+  : undefined;
 
 function normalizeSiteUrl(value: string) {
   const url = new URL(value);
@@ -19,7 +22,7 @@ if (rawSiteUrl) {
 }
 
 export const siteConfig = {
-  contactEmail: rawContactEmail || undefined,
+  contactEmail,
   isProduction,
   siteUrl: configuredSiteUrl
     ? configuredSiteUrl
@@ -34,7 +37,7 @@ if (isProduction && !configuredSiteUrl) {
   );
 }
 
-if (isProduction && !rawContactEmail) {
+if (isProduction && !contactEmail) {
   console.warn(
     "Nexus configuration warning: NEXT_PUBLIC_CONTACT_EMAIL is required before the public contact experience is deployment-ready.",
   );

@@ -2,8 +2,47 @@ import type { Metadata } from "next";
 import MarketingPage from "@/components/MarketingPage";
 import { pageMetadata } from "@/app/metadata";
 
-export const metadata: Metadata = pageMetadata("About", "Why Nexus is building operating infrastructure for business communication.", "/about");
+export const metadata: Metadata = pageMetadata("About", "Nexus builds serious operational technology around how businesses actually work.", "/about");
 
 export default function AboutPage() {
-  return <MarketingPage><section className="mx-auto max-w-4xl px-5 pb-24 pt-20 sm:px-8 sm:pt-28"><p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">About Nexus</p><h1 className="mt-5 font-heading text-5xl font-semibold tracking-[-0.055em] text-white sm:text-6xl">Business communication is operational work.</h1><div className="mt-10 max-w-3xl space-y-6 text-lg leading-8 text-zinc-400"><p>Nexus is being built for teams that need more than a chatbot. A useful business conversation should understand the question, retrieve relevant knowledge, remember context and move a workflow forward when action is needed.</p><p>The current public experience demonstrates a website support workspace backed by the Nexus Engine. The product is evolving through early-access conversations, with future channels and deployment options evaluated deliberately rather than promised ahead of delivery.</p></div></section></MarketingPage>;
+  return (
+    <MarketingPage>
+      <section className="mx-auto max-w-7xl px-5 pb-24 pt-20 sm:px-8 sm:pt-28">
+        <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
+          <div>
+            <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">About Nexus</p>
+            <h1 className="nexus-heading mt-5 font-heading text-5xl font-semibold tracking-[-0.06em] sm:text-6xl">Build around the operation.</h1>
+          </div>
+          <p className="nexus-copy max-w-2xl text-lg leading-8 lg:justify-self-end">
+            Nexus builds software systems that understand business context, handle repetitive work and bring people the decisions that need their judgment.
+          </p>
+        </div>
+
+        <div className="mt-20 grid gap-px overflow-hidden rounded-[var(--nexus-radius-surface)] bg-[var(--nexus-border)] md:grid-cols-2">
+          {[
+            ["Software first", "The product must solve the workflow even when AI is not the right tool for every step."],
+            ["AI where useful", "Agents, retrieval and automation are applied where they create a clearer or faster operating path."],
+            ["People stay in control", "Safe routine work can move automatically. Sensitive decisions can require approval or human handling."],
+            ["Industry context matters", "Useful systems reflect the language, roles, constraints and exceptions of the business using them."],
+            ["Connect before replacing", "Where reliable interfaces exist, Nexus can work with existing tools instead of demanding a complete replacement."],
+            ["Proof over theatre", "We distinguish what is built, what is in development and what is planned without invented scale or performance claims."],
+          ].map(([title, description]) => (
+            <article className="bg-[var(--nexus-surface)] p-6 sm:p-8" key={title}>
+              <h2 className="nexus-heading font-heading text-2xl font-semibold tracking-[-0.04em]">{title}</h2>
+              <p className="nexus-copy mt-4 max-w-lg text-sm leading-6">{description}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-20 grid gap-8 border-t border-[var(--nexus-border)] pt-10 lg:grid-cols-[0.7fr_1.3fr]">
+          <h2 className="nexus-heading font-heading text-3xl font-semibold tracking-[-0.045em]">Where the work stands</h2>
+          <div className="grid gap-6 sm:grid-cols-3">
+            <div><p className="nexus-heading text-sm font-semibold">Restaurant</p><p className="nexus-copy mt-2 text-sm leading-6">A real, pilot-ready operational product.</p></div>
+            <div><p className="nexus-heading text-sm font-semibold">Retail</p><p className="nexus-copy mt-2 text-sm leading-6">Operational intelligence and loss-prevention work in development.</p></div>
+            <div><p className="nexus-heading text-sm font-semibold">Fitness</p><p className="nexus-copy mt-2 text-sm leading-6">A planned industry direction, not a released product.</p></div>
+          </div>
+        </div>
+      </section>
+    </MarketingPage>
+  );
 }

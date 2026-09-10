@@ -34,7 +34,23 @@ Fast, interruptible, 160–240ms ease-out transitions. Do not use constant ambie
 
 ## Theme
 
-Dark-first. Body text targets readable zinc-300/400 values; zinc-500/600 are reserved for nonessential metadata.
+Dark and light themes share the same semantic roles: canvas, surface, raised surface, border, primary text, supporting copy and status. Marketing components use the `nexus-*` semantic classes or the corresponding CSS variables rather than theme-specific color utilities.
+
+---
+
+## Public Product Architecture
+
+The shared marketing shell owns company navigation, theme controls and the footer. Industry pages and case studies only compose content sections inside that shell. Protected product UI, public demo workspaces and backend integration boundaries remain separate from marketing components.
+
+Product representations must be sanitized public compositions. They may reflect real interface language and information hierarchy, but must not query protected data or imply integrations that have not been configured.
+
+Industry maturity is always explicit:
+
+- Restaurant: pilot ready
+- Retail: in development
+- Fitness: planned
+
+Custom systems are presented as operational technology built around a workflow, not as a catalogue of commodity development services.
 
 ---
 
