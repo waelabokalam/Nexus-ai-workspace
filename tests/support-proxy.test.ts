@@ -75,13 +75,40 @@ describe("support proxy", () => {
 
     expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual(
       expect.objectContaining({
-        tenant_id: "demo-tenant",
-        business_id: "support-demo",
+        tenant_id: "tqen",
+        business_id: "tqen-agent",
         conversation_id: "conversation-1",
         customer_id: "customer-1",
         channel: "website",
         message: { message_type: "text", content: "Hello" },
         request_id: expect.any(String),
+      }),
+    );
+  });
+
+  it("prioritizes TQEN_AGENT_BACKEND_URL and TQEN_AGENT_API_KEY environment variables", async () => {
+    vi.stubEnv("TQEN_AGENT_BACKEND_URL", "http://127.0.0.1:9000");
+    vi.stubEnv("TQEN_AGENT_API_KEY", "tqen-specific-key");
+
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response("event: request.started\ndata: {}\n\n", {
+        status: 200,
+        headers: { "Content-Type": "text/event-stream" },
+      }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    const response = await POST(
+      supportRequest({ conversation_id: "c-1", customer_id: "cust-1", message: "Hi" }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(fetchMock).toHaveBeenCalledWith(
+      "http://127.0.0.1:9000/v1/messages/stream",
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          "x-api-key": "tqen-specific-key",
+        }),
       }),
     );
   });

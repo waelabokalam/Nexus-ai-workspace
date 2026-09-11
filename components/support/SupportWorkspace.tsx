@@ -10,10 +10,10 @@ import type { WorkflowStep } from "@/lib/support-stream";
 
 const messageLimit = 12_000;
 const prompts = [
-  "What are your pricing plans?",
+  "What does TQEN do?",
+  "What is TQEN Restaurant?",
   "مرحبا، كيف يمكنكم مساعدتي؟",
   "Merhaba, hangi hizmetleri sunuyorsunuz?",
-  "I want to schedule a meeting tomorrow at 6pm.",
 ] as const;
 
 export type WorkspaceConfig = {
@@ -39,14 +39,14 @@ export type WorkspaceConfig = {
 };
 
 const supportWorkspaceConfig: WorkspaceConfig = {
-  assistantName: "TQEN",
-  headerTitle: "Customer Support",
-  workspaceTitle: "TQEN Support",
-  emptyTitle: "Ask a real support question to start a TQEN Engine session.",
-  emptyDescription: "Try a product question, switch language, or ask to schedule a meeting. Each prompt uses the same live request path.",
+  assistantName: "TQEN Agent",
+  headerTitle: "TQEN Agent",
+  workspaceTitle: "TQEN Agent",
+  emptyTitle: "Ask a question to start a TQEN Agent session.",
+  emptyDescription: "Try a question about TQEN, switch language, or ask about our platforms. Each prompt uses the same live request path.",
   prompts,
-  composerPlaceholder: "Ask about your business, knowledge or scheduling…",
-  composerLabel: "Message TQEN Support",
+  composerPlaceholder: "Ask about TQEN, capabilities or pilot…",
+  composerLabel: "Message TQEN Agent",
   preventActionRetry: true,
 };
 

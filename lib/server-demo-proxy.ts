@@ -75,8 +75,14 @@ export function createDemoProxy(profile: DemoBackendProfile) {
       return jsonError(400, "Please provide a valid conversation, customer, and message.");
     }
 
-    const backendUrl = process.env.NEXUS_BACKEND_URL?.replace(/\/$/, "");
-    const apiKey = process.env.NEXUS_DEVELOPMENT_API_KEY;
+    const backendUrl = (
+      process.env.TQEN_AGENT_BACKEND_URL ||
+      process.env.NEXUS_BACKEND_URL ||
+      "http://127.0.0.1:8000"
+    ).replace(/\/$/, "");
+    const apiKey =
+      process.env.TQEN_AGENT_API_KEY ||
+      process.env.NEXUS_DEVELOPMENT_API_KEY;
     if (!backendUrl || !apiKey) {
       return jsonError(503, profile.unavailableMessage);
     }

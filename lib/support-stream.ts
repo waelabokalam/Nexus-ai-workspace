@@ -24,6 +24,7 @@ export type WorkflowStep = {
   state: WorkflowState;
   durationMs?: number;
   startedAt?: number;
+  data?: Record<string, unknown>;
 };
 
 const labels: Record<WorkflowEventType, string> = {
@@ -73,6 +74,7 @@ export function applyWorkflowEvent(
     ...next[targetIndex],
     state: event.type === "response.completed" ? "complete" : "active",
     startedAt: at,
+    data: event.payload,
   };
 
   if (event.type === "response.completed") {
