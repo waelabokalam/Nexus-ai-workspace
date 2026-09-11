@@ -629,7 +629,7 @@ describe("daily manager brief", () => {
       {
         kind: "auto_handled_today",
         count: 1,
-        label: "1 event handled automatically by Nexus",
+        label: "1 event handled automatically by TQEN",
         priority: "info",
       },
     ]);

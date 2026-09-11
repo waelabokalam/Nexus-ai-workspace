@@ -69,7 +69,7 @@ export default function DailyManagerBriefSection({
             ["High priority", brief.highPriorityAttentionCount],
             ["Approvals", brief.approvalCount],
             ["Escalations", brief.escalationCount],
-            ["Nexus handled", brief.handledCount],
+            ["TQEN handled", brief.handledCount],
           ].map(([label, value]) => (
             <div className="rounded-xl border border-white/[0.08] bg-white/[0.025] p-3 light:border-black/[0.09] light:bg-black/[0.02]" key={label}>
               <dt className="text-[10px] leading-4 text-zinc-500">{label}</dt>

@@ -40,10 +40,10 @@ export function RestaurantHero() {
     <section className="px-5 pb-20 pt-16 sm:px-8 sm:pb-24 sm:pt-20 lg:pb-28 lg:pt-24">
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-14">
         <SectionReveal>
-          <span className="nexus-status inline-flex rounded-full px-3 py-1 text-xs font-medium">Nexus Restaurant · Pilot ready</span>
+          <span className="nexus-status inline-flex rounded-full px-3 py-1 text-xs font-medium">TQEN Restaurant · Pilot ready</span>
           <h1 className="nexus-heading mt-6 font-heading text-5xl font-semibold leading-[0.95] tracking-[-0.06em] sm:text-6xl">
-            <span className="block">Manage the exceptions.</span>
-            <span className="block">Let Nexus watch the operation.</span>
+            <span className="block">Run every location without</span>
+            <span className="block">carrying every location in your head.</span>
           </h1>
           <p className="nexus-copy mt-6 max-w-xl text-lg leading-8">A command center for attention, approvals, reputation, supplier costs and the daily decisions that need management.</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -61,13 +61,13 @@ export function RestaurantManagementStory() {
   return (
     <section className="border-y border-[var(--nexus-border)] bg-[var(--nexus-surface-soft)] px-5 py-20 sm:px-8 sm:py-28" id="command-center">
       <div className="mx-auto max-w-7xl">
-        <SectionReveal className="max-w-3xl"><h2 className="nexus-heading font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">One place to see what changed, what matters, and who should act.</h2><p className="nexus-copy mt-5 max-w-2xl text-base leading-7">Restaurant V1 turns persisted operational events into a daily management view. It does not replace judgment or hide important work.</p></SectionReveal>
+        <SectionReveal className="max-w-3xl"><h2 className="nexus-heading font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">One place to see what changed, what matters, and who should act.</h2><p className="nexus-copy mt-5 max-w-2xl text-base leading-7">TQEN Restaurant turns persisted operational events into a daily management view. It watches operations and surfaces the exceptions that deserve attention: what changed, what is abnormal, what TQEN can handle, what needs a manager, and what needs the owner. It does not replace judgment or hide important work.</p></SectionReveal>
         <div className="mt-12 grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
           <SectionReveal className="nexus-surface rounded-[var(--nexus-radius-surface)] p-6 sm:p-8">
             <div className="flex items-center gap-3"><Activity aria-hidden="true" className="nexus-heading size-5" strokeWidth={1.5} /><h3 className="nexus-heading text-lg font-medium">Daily Manager Brief</h3></div>
-            <p className="nexus-copy mt-4 max-w-2xl text-sm leading-6">Each business day begins with the current operational picture: high-priority attention, pending approvals, human escalations and work already handled by Nexus.</p>
+            <p className="nexus-copy mt-4 max-w-2xl text-sm leading-6">Each business day begins with the current operational picture: high-priority attention, pending approvals, human escalations and work already handled by TQEN.</p>
             <div className="mt-7 grid gap-3 sm:grid-cols-3">
-              {["Needs attention", "Waiting for approval", "Handled by Nexus"].map((item) => <div className="nexus-control rounded-[var(--nexus-radius-control)] p-4" key={item}><p className="nexus-heading text-sm font-medium">{item}</p><p className="nexus-subtle mt-2 text-xs leading-5">Only persisted operational events appear here.</p></div>)}
+              {["Needs attention", "Waiting for approval", "Handled by TQEN"].map((item) => <div className="nexus-control rounded-[var(--nexus-radius-control)] p-4" key={item}><p className="nexus-heading text-sm font-medium">{item}</p><p className="nexus-subtle mt-2 text-xs leading-5">Only persisted operational events appear here.</p></div>)}
             </div>
           </SectionReveal>
           <SectionReveal className="nexus-surface flex flex-col rounded-[var(--nexus-radius-surface)] p-6 sm:p-8" delay={0.05}>
@@ -133,7 +133,7 @@ export function RestaurantIntegrationBoundary() {
   return (
     <section className="px-5 py-20 sm:px-8 sm:py-28">
       <div className="mx-auto max-w-7xl">
-        <SectionReveal className="max-w-3xl"><h2 className="nexus-heading font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Built product, clear integration boundaries.</h2><p className="nexus-copy mt-5 max-w-2xl text-base leading-7">Nexus can connect existing restaurant systems through provider adapters. We do not claim integrations before they are configured and verified.</p></SectionReveal>
+        <SectionReveal className="max-w-3xl"><h2 className="nexus-heading font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Built product, clear integration boundaries.</h2><p className="nexus-copy mt-5 max-w-2xl text-base leading-7">TQEN can connect existing restaurant systems through provider adapters. We do not claim integrations before they are configured and verified.</p></SectionReveal>
         <div className="mt-12 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
           <SectionReveal className="nexus-surface rounded-[var(--nexus-radius-surface)] p-6 sm:p-8"><h3 className="nexus-heading text-xl font-medium">Built and pilot ready</h3><ul className="mt-6 grid gap-3 sm:grid-cols-2">{built.map((item) => <li className="nexus-copy flex gap-2.5 text-sm leading-6" key={item}><CheckCircle2 aria-hidden="true" className="nexus-heading mt-1 size-4 shrink-0" strokeWidth={1.5} />{item}</li>)}</ul></SectionReveal>
           <SectionReveal className="nexus-surface rounded-[var(--nexus-radius-surface)] p-6 sm:p-8" delay={0.05}><h3 className="nexus-heading text-xl font-medium">Integration dependent</h3><p className="nexus-copy mt-3 text-sm leading-6">These connections are implemented only after access, scope and provider behavior are confirmed.</p><ul className="mt-6 space-y-3">{integrationNext.map((item) => <li className="nexus-control rounded-lg px-3 py-2.5 text-sm nexus-copy" key={item}>{item}</li>)}</ul></SectionReveal>
@@ -147,7 +147,7 @@ export function RestaurantPilot() {
   return (
     <section className="border-t border-[var(--nexus-border)] bg-[var(--nexus-surface-soft)] px-5 py-20 sm:px-8 sm:py-28" id="restaurant-pilot">
       <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-center lg:gap-16">
-        <SectionReveal><h2 className="nexus-heading font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Run Nexus with your restaurant for 30 days.</h2><p className="nexus-copy mt-5 max-w-2xl text-base leading-7">The pilot establishes a focused operational baseline and shows where the product can remove checking, surface issues, and support better decisions.</p><div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact?industry=restaurant&intent=pilot">Apply for a pilot</Link><Link className="nexus-button-secondary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/restaurant/login">Existing pilot access</Link></div></SectionReveal>
+        <SectionReveal><h2 className="nexus-heading font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Run TQEN with your restaurant for 30 days.</h2><p className="nexus-copy mt-5 max-w-2xl text-base leading-7">The pilot establishes a focused operational baseline and shows where the product can remove checking, surface issues, and support better decisions.</p><div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link className="nexus-button-primary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact?industry=restaurant&intent=pilot">Apply for a pilot</Link><Link className="nexus-button-secondary nexus-focus inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/restaurant/login">Existing pilot access</Link></div></SectionReveal>
         <SectionReveal className="nexus-surface rounded-[var(--nexus-radius-surface)] p-6 sm:p-8"><h3 className="nexus-heading text-sm font-medium">What the pilot examines</h3><ul className="mt-6 space-y-4">{pilotChecks.map((item) => <li className="nexus-copy flex gap-3 text-sm leading-6" key={item}><CheckCircle2 aria-hidden="true" className="nexus-heading mt-1 size-4 shrink-0" strokeWidth={1.5} />{item}</li>)}</ul></SectionReveal>
       </div>
     </section>

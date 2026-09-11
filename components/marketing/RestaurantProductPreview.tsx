@@ -1,5 +1,5 @@
 import { AlertTriangle, Building2, FileCheck2, MessageSquareWarning, ShieldCheck } from "lucide-react";
-import NexusCore from "@/components/ui/NexusCore";
+import TqMonogram from "@/components/ui/TqMonogram";
 
 const attentionItems = [
   { title: "Supplier invoice needs review", detail: "A material price change is waiting for a manager.", icon: FileCheck2 },
@@ -8,9 +8,9 @@ const attentionItems = [
 
 export default function RestaurantProductPreview({ compact = false }: { compact?: boolean }) {
   return (
-    <div className="restaurant-product-preview nexus-surface overflow-hidden rounded-[var(--nexus-radius-surface)]" aria-label="Sample Nexus Restaurant Manager Command Center interface">
+    <div className="restaurant-product-preview nexus-surface overflow-hidden rounded-[var(--nexus-radius-surface)]" aria-label="Sample TQEN Restaurant Manager Command Center interface">
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--nexus-border)] px-5 py-4">
-        <div className="flex items-center gap-3"><NexusCore size={29} /><div><p className="nexus-heading text-sm font-semibold">Nexus Restaurant</p><p className="nexus-subtle mt-0.5 text-[11px]">Manager Command Center</p></div></div>
+        <div className="flex items-center gap-3"><TqMonogram size={28} /><div><p className="nexus-heading text-sm font-semibold">TQEN Restaurant</p><p className="nexus-subtle mt-0.5 text-[11px]">Manager Command Center</p></div></div>
         <span className="nexus-status rounded-full px-3 py-1 text-[11px] font-medium">Sample workspace</span>
       </div>
 

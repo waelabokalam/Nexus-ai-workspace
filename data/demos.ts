@@ -25,9 +25,9 @@ export type Demo = {
 export const demos: Demo[] = [
   {
     id: "customer-support",
-    title: "Nexus Agent",
+    title: "TQEN Agent",
     description:
-      "Talk to the same agent architecture Nexus uses for grounded answers, memory, intent handling and scheduling.",
+      "Talk to the same agent architecture TQEN uses for grounded answers, memory, intent handling and scheduling.",
     capabilities: [
       "Multi-language",
       "Google Calendar",

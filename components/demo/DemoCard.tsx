@@ -20,6 +20,8 @@ export default function DemoCard({ demo }: DemoCardProps) {
   const isAvailable = demo.status === "available" || demo.status === "prototype";
   const statusLabel = demo.status === "available" ? "Live" : demo.status === "prototype" ? "Prototype" : demo.status === "planned" ? "Planned" : "Coming soon";
   const reduceMotion = useReducedMotion();
+  // PGPara carries its own measured brand green (#25a520) on its existing light card.
+  const isPgpara = demo.id === "pgpara";
 
   return (
     <motion.article
@@ -32,7 +34,7 @@ export default function DemoCard({ demo }: DemoCardProps) {
       data-demo-id={demo.id}
     >
       <div className="relative flex items-start justify-between gap-4">
-        <div className="nexus-control nexus-heading flex size-10 items-center justify-center rounded-xl">
+        <div className={`flex size-10 items-center justify-center rounded-xl ${isPgpara ? "border border-[#25a520]/30 bg-[#25a520] text-white" : "nexus-control nexus-heading"}`}>
           <DemoScenarioIcon
             className="size-5 transition-transform duration-300 group-hover:rotate-3"
             icon={demo.icon}
@@ -42,7 +44,7 @@ export default function DemoCard({ demo }: DemoCardProps) {
         <span className="nexus-subtle inline-flex items-center gap-1.5 pt-1 text-xs font-medium">
           {isAvailable ? (
             <span className="relative flex size-1.5">
-              <span className="relative inline-flex size-1.5 rounded-full bg-[var(--nexus-text)]" />
+              <span className={`relative inline-flex size-1.5 rounded-full ${isPgpara ? "bg-[#25a520]" : "bg-[var(--nexus-text)]"}`} />
             </span>
           ) : (
             <span className="size-1.5 rounded-full bg-[var(--nexus-text-muted)]" />
@@ -72,7 +74,7 @@ export default function DemoCard({ demo }: DemoCardProps) {
 
       {isAvailable ? (
         <Link
-          className="nexus-button-primary nexus-focus relative mt-auto inline-flex h-11 w-full items-center justify-center rounded-[var(--nexus-radius-control)] text-sm font-medium"
+          className={`nexus-focus relative mt-auto inline-flex h-11 w-full items-center justify-center rounded-[var(--nexus-radius-control)] text-sm font-medium ${isPgpara ? "bg-[#25a520] text-white transition hover:brightness-95" : "nexus-button-primary"}`}
           href={demo.href ?? "/demo"}
         >
           Open Workspace →

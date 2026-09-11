@@ -7,7 +7,7 @@ import SectionReveal from "@/components/marketing/SectionReveal";
 
 export const metadata: Metadata = pageMetadata(
   "Crave It Case Study",
-  "How Nexus connected a customer-facing food experience with the operational workflow required to run it.",
+  "How TQEN connected a customer-facing food experience with the operational workflow required to run it.",
   "/case-studies/crave-it",
 );
 
@@ -80,7 +80,7 @@ export default function CraveItCaseStudyPage() {
       <section className="px-5 py-24 sm:px-8 sm:py-32">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
-            <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">What Nexus built</p>
+            <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">What TQEN built</p>
             <h2 className="nexus-heading mt-4 font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
               One system across both sides of the experience.
             </h2>
@@ -107,7 +107,7 @@ export default function CraveItCaseStudyPage() {
               <h2 className="nexus-heading mt-4 font-heading text-4xl font-semibold tracking-[-0.055em]">A useful digital channel must include the work after the click.</h2>
             </div>
             <p className="nexus-copy max-w-2xl text-base leading-7 lg:justify-self-end">
-              Crave It demonstrates how Nexus approaches custom systems: understand the customer path, understand fulfilment, then design one product around both. No performance metrics are claimed here; the proof is the connected system itself.
+              Crave It demonstrates how TQEN approaches custom systems: understand the customer path, understand fulfilment, then design one product around both. No performance metrics are claimed here; the proof is the connected system itself.
             </p>
           </div>
         </div>
@@ -119,7 +119,7 @@ export default function CraveItCaseStudyPage() {
             <h2 className="nexus-heading mx-auto max-w-4xl font-heading text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">What should your system connect?</h2>
             <p className="nexus-copy mx-auto mt-5 max-w-xl text-base leading-7">Tell us where customer intent, internal work and existing tools stop lining up.</p>
             <Link className="nexus-button-primary nexus-focus mt-9 inline-flex min-h-12 items-center justify-center rounded-[var(--nexus-radius-control)] px-5 text-sm font-medium" href="/contact?source=crave-it">
-              Talk to Nexus <span aria-hidden="true" className="ml-2">→</span>
+              Talk to TQEN <span aria-hidden="true" className="ml-2">→</span>
             </Link>
           </div>
         </div>

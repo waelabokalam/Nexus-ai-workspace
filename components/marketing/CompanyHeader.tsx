@@ -4,15 +4,15 @@ import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import NexusCore from "@/components/ui/NexusCore";
+import TqMonogram from "@/components/ui/TqMonogram";
 import ThemeToggle from "@/components/ThemeToggle";
 
 type MenuName = "industries" | "solutions";
 
 const industries = [
-  { href: "/restaurants", label: "Restaurants", meta: "Pilot ready" },
-  { href: "/#industries", label: "Retail", meta: "In development" },
-  { href: "/#industries", label: "Fitness", meta: "Planned" },
+  { href: "/restaurants", label: "TQEN Restaurant", meta: "Pilot ready" },
+  { href: "/#industries", label: "TQEN Retail", meta: "In development" },
+  { href: "/#industries", label: "TQEN Vision", meta: "Planned" },
 ] as const;
 
 const solutions = [
@@ -88,7 +88,7 @@ export default function CompanyHeader() {
   return (
     <header className="sticky top-0 z-50 mx-auto w-full max-w-7xl px-5 pt-4 sm:px-8 sm:pt-5" ref={headerRef}>
       <div className="nexus-frame relative flex min-h-14 items-center justify-between rounded-[var(--nexus-radius-frame)] bg-[var(--nexus-surface)] px-4 backdrop-blur-xl sm:px-5">
-        <Link aria-label="Nexus home" className="nexus-heading nexus-focus inline-flex items-center gap-2.5 rounded-lg text-sm font-semibold tracking-[-0.02em]" href="/"><NexusCore size={27} /><span>Nexus</span></Link>
+        <Link aria-label="TQEN home" className="nexus-heading nexus-focus inline-flex items-center gap-3 rounded-lg p-2 text-[15px] font-semibold tracking-[-0.03em] sm:gap-3.5 sm:text-base" href="/"><TqMonogram className="h-8 w-auto sm:h-9 lg:h-10" size={40} /><span>TQEN</span></Link>
 
         <nav aria-label="Primary navigation" className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-0.5 text-sm lg:flex">
           <div className="relative">

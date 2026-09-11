@@ -249,7 +249,7 @@ export function calculateDailyManagerBrief(
   addPriorityItem(
     "auto_handled_today",
     summary.handledAutomatically,
-    `${pluralize(summary.handledAutomatically, "event")} handled automatically by Nexus`,
+    `${pluralize(summary.handledAutomatically, "event")} handled automatically by TQEN`,
     "info",
   );
 

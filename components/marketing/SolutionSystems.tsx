@@ -17,7 +17,7 @@ const solutions = [
     status: "Available in scoped workflows",
     icon: Bot,
     problem: "Teams lose time moving information between messages, tools and repetitive decisions.",
-    approach: "Nexus maps the real workflow, gives the system the right business context, and defines what it may handle, what needs approval and what stays human.",
+    approach: "TQEN maps the real workflow, gives the system the right business context, and defines what it may handle, what needs approval and what stays human.",
     result: "Routine work moves forward without hiding the decisions that still need a person.",
     examples: ["Customer and team agents", "Workflow routing", "Knowledge and memory", "Approvals and handoff"],
   },
@@ -28,7 +28,7 @@ const solutions = [
     status: "Built to scope",
     icon: PanelsTopLeft,
     problem: "Critical operations often live across spreadsheets, inboxes and disconnected software.",
-    approach: "Nexus designs an operational system around the team, its roles and the information required to run the work.",
+    approach: "TQEN designs an operational system around the team, its roles and the information required to run the work.",
     result: "People get one clear place to understand activity, resolve exceptions and maintain control.",
     examples: ["Command centers", "Internal tools", "Customer portals", "Multi-location platforms"],
   },
@@ -39,7 +39,7 @@ const solutions = [
     status: "Built to scope",
     icon: AppWindow,
     problem: "A digital experience fails when it looks polished but stops before the operational work begins.",
-    approach: "Nexus designs the customer-facing experience and the system behind it as one connected product.",
+    approach: "TQEN designs the customer-facing experience and the system behind it as one connected product.",
     result: "The interface becomes a useful part of the operation, not a brochure disconnected from fulfilment.",
     examples: ["Web applications", "Mobile experiences", "Direct-commerce systems", "Premium business websites"],
   },
@@ -50,7 +50,7 @@ const solutions = [
     status: "Dependent on available APIs",
     icon: Blocks,
     problem: "Replacing every existing tool is expensive, disruptive and often unnecessary.",
-    approach: "Where safe interfaces exist, Nexus connects the systems a business already uses and adds a control layer above them.",
+    approach: "Where safe interfaces exist, TQEN connects the systems a business already uses and adds a control layer above them.",
     result: "Information can move with less manual re-entry while the underlying tools remain in place.",
     examples: ["Calendars", "Business data sources", "Notification paths", "Provider-neutral connections"],
   },
@@ -61,7 +61,7 @@ const solutions = [
     status: "Retail direction in development",
     icon: Eye,
     problem: "Some operational signals happen in physical spaces and are missed until after the cost is visible.",
-    approach: "Nexus is developing carefully scoped monitoring systems that turn permitted visual signals into reviewable operational events.",
+    approach: "TQEN is developing carefully scoped monitoring systems that turn permitted visual signals into reviewable operational events.",
     result: "Teams can investigate relevant events without treating every camera feed as something a person must constantly watch.",
     examples: ["Loss-prevention signals", "Operational monitoring", "Human review", "Privacy-aware system design"],
   },
@@ -72,7 +72,7 @@ const solutions = [
     status: "Discovery and scoped delivery",
     icon: Workflow,
     problem: "The most important workflow may not fit a standard product category.",
-    approach: "Nexus studies how the business actually works, then chooses the smallest useful combination of software, automation and AI.",
+    approach: "TQEN studies how the business actually works, then chooses the smallest useful combination of software, automation and AI.",
     result: "The solution fits the operation instead of forcing the operation into a generic template.",
     examples: ["Custom SaaS", "CRM workflows", "Operations platforms", "Purpose-built automation"],
   },
@@ -109,7 +109,7 @@ export default function SolutionSystems() {
                     <p className="nexus-copy mt-3 text-sm leading-6">{solution.problem}</p>
                   </div>
                   <div>
-                    <h3 className="nexus-subtle text-xs font-medium uppercase tracking-[0.13em]">How Nexus works</h3>
+                    <h3 className="nexus-subtle text-xs font-medium uppercase tracking-[0.13em]">How TQEN works</h3>
                     <p className="nexus-copy mt-3 text-sm leading-6">{solution.approach}</p>
                   </div>
                   <div>

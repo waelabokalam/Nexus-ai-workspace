@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 
 import RestaurantLoginForm from "@/components/RestaurantLoginForm";
 import ThemeToggle from "@/components/ThemeToggle";
-import NexusCore from "@/components/ui/NexusCore";
+import TqMonogram from "@/components/ui/TqMonogram";
 
 export const metadata: Metadata = {
-  title: "Restaurant sign in | Nexus",
-  description: "Secure access to the Nexus Restaurant Manager Command Center.",
+  title: "Restaurant sign in | TQEN",
+  description: "Secure access to the TQEN Restaurant Manager Command Center.",
   robots: { index: false, follow: false },
 };
 
@@ -31,10 +31,10 @@ export default async function RestaurantLoginPage({
         id="restaurant-login"
       >
         <div className="flex items-center gap-3">
-          <NexusCore size={34} />
+          <TqMonogram size={30} />
           <div>
             <p className="text-sm font-semibold tracking-[-0.02em] text-white light:text-zinc-950">
-              Nexus Restaurant
+              TQEN Restaurant
             </p>
             <p className="mt-0.5 text-xs text-zinc-500">Manager workspace</p>
           </div>
@@ -55,7 +55,7 @@ export default async function RestaurantLoginPage({
         <RestaurantLoginForm next={next} />
 
         <div className="mt-7 border-t border-white/[0.08] pt-5 text-xs leading-5 text-zinc-500 light:border-black/[0.09]">
-          Nexus uses your existing restaurant membership to determine workspace and role access.
+          TQEN uses your existing restaurant membership to determine workspace and role access.
         </div>
       </section>
     </main>

@@ -20,7 +20,7 @@ import {
   type CommandCenterData,
 } from "@/components/restaurant/command-center-presentation";
 import ThemeToggle from "@/components/ThemeToggle";
-import NexusCore from "@/components/ui/NexusCore";
+import TqMonogram from "@/components/ui/TqMonogram";
 import { signOutRestaurant } from "@/lib/restaurant/auth-actions";
 
 export default function RestaurantCommandCenter({ data }: { data: CommandCenterData }) {
@@ -29,7 +29,7 @@ export default function RestaurantCommandCenter({ data }: { data: CommandCenterD
   const summaryItems = [
     { label: "Open attention", value: summary.openAttentionItems, icon: AlertTriangle },
     { label: "Waiting approval", value: summary.waitingForApproval, icon: ShieldCheck },
-    { label: "Handled by Nexus", value: summary.handledAutomatically, icon: Sparkles },
+    { label: "Handled by TQEN", value: summary.handledAutomatically, icon: Sparkles },
     { label: "Human escalations", value: summary.humanEscalations, icon: UserRoundCheck },
     { label: "Events today", value: summary.eventsToday, icon: Activity },
   ];
@@ -38,16 +38,16 @@ export default function RestaurantCommandCenter({ data }: { data: CommandCenterD
     <main className="nexus-page min-h-screen flex-1 text-white">
       <a className="nexus-skip-link" href="#command-center-content">Skip to command center</a>
 
-      <header className="sticky top-0 z-30 border-b border-white/[0.08] bg-[#09090B]/90 backdrop-blur-xl light:border-black/[0.09] light:bg-[#f4f4f0]/90">
+      <header className="sticky top-0 z-30 border-b border-white/[0.08] bg-[#090A0C]/90 backdrop-blur-xl light:border-black/[0.09] light:bg-[#f4f4f0]/90">
         <div className="mx-auto flex min-h-16 max-w-[1480px] flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-3">
-            <NexusCore size={31} />
+            <TqMonogram size={28} />
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold tracking-[-0.02em] text-white light:text-zinc-950">
                 {organization.name}
               </p>
               <p className="truncate text-[11px] text-zinc-500">
-                Nexus Restaurant · {humanize(membership.role)}
+                TQEN Restaurant · {humanize(membership.role)}
               </p>
             </div>
           </div>
@@ -126,7 +126,7 @@ export default function RestaurantCommandCenter({ data }: { data: CommandCenterD
         </div>
 
         <footer className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.08] py-5 text-[11px] text-zinc-600 light:border-black/[0.09]">
-          <p className="flex items-center gap-2"><UtensilsCrossed aria-hidden="true" className="size-3.5" />Nexus Restaurant V1</p>
+          <p className="flex items-center gap-2"><UtensilsCrossed aria-hidden="true" className="size-3.5" />TQEN Restaurant</p>
           <p>Persisted operational data · External review responses are not published</p>
         </footer>
       </div>

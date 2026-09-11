@@ -42,14 +42,14 @@ const systems: FeatureSystem[] = [
         title: "Adaptive communication",
         availability: "Live in the website workspace",
         problem: "A rigid script can sound distant or inappropriate.",
-        works: "Nexus uses style signals and reviewed examples to shape the form of a response without changing the business answer.",
+        works: "TQEN uses style signals and reviewed examples to shape the form of a response without changing the business answer.",
         outcome: "Conversations can remain helpful and appropriate to the person asking.",
       },
       {
         title: "English, Arabic and Turkish",
         availability: "Live in the website workspace",
         problem: "Customers should not have to switch languages to get help.",
-        works: "Nexus keeps the response in the supported language of the conversation.",
+        works: "TQEN keeps the response in the supported language of the conversation.",
         outcome: "Teams can serve these supported languages from one workspace.",
       },
     ],
@@ -63,7 +63,7 @@ const systems: FeatureSystem[] = [
         title: "Conversation memory",
         availability: "Live in the website workspace",
         problem: "Customers lose confidence when they have to repeat themselves.",
-        works: "Nexus retains context across turns for the same session.",
+        works: "TQEN retains context across turns for the same session.",
         outcome: "Follow-up questions can build on the conversation already in progress.",
       },
     ],
@@ -119,7 +119,7 @@ const systems: FeatureSystem[] = [
         title: "Channel-neutral architecture",
         availability: "Website workspace live · other channels planned",
         problem: "Business logic should not be rebuilt for every entry point.",
-        works: "Nexus is designed around channel-neutral message contracts, with the public website workspace as the current product surface.",
+        works: "TQEN is designed around channel-neutral message contracts, with the public website workspace as the current product surface.",
         outcome: "Future channels can share one operational communication layer as they are released.",
       },
     ],
@@ -159,7 +159,7 @@ export default function FeatureSystems() {
                       <p className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-500">{feature.availability}</p>
                       <dl className="mt-5 grid gap-4 text-sm leading-6">
                         <div><dt className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">Business problem</dt><dd className="mt-1.5 text-zinc-400">{feature.problem}</dd></div>
-                        <div><dt className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">How Nexus works</dt><dd className="mt-1.5 text-zinc-300">{feature.works}</dd></div>
+                        <div><dt className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">How TQEN works</dt><dd className="mt-1.5 text-zinc-300">{feature.works}</dd></div>
                         <div><dt className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-400">Business outcome</dt><dd className="mt-1.5 text-zinc-200">{feature.outcome}</dd></div>
                       </dl>
                     </div></motion.div>
@@ -181,7 +181,7 @@ export default function FeatureSystems() {
                     <h3 className="nexus-heading mt-5 font-heading text-2xl font-medium tracking-[-0.04em]">{feature.title}</h3>
                     <dl className="mt-8 grid gap-6 text-sm leading-6">
                       <div><dt className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">Business problem</dt><dd className="nexus-copy mt-2">{feature.problem}</dd></div>
-                      <div><dt className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">How Nexus works</dt><dd className="nexus-copy mt-2">{feature.works}</dd></div>
+                      <div><dt className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">How TQEN works</dt><dd className="nexus-copy mt-2">{feature.works}</dd></div>
                       <div><dt className="nexus-subtle text-xs font-medium uppercase tracking-[0.14em]">Business outcome</dt><dd className="nexus-heading mt-2">{feature.outcome}</dd></div>
                     </dl>
                   </motion.div>;

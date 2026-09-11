@@ -8,7 +8,7 @@ import {
   ShieldCheck,
   UserRound,
 } from "lucide-react";
-import NexusCore from "@/components/ui/NexusCore";
+import TqMonogram from "@/components/ui/TqMonogram";
 
 const signals = [
   { label: "Customer requests", icon: MessageSquareText },
@@ -25,7 +25,7 @@ const routes = [
 
 export default function CompanyOperatingModel() {
   return (
-    <div className="nexus-surface relative overflow-hidden rounded-[var(--nexus-radius-surface)] p-4 sm:p-5" aria-label="Nexus operating model">
+    <div className="nexus-surface relative overflow-hidden rounded-[var(--nexus-radius-surface)] p-4 sm:p-5" aria-label="TQEN operating model">
       <div className="flex items-center justify-between gap-4 border-b border-[var(--nexus-border)] pb-4">
         <p className="nexus-heading text-sm font-medium">Your operation</p>
         <p className="nexus-subtle text-xs">Connected, not replaced</p>
@@ -42,10 +42,10 @@ export default function CompanyOperatingModel() {
 
       <div className="relative my-4 flex items-center justify-center py-2">
         <span aria-hidden="true" className="absolute inset-x-0 top-1/2 h-px bg-[var(--nexus-border)]" />
-        <div className="relative flex items-center gap-3 rounded-[var(--nexus-radius-control)] border border-[var(--nexus-border-strong)] bg-[var(--nexus-surface-raised)] px-4 py-3 shadow-[0_16px_42px_rgba(0,0,0,0.16)]">
-          <NexusCore size={31} />
+        <div className="relative flex items-center gap-3 rounded-[var(--nexus-radius-control)] border border-[var(--nexus-border)] bg-[var(--nexus-surface)] px-4 py-3">
+          <TqMonogram size={28} />
           <div>
-            <p className="nexus-heading text-sm font-semibold">Nexus</p>
+            <p className="nexus-heading text-sm font-semibold">TQEN</p>
             <p className="nexus-subtle mt-0.5 text-[11px]">Understand, connect, act</p>
           </div>
         </div>

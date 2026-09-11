@@ -11,8 +11,8 @@ import {
 import { pageMetadata } from "@/app/metadata";
 
 export const metadata: Metadata = pageMetadata(
-  "Restaurant Operations",
-  "Nexus Restaurant is a pilot-ready Manager Command Center for attention, approvals, reputation, supplier costs, invoice extraction and multi-branch operations.",
+  "TQEN Restaurant Operations",
+  "TQEN Restaurant is a pilot-ready Manager Command Center for attention, approvals, reputation, supplier costs, invoice extraction and multi-branch operations.",
   "/restaurants",
 );
 

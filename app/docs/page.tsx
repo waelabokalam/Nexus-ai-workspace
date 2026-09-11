@@ -5,7 +5,7 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import DocsNavigation from "@/components/docs/DocsNavigation";
 import { pageMetadata } from "@/app/metadata";
 
-export const metadata: Metadata = pageMetadata("Nexus Agent Documentation", "A practical guide to the current Nexus Agent website workspace and communication engine integration.", "/docs");
+export const metadata: Metadata = pageMetadata("TQEN Agent Documentation", "A practical guide to the current TQEN Agent website workspace and communication engine integration.", "/docs");
 
 const sections = [
   { id: "overview", title: "Overview" },
@@ -80,16 +80,16 @@ export default function DocsPage() {
     <MarketingPage>
       <div className="mx-auto max-w-7xl px-5 pb-28 pt-20 sm:px-8 sm:pt-28">
         <div className="max-w-3xl">
-          <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Nexus Agent documentation</p>
+          <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">TQEN Agent documentation</p>
           <h1 className="nexus-heading mt-5 font-heading text-5xl font-semibold tracking-[-0.055em] sm:text-6xl">Operate the conversation with confidence.</h1>
-          <p className="nexus-copy mt-6 text-lg leading-8">A practical guide to the current Agent workspace, its streaming behavior and the capabilities that support it. Documentation for other Nexus products will be published with their public integration surfaces.</p>
+          <p className="nexus-copy mt-6 text-lg leading-8">A practical guide to the current Agent workspace, its streaming behavior and the capabilities that support it. Documentation for other TQEN products will be published with their public integration surfaces.</p>
         </div>
 
         <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-[13.5rem_minmax(0,1fr)]">
           <DocsNavigation sections={sections} />
           <article className="space-y-10">
             <DocSection id="overview" title="Overview">
-              <p>Nexus is an AI operating system for business communication. The public product currently demonstrates a website support workspace connected to the Nexus Engine.</p>
+              <p>TQEN Agent is the live communication workspace. The public product currently demonstrates a website support workspace connected to the TQEN Engine.</p>
               <aside className="rounded-[var(--nexus-radius-control)] border border-white/[0.1] bg-white/[0.035] p-4 text-sm leading-6 text-zinc-300" role="note"><strong className="font-medium text-white">Current public scope.</strong> Customer Support is the live workspace. Other scenarios, integrations and channels are planned rather than functioning public demos.</aside>
             </DocSection>
 
@@ -99,7 +99,7 @@ export default function DocsPage() {
 
             <DocSection id="architecture" title="Architecture">
               <p>The browser sends a message to a Next.js server route. That route keeps development credentials server-side and streams the engine response back to the browser. The workspace renders safe response text and only the events the engine emits.</p>
-              <p className="text-sm text-zinc-500">Browser → Next.js support proxy → Nexus Engine stream → Support workspace</p>
+              <p className="text-sm text-zinc-500">Browser → Next.js support proxy → TQEN Engine stream → Support workspace</p>
             </DocSection>
 
             <DocSection id="website-integration" title="Website Integration">
@@ -126,7 +126,7 @@ export default function DocsPage() {
             </DocSection>
 
             <DocSection id="knowledge-base-setup" title="Knowledge Base Setup"><p>Business knowledge is retrieved from Qdrant-backed collections. Keep content current, scoped to the intended business and reviewed for accuracy before it enters a live workflow.</p></DocSection>
-            <DocSection id="adaptive-style-memory" title="Adaptive Style Memory"><p>Style examples help Nexus adapt the form of a response while preserving the underlying business answer. Treat examples as reviewed communication guidance, not as a replacement for business policy.</p></DocSection>
+            <DocSection id="adaptive-style-memory" title="Adaptive Style Memory"><p>Style examples help TQEN adapt the form of a response while preserving the underlying business answer. Treat examples as reviewed communication guidance, not as a replacement for business policy.</p></DocSection>
             <DocSection id="google-calendar-setup" title="Google Calendar Setup"><p>Scheduling requires a configured Google Calendar integration and an available workflow. Confirm the intended calendar and keep credentials server-side before enabling actions. The public workspace only displays the event URL the engine returns; event details remain in Google Calendar.</p></DocSection>
 
             <DocSection id="environment-variables" title="Environment Variables">

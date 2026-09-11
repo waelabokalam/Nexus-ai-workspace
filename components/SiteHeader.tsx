@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import NexusCore from "@/components/ui/NexusCore";
+import TqMonogram from "@/components/ui/TqMonogram";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const navigation = [
@@ -57,9 +57,9 @@ export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 mx-auto w-full max-w-7xl px-5 pt-4 sm:px-8 sm:pt-5">
       <div className="nexus-frame relative flex min-h-14 items-center justify-between rounded-[var(--nexus-radius-frame)] bg-zinc-950/80 px-4 backdrop-blur-xl sm:px-5">
-        <Link aria-label="Nexus home" className="inline-flex items-center gap-2.5 text-sm font-semibold tracking-[-0.02em] text-white" href="/">
-          <NexusCore size={27} />
-          <span>Nexus</span>
+        <Link aria-label="TQEN home" className="inline-flex items-center gap-3 rounded-lg p-2 text-[15px] font-semibold tracking-[-0.03em] text-white sm:gap-3.5 sm:text-base" href="/">
+          <TqMonogram className="h-8 w-auto sm:h-9 lg:h-10" size={40} />
+          <span>TQEN</span>
         </Link>
 
         <nav aria-label="Primary navigation" className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-xl border border-white/[0.06] bg-black/20 p-1 text-sm md:flex">
@@ -73,7 +73,7 @@ export default function SiteHeader() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <Link className="nexus-focus hidden min-h-9 items-center rounded-lg bg-white px-4 text-sm font-medium text-zinc-950 transition hover:bg-zinc-200 sm:inline-flex" href="/demo">
-            Try Nexus <span aria-hidden="true" className="ml-1.5">→</span>
+            Try TQEN <span aria-hidden="true" className="ml-1.5">→</span>
           </Link>
           <button
             aria-controls="site-navigation-mobile"

@@ -18,7 +18,7 @@ export default function DemoGrid() {
   return (
     <motion.section
       animate="visible"
-      aria-label="Available Nexus demos"
+      aria-label="Available TQEN demos"
       className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3"
       initial={false}
       variants={gridVariants}

@@ -4,7 +4,7 @@ import { absoluteSiteUrl, siteConfig } from "@/app/site-config";
 const socialImage = absoluteSiteUrl("/social-image");
 
 export function pageMetadata(title: string, description: string, path: string): Metadata {
-  const fullTitle = `${title} | Nexus`;
+  const fullTitle = `${title} | TQEN`;
 
   return {
     title,
@@ -15,8 +15,8 @@ export function pageMetadata(title: string, description: string, path: string): 
       description,
       type: "website",
       url: absoluteSiteUrl(path),
-      siteName: "Nexus",
-      images: socialImage ? [{ url: socialImage, width: 1200, height: 630, alt: "Nexus intelligent systems for business operations" }] : undefined,
+      siteName: "TQEN",
+      images: socialImage ? [{ url: socialImage, width: 1200, height: 630, alt: "TQEN intelligent systems for real business operations" }] : undefined,
     },
     twitter: socialImage ? { card: "summary_large_image", title: fullTitle, description, images: [socialImage] } : undefined,
   };

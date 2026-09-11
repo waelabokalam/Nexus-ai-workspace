@@ -14,7 +14,7 @@ const workflowIconContainer =
 const flow = [
   { icon: KnowledgeIcon, title: "Business knowledge", description: "Relevant company context is retrieved when the request needs it." },
   { icon: GPTIcon, title: "Intent & memory", description: "The request is understood in the context of the conversation." },
-  { icon: AutomationIcon, title: "Workflow action", description: "Nexus responds or moves into an available action flow." },
+  { icon: AutomationIcon, title: "Workflow action", description: "TQEN responds or moves into an available action flow." },
   { icon: CompletedIcon, title: "Outcome", description: "The response and any emitted workflow stages are visible in the workspace." },
 ];
 
@@ -29,7 +29,7 @@ const communicationInputs = [
     label: "Customer context",
     detail: "Language and conversation history",
     title: "Conversation context",
-    summary: "Nexus considers the customer’s language and the context already present in the conversation.",
+    summary: "TQEN considers the customer’s language and the context already present in the conversation.",
     highlightedStep: 1,
   },
   {
@@ -63,9 +63,9 @@ export default function WorkspacePreview() {
         </div>
 
         <div className="nexus-frame rounded-[var(--nexus-radius-surface)] p-1">
-          <div className="rounded-[calc(var(--nexus-radius-surface)-0.3rem)] bg-[#101012]/85 p-5 sm:p-8">
+          <div className="rounded-[calc(var(--nexus-radius-surface)-0.3rem)] bg-[#111317]/85 p-5 sm:p-8">
           <div className="flex flex-col gap-3 border-b border-white/[0.08] pb-5 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">Nexus operating flow</p>
+            <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">TQEN operating flow</p>
             <p className="text-xs leading-5 text-zinc-500">The live demo shows actual emitted workflow events.</p>
           </div>
 

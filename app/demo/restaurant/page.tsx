@@ -11,7 +11,7 @@ import {
 export const metadata: Metadata = {
   ...pageMetadata(
     "Saray Sofrasi Restaurant Demo",
-    "Ask about the menu in Turkish, Arabic, or English and book a real table through the Nexus restaurant workspace.",
+    "Ask about the menu in Turkish, Arabic, or English and book a real table through the TQEN restaurant workspace.",
     "/demo/restaurant",
   ),
 };
@@ -22,7 +22,7 @@ export const restaurantWorkspaceConfig: WorkspaceConfig = {
   headerTitle: "Saray Sofrasi",
   headerSubtext: "AI-powered guest service and reservations",
   workspaceTitle: "Saray Sofrasi — Restaurant Demo",
-  emptyTitle: "Ask about the menu or book a table to start a live Nexus Engine session.",
+  emptyTitle: "Ask about the menu or book a table to start a live TQEN Engine session.",
   emptyDescription: "Ask in Turkish, Arabic, or English. Confirmed reservations create real calendar events.",
   prompts: restaurantStarterPrompts,
   secondaryPrompts: restaurantSecondaryPrompts,

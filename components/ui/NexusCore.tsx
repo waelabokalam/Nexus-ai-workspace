@@ -1,3 +1,4 @@
+// Legacy mark — retained for reference only. Public TQEN surfaces use TqMonogram.
 interface NexusCoreProps {
   size?: number;
 }

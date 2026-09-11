@@ -5,7 +5,7 @@ import { pageMetadata } from "@/app/metadata";
 
 export const metadata: Metadata = pageMetadata(
   "Engagements",
-  "Explore how Nexus scopes restaurant pilots and custom operational systems around real business workflows.",
+  "Explore how TQEN scopes restaurant pilots and custom operational systems around real business workflows.",
   "/pricing",
 );
 
@@ -14,7 +14,7 @@ const engagements = [
     label: "Flagship industry system",
     title: "Restaurant pilot",
     timing: "30-day operating pilot",
-    description: "Run the current Nexus Restaurant system with a real restaurant operation and evaluate what it surfaces for managers.",
+    description: "Run the current TQEN Restaurant system with a real restaurant operation and evaluate what it surfaces for managers.",
     includes: ["Command Center setup", "Branch and role configuration", "Daily Brief and work queues", "Reputation and supplier workflows", "Pilot review"],
     href: "/restaurants#restaurant-pilot",
     cta: "Explore the pilot",
@@ -36,11 +36,11 @@ export default function PricingPage() {
       <section className="mx-auto max-w-7xl px-5 pb-28 pt-20 sm:px-8 sm:pt-28">
         <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
           <div>
-            <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Ways to work with Nexus</p>
+            <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">Ways to work with TQEN</p>
             <h1 className="nexus-heading mt-5 font-heading text-5xl font-semibold tracking-[-0.06em] sm:text-6xl">Scope first. Price the real work.</h1>
           </div>
           <p className="nexus-copy max-w-2xl text-lg leading-8 lg:justify-self-end">
-            Nexus does not force different businesses into a fixed software package. We define the workflow, integrations and level of operational responsibility before proposing a commercial scope.
+            TQEN does not force different businesses into a fixed software package. We define the workflow, integrations and level of operational responsibility before proposing a commercial scope.
           </p>
         </div>
 

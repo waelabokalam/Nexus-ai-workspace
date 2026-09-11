@@ -7,22 +7,22 @@ const socialImage = absoluteSiteUrl("/social-image");
 export const metadata: Metadata = {
   metadataBase: siteConfig.siteUrl ? new URL(siteConfig.siteUrl) : undefined,
   title: {
-    default: "Nexus | Intelligent Systems for Business Operations",
-    template: "%s | Nexus",
+    default: "TQEN | Intelligent Systems for Real Business Operations",
+    template: "%s | TQEN",
   },
-  description: "Nexus builds intelligent business systems, automation, applications and operational technology around how companies actually work.",
-  applicationName: "Nexus",
+  description: "TQEN builds intelligent operational systems — software, AI, automation, data intelligence, integrations and computer vision — around how companies actually work.",
+  applicationName: "TQEN",
   openGraph: {
     type: "website",
-    siteName: "Nexus",
-    title: "Nexus | Intelligent Systems for Business Operations",
+    siteName: "TQEN",
+    title: "TQEN | Intelligent Systems for Real Business Operations",
     description: "Software, automation and AI designed around the real operation.",
     url: siteConfig.siteUrl,
-    images: socialImage ? [{ url: socialImage, width: 1200, height: 630, alt: "Nexus intelligent systems for business operations" }] : undefined,
+    images: socialImage ? [{ url: socialImage, width: 1200, height: 630, alt: "TQEN intelligent systems for real business operations" }] : undefined,
   },
   twitter: {
     card: socialImage ? "summary_large_image" : "summary",
-    title: "Nexus | Intelligent Systems for Business Operations",
+    title: "TQEN | Intelligent Systems for Real Business Operations",
     description: "Software, automation and AI designed around the real operation.",
     images: socialImage ? [socialImage] : undefined,
   },
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#f4f4f0" },
-    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+    { media: "(prefers-color-scheme: dark)", color: "#090A0C" },
   ],
   colorScheme: "dark light",
 };
@@ -48,7 +48,7 @@ export default function RootLayout({
       className="h-full antialiased dark"
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-[#09090B] text-white">
+      <body className="min-h-full flex flex-col bg-[#090A0C] text-white">
         {children}
       </body>
     </html>

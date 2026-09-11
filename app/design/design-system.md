@@ -1,4 +1,4 @@
-# Nexus Design System
+# TQEN Design System
 
 ## Principles
 

@@ -17,7 +17,7 @@ export default function OutcomeActivitySections({ data }: { data: CommandCenterD
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-zinc-500">Recent outcomes</p>
-            <h2 className="mt-1.5 text-lg font-semibold tracking-[-0.025em] text-white light:text-zinc-950" id="handled-heading">Nexus handled</h2>
+            <h2 className="mt-1.5 text-lg font-semibold tracking-[-0.025em] text-white light:text-zinc-950" id="handled-heading">TQEN handled</h2>
           </div>
           <Sparkles aria-hidden="true" className="size-5 text-zinc-500" />
         </div>

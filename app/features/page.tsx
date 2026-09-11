@@ -5,7 +5,7 @@ import { pageMetadata } from "@/app/metadata";
 
 export const metadata: Metadata = pageMetadata(
   "Features",
-  "Explore the intelligent systems, automation, applications, integrations and operational technology Nexus builds around real businesses.",
+  "Explore the intelligent systems, automation, applications, integrations and operational technology TQEN builds around real businesses.",
   "/features",
 );
 
@@ -19,7 +19,7 @@ export default function FeaturesPage() {
             Systems that make the operation easier to run.
           </h1>
           <p className="nexus-copy mt-6 max-w-2xl text-lg leading-8">
-            Nexus combines software, automation and AI only where each one is useful. Every engagement begins with the workflow, the people responsible for it and the decisions that matter.
+            TQEN combines software, automation and AI only where each one is useful. Every engagement begins with the workflow, the people responsible for it and the decisions that matter.
           </p>
         </div>
 

@@ -4,7 +4,7 @@ import SectionReveal from "@/components/marketing/SectionReveal";
 
 const secondaryIndustries = [
   {
-    title: "Retail",
+    title: "TQEN Retail",
     status: "In development",
     description: "Operational alerts, loss prevention, pricing, inventory and customer workflows for multi-location retail.",
     icon: ScanSearch,
@@ -12,12 +12,12 @@ const secondaryIndustries = [
     action: "Discuss retail operations",
   },
   {
-    title: "Fitness",
+    title: "TQEN Vision",
     status: "Planned",
-    description: "Membership, access, attendance, retention and service workflows designed around the member journey.",
+    description: "Carefully scoped computer vision that turns permitted visual signals into reviewable operational events.",
     icon: Dumbbell,
-    href: "/contact?industry=fitness",
-    action: "Share a fitness workflow",
+    href: "/contact?industry=vision",
+    action: "Share a vision workflow",
   },
 ] as const;
 
@@ -26,8 +26,9 @@ export default function IndustrySystems() {
     <section className="border-y border-[var(--nexus-border)] bg-[var(--nexus-surface-soft)] px-5 py-20 sm:px-8 sm:py-24" id="industries">
       <div className="mx-auto max-w-7xl">
         <SectionReveal className="max-w-3xl">
-          <h2 className="nexus-heading font-heading text-4xl font-semibold leading-[1.02] tracking-[-0.055em] sm:text-5xl">Industry depth where operations demand it.</h2>
-          <p className="nexus-copy mt-5 max-w-2xl text-base leading-7">We package repeatable operational intelligence by industry, starting with Restaurant.</p>
+          <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">TQEN product architecture</p>
+          <h2 className="nexus-heading mt-4 font-heading text-4xl font-semibold leading-[1.02] tracking-[-0.055em] sm:text-5xl">Industry depth where operations demand it.</h2>
+          <p className="nexus-copy mt-5 max-w-2xl text-base leading-7">We package repeatable operational intelligence by industry, starting with TQEN Restaurant.</p>
         </SectionReveal>
 
         <div className="mt-12 grid gap-4 lg:grid-cols-[1.35fr_0.65fr]">
@@ -37,15 +38,15 @@ export default function IndustrySystems() {
               <span className="nexus-status rounded-full px-3 py-1 text-xs font-medium">Pilot ready</span>
             </div>
             <div className="mt-auto max-w-2xl pt-16">
-              <h3 className="nexus-heading font-heading text-4xl font-semibold tracking-[-0.05em]">Restaurant</h3>
-              <p className="nexus-copy mt-4 max-w-xl text-base leading-7">A manager command center for daily priorities, approvals, reputation, supplier costs and operational history.</p>
+              <h3 className="nexus-heading font-heading text-4xl font-semibold tracking-[-0.05em]">TQEN Restaurant</h3>
+              <p className="nexus-copy mt-4 max-w-xl text-base leading-7">Run every location without carrying every location in your head. A manager command center for daily priorities, approvals, reputation, supplier costs and operational history.</p>
               <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm">
                 <span className="nexus-subtle">Daily brief</span>
                 <span className="nexus-subtle">Attention queues</span>
                 <span className="nexus-subtle">Supplier intelligence</span>
               </div>
               <Link className="nexus-heading nexus-focus mt-8 inline-flex min-h-11 items-center rounded-[var(--nexus-radius-control)] text-sm font-medium underline decoration-current/25 underline-offset-4 transition hover:decoration-current" href="/restaurants">
-                Explore Nexus Restaurant <span aria-hidden="true" className="ml-2">→</span>
+                Explore TQEN Restaurant <span aria-hidden="true" className="ml-2">→</span>
               </Link>
             </div>
           </SectionReveal>

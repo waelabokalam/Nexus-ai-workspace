@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import RestaurantCommandCenter from "@/components/RestaurantCommandCenter";
 import ThemeToggle from "@/components/ThemeToggle";
-import NexusCore from "@/components/ui/NexusCore";
+import TqMonogram from "@/components/ui/TqMonogram";
 import { listRestaurantWorkspaces } from "@/lib/restaurant/auth";
 import { signOutRestaurant } from "@/lib/restaurant/auth-actions";
 import { getRestaurantCommandCenter } from "@/lib/restaurant/command-center/service";
@@ -13,8 +13,8 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Manager Command Center | Nexus Restaurant",
-  description: "Restaurant attention, approvals, Nexus outcomes, and activity history.",
+  title: "Manager Command Center | TQEN Restaurant",
+  description: "Restaurant attention, approvals, TQEN outcomes, and activity history.",
   robots: { index: false, follow: false },
 };
 
@@ -33,8 +33,8 @@ export default async function RestaurantPage({
       <main className="nexus-page flex min-h-screen flex-1 items-center justify-center px-5 py-12 text-white">
         <div className="absolute right-5 top-5"><ThemeToggle /></div>
         <section className="nexus-surface w-full max-w-lg rounded-[var(--nexus-radius-surface)] p-7 text-center sm:p-9">
-          <div className="mx-auto flex size-12 items-center justify-center"><NexusCore size={42} /></div>
-          <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500">Nexus Restaurant</p>
+          <div className="mx-auto flex size-12 items-center justify-center"><TqMonogram size={30} /></div>
+          <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500">TQEN Restaurant</p>
           <h1 className="mt-3 text-2xl font-semibold tracking-[-0.035em] text-white light:text-zinc-950">No restaurant workspace yet</h1>
           <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-zinc-400 light:text-zinc-600">
             Your account is authenticated, but it has not been added to a restaurant organization. Ask an owner to add your user account, or run the guarded seed against an approved Restaurant development project.

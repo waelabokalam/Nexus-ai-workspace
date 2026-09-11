@@ -17,7 +17,7 @@ if (rawSiteUrl) {
   try {
     configuredSiteUrl = normalizeSiteUrl(rawSiteUrl);
   } catch {
-    console.warn("Nexus configuration warning: NEXT_PUBLIC_SITE_URL must be a valid absolute URL.");
+    console.warn("TQEN configuration warning: NEXT_PUBLIC_SITE_URL must be a valid absolute URL.");
   }
 }
 
@@ -33,13 +33,13 @@ export const siteConfig = {
 
 if (isProduction && !configuredSiteUrl) {
   console.warn(
-    "Nexus configuration warning: NEXT_PUBLIC_SITE_URL is required in production for canonical URLs, sitemap, robots, and social metadata.",
+    "TQEN configuration warning: NEXT_PUBLIC_SITE_URL is required in production for canonical URLs, sitemap, robots, and social metadata.",
   );
 }
 
 if (isProduction && !contactEmail) {
   console.warn(
-    "Nexus configuration warning: NEXT_PUBLIC_CONTACT_EMAIL is required before the public contact experience is deployment-ready.",
+    "TQEN configuration warning: NEXT_PUBLIC_CONTACT_EMAIL is required before the public contact experience is deployment-ready.",
   );
 }
 

@@ -49,18 +49,22 @@
 }
 
 :root {
-  --nexus-canvas: #09090b;
-  --nexus-surface: #111113;
-  --nexus-surface-raised: #171719;
+  --nexus-canvas: #090A0C;
+  --nexus-surface: #111317;
+  --nexus-surface-raised: #16191E;
   --nexus-surface-soft: rgba(255, 255, 255, 0.035);
   --nexus-border: rgba(255, 255, 255, 0.11);
   --nexus-border-strong: rgba(255, 255, 255, 0.19);
   --nexus-text: #f7f7f5;
   --nexus-text-muted: #b0b0b5;
   --nexus-text-subtle: #7b7b84;
-  --nexus-accent: #f7f7f5;
-  --nexus-accent-foreground: #131314;
-  --nexus-focus-ring: rgba(255, 255, 255, 0.46);
+  --nexus-accent: #0052FF;
+  --nexus-accent-foreground: #ffffff;
+  --nexus-focus-ring: rgba(0, 82, 255, 0.65);
+  --tqen-blue: #0052FF;
+  --tqen-blue-hover: #0043D6;
+  --tqen-canvas: #090A0C;
+  --tqen-surface: #111317;
   --nexus-radius-surface: 1.5rem;
   --nexus-radius-control: 0.875rem;
   --nexus-radius-frame: 1.125rem;
@@ -159,9 +163,9 @@
   --border: rgba(24, 24, 22, 0.14);
   --input: rgba(24, 24, 22, 0.14);
   --ring: #181816;
-  --nexus-accent: #181816;
+  --nexus-accent: #0052FF;
   --nexus-accent-foreground: #ffffff;
-  --nexus-focus-ring: rgba(24, 24, 22, 0.42);
+  --nexus-focus-ring: rgba(0, 82, 255, 0.45);
 }
 
 @layer base {
@@ -228,10 +232,16 @@
 .nexus-subtle { color: var(--nexus-text-subtle); }
 .nexus-card { border: 1px solid var(--nexus-border); background: var(--nexus-surface); box-shadow: 0 14px 38px rgba(0, 0, 0, 0.12); }
 .nexus-control { border: 1px solid var(--nexus-border); background: var(--nexus-surface-soft); }
-.nexus-button-primary { background: var(--nexus-accent); color: var(--nexus-accent-foreground); }
+.nexus-button-primary { background: var(--nexus-accent); color: var(--nexus-accent-foreground); border: 1px solid transparent; }
 .nexus-button-secondary { border: 1px solid var(--nexus-border-strong); background: var(--nexus-surface-soft); color: var(--nexus-text); }
 .nexus-button-primary, .nexus-button-secondary { transition: transform 180ms ease, background 180ms ease, border-color 180ms ease; }
-.nexus-button-primary:hover, .nexus-button-secondary:hover { transform: translateY(-1px); border-color: var(--nexus-border-strong); }
+.nexus-button-primary:hover { transform: translateY(-1px); background: var(--tqen-blue-hover); border-color: transparent; }
+.nexus-button-secondary:hover { transform: translateY(-1px); border-color: var(--nexus-border-strong); }
+.tq-monogram {
+  flex-shrink: 0;
+  display: block;
+  background: transparent;
+}
 .nexus-status { border: 1px solid var(--nexus-border); background: var(--nexus-surface-soft); color: var(--nexus-text-muted); }
 
 .nexus-theme-toggle {
@@ -396,6 +406,11 @@
 [data-demo-id="pgpara"] .bg-white { background: #25a520; color: #fff; }
 [data-demo-id="pgpara"] .bg-white.text-zinc-950 { color: #fff; }
 [data-demo-id="pgpara"] .border-white\/\[0\.1\] { border-color: #cfe2ca; }
+[data-demo-id="pgpara"] .nexus-heading { color: #1d3920; }
+[data-demo-id="pgpara"] .nexus-copy { color: #355d38; }
+[data-demo-id="pgpara"] .nexus-subtle { color: #607b62; }
+[data-demo-id="pgpara"] .nexus-status { border-color: #cfe2ca; background: #ffffff; color: #355d38; }
+[data-demo-id="pgpara"] .border-t { border-top-color: #cfe2ca; }
 
 .light .nexus-workspace[data-workspace-theme="pgpara"] {
   --nexus-canvas: #f5faf4;

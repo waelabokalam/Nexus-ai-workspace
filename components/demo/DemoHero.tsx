@@ -24,10 +24,10 @@ export default function DemoHero() {
         See the systems at work.
       </h1>
       <p className="nexus-copy mx-auto mt-6 max-w-2xl text-base leading-7 sm:text-lg">
-        These public workspaces demonstrate real Nexus capabilities and one clearly labeled concept integration. No scripted conversations or invented results.
+        These public workspaces demonstrate real TQEN capabilities and one clearly labeled concept integration. No scripted conversations or invented results.
       </p>
       <p className="nexus-subtle mt-3 text-sm tracking-[-0.01em]">
-        The Nexus Agent and Restaurant Guest Assistant use live request paths. PGPara is an independent concept prototype with no implied endorsement.
+        The TQEN Agent and Restaurant Guest Assistant use live request paths. PGPara is an independent concept prototype with no implied endorsement.
       </p>
 
       <motion.div
