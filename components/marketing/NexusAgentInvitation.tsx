@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { ArrowRight, CalendarDays, Languages, MessageSquareText, Search } from "lucide-react";
+import { ArrowRight, CheckCircle2, Languages, MessageSquareText, Search } from "lucide-react";
 import SectionReveal from "@/components/marketing/SectionReveal";
 
 const abilities = [
   { label: "Explain TQEN", icon: MessageSquareText },
   { label: "Use business knowledge", icon: Search },
   { label: "Speak three languages", icon: Languages },
-  { label: "Move into scheduling", icon: CalendarDays },
+  { label: "Capture pilot inquiries", icon: CheckCircle2 },
 ] as const;
 
 export default function NexusAgentInvitation() {

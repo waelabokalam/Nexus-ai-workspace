@@ -27,12 +27,12 @@ export const demos: Demo[] = [
     id: "customer-support",
     title: "TQEN Agent",
     description:
-      "Talk to the same agent architecture TQEN uses for grounded answers, memory, intent handling and scheduling.",
+      "Talk to the official TQEN Agent for grounded company knowledge, multi-language dialogue, and pilot qualification.",
     capabilities: [
       "Multi-language",
-      "Google Calendar",
+      "Grounded Knowledge",
       "Adaptive Tone",
-      "Knowledge Base",
+      "Pilot Qualification",
     ],
     availability: { label: "Live today", values: ["Website workspace"] },
     href: "/demo/support",

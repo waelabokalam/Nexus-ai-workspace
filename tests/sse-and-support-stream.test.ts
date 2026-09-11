@@ -149,4 +149,43 @@ describe("SSE parsing and support stream state", () => {
     expect(pgparaIntegrationTools.every((tool) => tool.status === "Integration ready")).toBe(true);
     expect(JSON.stringify(pgparaIntegrationTools)).not.toMatch(/rate|commission|fee|endpoint|transaction number/i);
   });
+
+  it("handles malformed JSON and truncated frames in SSE parser gracefully", () => {
+    const parser = new SSEParser();
+    // Incomplete/truncated chunk (missing ending newline)
+    const incomplete = parser.push("event: response.delta\ndata: {\"type\":\"response.delta\",\"payload\":{\"text\":\"Incomp");
+    expect(incomplete).toEqual([]);
+
+    // Corrupted non-JSON frame followed by a valid frame
+    const nextChunk = parser.push("lete\"}}\n\nevent: garbage\ndata: {corrupted_json}\n\nevent: response.completed\ndata: {\"type\":\"response.completed\"}\n\n");
+    expect(nextChunk).toEqual([
+      {
+        event: "response.delta",
+        data: '{"type":"response.delta","payload":{"text":"Incomplete"}}',
+        id: undefined,
+      },
+      {
+        event: "garbage",
+        data: "{corrupted_json}",
+        id: undefined,
+      },
+      {
+        event: "response.completed",
+        data: '{"type":"response.completed"}',
+        id: undefined,
+      },
+    ]);
+
+    // finish() flushes buffer cleanly
+    expect(parser.finish()).toEqual([]);
+  });
+
+  it("applies request.failed workflow step safely without leaking errors", () => {
+    const steps = applyWorkflowEvent(createWorkflowSteps(), {
+      type: "request.failed",
+      timestamp: "2026-09-11T12:00:00.000Z",
+    });
+    // Request started step should still exist and request.failed should not break the array
+    expect(steps).toHaveLength(8);
+  });
 });

@@ -112,6 +112,41 @@ describe("support proxy", () => {
       }),
     );
   });
+
+  it("handles backend HTTP 500 safely without leaking stack traces or internal paths", async () => {
+    const internalLeakPayload = JSON.stringify({
+      error: "Internal Server Error",
+      traceback: "Traceback (most recent call last):\n  File '/app/src/engine.py', line 123 in run\nValueError",
+      file_path: "/root/.secrets/tqen_key.json",
+    });
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(internalLeakPayload, { status: 500 })));
+
+    const response = await POST(
+      supportRequest({ conversation_id: "c-err", customer_id: "cust-err", message: "Crash test" }),
+    );
+
+    expect(response.status).toBe(502);
+    const body = await response.text();
+    expect(body).toContain("The TQEN Agent is temporarily unavailable. Please try again.");
+    expect(body).not.toContain("/app/src/engine.py");
+    expect(body).not.toContain("Traceback");
+    expect(body).not.toContain("/root/.secrets");
+    expect(body).not.toContain(apiKey);
+  });
+
+  it("handles backend timeout and connection errors safely without leaking details", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("connect ETIMEDOUT 127.0.0.1:8000 with secret=" + apiKey)));
+
+    const response = await POST(
+      supportRequest({ conversation_id: "c-timeout", customer_id: "cust-timeout", message: "Timeout test" }),
+    );
+
+    expect(response.status).toBe(502);
+    const body = await response.text();
+    expect(body).toContain("The TQEN Agent is temporarily unavailable. Please try again.");
+    expect(body).not.toContain("ETIMEDOUT");
+    expect(body).not.toContain(apiKey);
+  });
 });
 
 describe("PGPara prototype proxy", () => {
