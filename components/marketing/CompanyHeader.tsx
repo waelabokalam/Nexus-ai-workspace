@@ -6,28 +6,23 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import TqMonogram from "@/components/ui/TqMonogram";
 import ThemeToggle from "@/components/ThemeToggle";
+import LocaleSwitcher from "@/components/LocaleSwitcher";
+import { localeHref, stripAr, type Locale } from "@/lib/i18n/routing";
+import { siteEn, type HeaderCopy } from "@/lib/i18n/site";
 
 type MenuName = "industries" | "solutions";
 
-const industries = [
-  { href: "/restaurants", label: "TQEN Restaurant", meta: "Pilot ready" },
-  { href: "/#industries", label: "TQEN Retail", meta: "In development" },
-  { href: "/#industries", label: "TQEN Vision", meta: "Planned" },
-] as const;
-
-const solutions = [
-  { href: "/features#ai-automation", label: "AI and automation" },
-  { href: "/features#business-systems", label: "Apps and platforms" },
-  { href: "/features#websites", label: "Websites" },
-  { href: "/features#integrations", label: "Integrations" },
-  { href: "/features#computer-vision", label: "Computer vision" },
-  { href: "/features#custom-systems", label: "Custom systems" },
-] as const;
-
-export default function CompanyHeader() {
+export default function CompanyHeader({
+  t = siteEn.header,
+  locale = siteEn.locale,
+}: {
+  t?: HeaderCopy;
+  locale?: Locale;
+}) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<MenuName | null>(null);
   const pathname = usePathname();
+  const basePath = stripAr(pathname);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobileNavigationRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLElement>(null);
@@ -81,46 +76,48 @@ export default function CompanyHeader() {
 
   const menuButton = (name: MenuName, label: string) => (
     <button aria-expanded={openMenu === name} aria-haspopup="true" className="nexus-focus inline-flex min-h-9 items-center rounded-lg px-3 text-sm text-[var(--nexus-text-muted)] transition-colors hover:bg-[var(--nexus-surface-soft)] hover:text-[var(--nexus-text)]" onClick={() => setOpenMenu((current) => current === name ? null : name)} type="button">
-      {label}<ChevronDown aria-hidden="true" className={`ml-1.5 size-3.5 transition-transform ${openMenu === name ? "rotate-180" : ""}`} strokeWidth={1.6} />
+      {label}<ChevronDown aria-hidden="true" className={`ms-1.5 size-3.5 transition-transform ${openMenu === name ? "rotate-180" : ""}`} strokeWidth={1.6} />
     </button>
   );
 
   return (
     <header className="sticky top-0 z-50 mx-auto w-full max-w-7xl px-5 pt-4 sm:px-8 sm:pt-5" ref={headerRef}>
       <div className="nexus-frame relative flex min-h-14 items-center justify-between rounded-[var(--nexus-radius-frame)] bg-[var(--nexus-surface)] px-4 backdrop-blur-xl sm:px-5">
-        <Link aria-label="TQEN home" className="nexus-heading nexus-focus inline-flex items-center gap-3 rounded-lg p-2 text-[15px] font-semibold tracking-[-0.03em] sm:gap-3.5 sm:text-base" href="/"><TqMonogram className="h-8 w-auto sm:h-9 lg:h-10" size={40} /><span>TQEN</span></Link>
+        <Link aria-label={t.homeLabel} className="nexus-heading nexus-focus inline-flex items-center gap-3 rounded-lg p-2 text-[15px] font-semibold tracking-[-0.03em] sm:gap-3.5 sm:text-base" href={localeHref("/", locale)}><TqMonogram className="h-8 w-auto sm:h-9 lg:h-10" size={40} /><span>TQEN</span></Link>
 
-        <nav aria-label="Primary navigation" className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-0.5 text-sm lg:flex">
+        <nav aria-label={t.primaryNavLabel} className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-0.5 text-sm lg:flex">
           <div className="relative">
-            {menuButton("industries", "Industries")}
-            {openMenu === "industries" && <div className="nexus-surface absolute left-1/2 top-full mt-2 w-64 -translate-x-1/2 rounded-[var(--nexus-radius-control)] p-2">{industries.map((item) => <Link className="nexus-focus flex min-h-12 items-center justify-between rounded-lg px-3 text-sm transition hover:bg-[var(--nexus-surface-soft)]" href={item.href} key={`${item.label}-${item.meta}`} onClick={() => setOpenMenu(null)}><span className="nexus-heading font-medium">{item.label}</span><span className="nexus-subtle text-[11px]">{item.meta}</span></Link>)}</div>}
+            {menuButton("industries", t.industriesLabel)}
+            {openMenu === "industries" && <div className="nexus-surface absolute left-1/2 top-full mt-2 w-64 -translate-x-1/2 rounded-[var(--nexus-radius-control)] p-2">{t.industries.map((item) => <Link className="nexus-focus flex min-h-12 items-center justify-between rounded-lg px-3 text-sm transition hover:bg-[var(--nexus-surface-soft)]" href={localeHref(item.path, locale)} key={`${item.label}-${item.meta}`} onClick={() => setOpenMenu(null)}><span className="nexus-heading font-medium">{item.label}</span><span className="nexus-subtle text-[11px]">{item.meta}</span></Link>)}</div>}
           </div>
 
           <div className="relative">
-            {menuButton("solutions", "Solutions")}
-            {openMenu === "solutions" && <div className="nexus-surface absolute left-1/2 top-full mt-2 grid w-[29rem] -translate-x-1/2 grid-cols-2 gap-1 rounded-[var(--nexus-radius-control)] p-2">{solutions.map((item) => <Link className="nexus-heading nexus-focus min-h-11 rounded-lg px-3 py-3 text-sm transition hover:bg-[var(--nexus-surface-soft)]" href={item.href} key={item.label} onClick={() => setOpenMenu(null)}>{item.label}</Link>)}</div>}
+            {menuButton("solutions", t.solutionsLabel)}
+            {openMenu === "solutions" && <div className="nexus-surface absolute left-1/2 top-full mt-2 grid w-[29rem] -translate-x-1/2 grid-cols-2 gap-1 rounded-[var(--nexus-radius-control)] p-2">{t.solutions.map((item) => <Link className="nexus-heading nexus-focus min-h-11 rounded-lg px-3 py-3 text-sm transition hover:bg-[var(--nexus-surface-soft)]" href={localeHref(item.path, locale)} key={item.label} onClick={() => setOpenMenu(null)}>{item.label}</Link>)}</div>}
           </div>
 
-          <Link className="nexus-focus min-h-9 rounded-lg px-3 py-2 text-[var(--nexus-text-muted)] transition-colors hover:bg-[var(--nexus-surface-soft)] hover:text-[var(--nexus-text)]" href="/#work">Work</Link>
-          <Link aria-current={pathname === "/about" ? "page" : undefined} className={`nexus-focus min-h-9 rounded-lg px-3 py-2 transition-colors ${pathname === "/about" ? "bg-[var(--nexus-surface-soft)] text-[var(--nexus-text)]" : "text-[var(--nexus-text-muted)] hover:bg-[var(--nexus-surface-soft)] hover:text-[var(--nexus-text)]"}`} href="/about">About</Link>
+          <Link className="nexus-focus min-h-9 rounded-lg px-3 py-2 text-[var(--nexus-text-muted)] transition-colors hover:bg-[var(--nexus-surface-soft)] hover:text-[var(--nexus-text)]" href={localeHref(t.workPath, locale)}>{t.workLabel}</Link>
+          <Link aria-current={basePath === t.aboutPath ? "page" : undefined} className={`nexus-focus min-h-9 rounded-lg px-3 py-2 transition-colors ${basePath === t.aboutPath ? "bg-[var(--nexus-surface-soft)] text-[var(--nexus-text)]" : "text-[var(--nexus-text-muted)] hover:bg-[var(--nexus-surface-soft)] hover:text-[var(--nexus-text)]"}`} href={localeHref(t.aboutPath, locale)}>{t.aboutLabel}</Link>
         </nav>
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Link className="nexus-button-primary nexus-focus hidden min-h-9 items-center rounded-lg px-4 text-sm font-medium sm:inline-flex" href="/contact">Talk to us <span aria-hidden="true" className="ml-1.5">→</span></Link>
-          <button aria-controls="site-navigation-mobile" aria-expanded={mobileOpen} className="nexus-button-secondary nexus-focus inline-flex min-h-10 items-center rounded-lg px-3 text-sm lg:hidden" onClick={() => (mobileOpen ? closeMobileMenu(true) : setMobileOpen(true))} ref={menuButtonRef} type="button">{mobileOpen ? "Close" : "Menu"}</button>
+          <LocaleSwitcher className="hidden sm:inline-flex" locale={locale} />
+          <Link className="nexus-button-primary nexus-focus hidden min-h-9 items-center rounded-lg px-4 text-sm font-medium sm:inline-flex" href={localeHref(t.contactPath, locale)}>{t.talkToUs} <span aria-hidden="true" className="ms-1.5 inline-block rtl:-scale-x-100">→</span></Link>
+          <button aria-controls="site-navigation-mobile" aria-expanded={mobileOpen} className="nexus-button-secondary nexus-focus inline-flex min-h-10 items-center rounded-lg px-3 text-sm lg:hidden" onClick={() => (mobileOpen ? closeMobileMenu(true) : setMobileOpen(true))} ref={menuButtonRef} type="button">{mobileOpen ? t.closeLabel : t.menuLabel}</button>
         </div>
       </div>
 
       {mobileOpen && (
-        <nav aria-label="Mobile navigation" className="nexus-surface mt-2 max-h-[calc(100dvh-6rem)] overflow-y-auto rounded-[var(--nexus-radius-control)] p-2 lg:hidden" id="site-navigation-mobile" ref={mobileNavigationRef}>
-          <p className="nexus-subtle px-3 pb-2 pt-2 text-xs font-medium">Industries</p>
-          {industries.map((item) => <Link className="nexus-focus flex min-h-11 items-center justify-between rounded-lg px-3 text-sm hover:bg-[var(--nexus-surface-soft)]" href={item.href} key={`${item.label}-mobile`} onClick={() => closeMobileMenu(false)}><span className="nexus-heading">{item.label}</span><span className="nexus-subtle text-[11px]">{item.meta}</span></Link>)}
-          <p className="nexus-subtle mt-2 border-t border-[var(--nexus-border)] px-3 pb-2 pt-4 text-xs font-medium">Company</p>
-          <Link className="nexus-heading nexus-focus block min-h-11 rounded-lg px-3 py-3 text-sm hover:bg-[var(--nexus-surface-soft)]" href="/#solutions" onClick={() => closeMobileMenu(false)}>Solutions</Link>
-          <Link className="nexus-heading nexus-focus block min-h-11 rounded-lg px-3 py-3 text-sm hover:bg-[var(--nexus-surface-soft)]" href="/#work" onClick={() => closeMobileMenu(false)}>Work</Link>
-          <Link className="nexus-heading nexus-focus block min-h-11 rounded-lg px-3 py-3 text-sm hover:bg-[var(--nexus-surface-soft)]" href="/about" onClick={() => closeMobileMenu(false)}>About</Link>
-          <Link className="nexus-button-primary nexus-focus mt-2 flex min-h-11 items-center justify-center rounded-lg px-4 text-sm font-medium" href="/contact" onClick={() => closeMobileMenu(false)}>Talk to us</Link>
+        <nav aria-label={t.mobileNavLabel} className="nexus-surface mt-2 max-h-[calc(100dvh-6rem)] overflow-y-auto rounded-[var(--nexus-radius-control)] p-2 lg:hidden" id="site-navigation-mobile" ref={mobileNavigationRef}>
+          <div className="px-1 pb-2 pt-1"><LocaleSwitcher className="w-full" locale={locale} /></div>
+          <p className="nexus-subtle px-3 pb-2 pt-2 text-xs font-medium">{t.industriesLabel}</p>
+          {t.industries.map((item) => <Link className="nexus-focus flex min-h-11 items-center justify-between rounded-lg px-3 text-sm hover:bg-[var(--nexus-surface-soft)]" href={localeHref(item.path, locale)} key={`${item.label}-mobile`} onClick={() => closeMobileMenu(false)}><span className="nexus-heading">{item.label}</span><span className="nexus-subtle text-[11px]">{item.meta}</span></Link>)}
+          <p className="nexus-subtle mt-2 border-t border-[var(--nexus-border)] px-3 pb-2 pt-4 text-xs font-medium">{t.companyLabel}</p>
+          <Link className="nexus-heading nexus-focus block min-h-11 rounded-lg px-3 py-3 text-sm hover:bg-[var(--nexus-surface-soft)]" href={localeHref("/#solutions", locale)} onClick={() => closeMobileMenu(false)}>{t.solutionsLabel}</Link>
+          <Link className="nexus-heading nexus-focus block min-h-11 rounded-lg px-3 py-3 text-sm hover:bg-[var(--nexus-surface-soft)]" href={localeHref(t.workPath, locale)} onClick={() => closeMobileMenu(false)}>{t.workLabel}</Link>
+          <Link className="nexus-heading nexus-focus block min-h-11 rounded-lg px-3 py-3 text-sm hover:bg-[var(--nexus-surface-soft)]" href={localeHref(t.aboutPath, locale)} onClick={() => closeMobileMenu(false)}>{t.aboutLabel}</Link>
+          <Link className="nexus-button-primary nexus-focus mt-2 flex min-h-11 items-center justify-center rounded-lg px-4 text-sm font-medium" href={localeHref(t.contactPath, locale)} onClick={() => closeMobileMenu(false)}>{t.talkToUs}</Link>
         </nav>
       )}
     </header>

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SSEParser } from "@/lib/sse";
+import type { Locale } from "@/lib/i18n/routing";
 import { createNewDemoSession, getOrCreateDemoSession } from "@/lib/support-session";
 import {
   appendAssistantDelta,
@@ -24,6 +25,7 @@ type SupportChatOptions = {
   endpoint?: string;
   sessionNamespace?: string;
   unavailableMessage?: string;
+  locale?: Locale;
 };
 
 function isEngineEvent(value: unknown): value is EngineStreamEvent {
@@ -39,9 +41,10 @@ export default function useSupportChat({
   endpoint = "/api/demo/support",
   sessionNamespace = "support",
   unavailableMessage = userFacingStreamError(),
+  locale = "en",
 }: SupportChatOptions = {}) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [workflow, setWorkflow] = useState<WorkflowStep[]>(createWorkflowSteps);
+  const [workflow, setWorkflow] = useState<WorkflowStep[]>(() => createWorkflowSteps(locale));
   const [isSending, setIsSending] = useState(false);
   // Session storage is accessed only from event handlers, so the workspace can
   // be immediately available without creating a server/client hydration split.
@@ -68,7 +71,7 @@ export default function useSupportChat({
       userMessage,
       { id: assistantId, role: "assistant", content: "", complete: false },
     ]);
-    setWorkflow(createWorkflowSteps());
+    setWorkflow(createWorkflowSteps(locale));
     setError(null);
     setLastFailedMessage(null);
     setIsSending(true);
@@ -159,16 +162,16 @@ export default function useSupportChat({
       setIsSending(false);
       abortRef.current = null;
     }
-  }, [endpoint, isSending, sessionNamespace, unavailableMessage]);
+  }, [endpoint, isSending, locale, sessionNamespace, unavailableMessage]);
 
   const startNewConversation = useCallback(() => {
     if (isSending) return;
     sessionRef.current = createNewDemoSession(sessionStorage, sessionNamespace);
     setMessages([]);
-    setWorkflow(createWorkflowSteps());
+    setWorkflow(createWorkflowSteps(locale));
     setError(null);
     setLastFailedMessage(null);
-  }, [isSending, sessionNamespace]);
+  }, [isSending, locale, sessionNamespace]);
 
   return { messages, workflow, isSending, isReady, error, lastFailedMessage, sendMessage, startNewConversation };
 }

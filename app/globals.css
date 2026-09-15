@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-sans: ui-sans-serif, system-ui, "Segoe UI", Tahoma, "Noto Sans Arabic", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --font-heading: ui-sans-serif, system-ui, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
@@ -228,6 +228,11 @@
 }
 
 .nexus-heading { color: var(--nexus-text); }
+
+/* Arabic script is cursive: letter-spacing would disconnect its letters. */
+[dir="rtl"] [class*="tracking-"] {
+  letter-spacing: 0;
+}
 .nexus-copy { color: var(--nexus-text-muted); }
 .nexus-subtle { color: var(--nexus-text-subtle); }
 .nexus-card { border: 1px solid var(--nexus-border); background: var(--nexus-surface); box-shadow: 0 14px 38px rgba(0, 0, 0, 0.12); }

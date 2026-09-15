@@ -1,15 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { demoHubEn, type DemoHeroCopy } from "@/lib/i18n/demo";
 
-const metadata = [
-  "Real request paths",
-  "Business knowledge",
-  "Conversation memory",
-  "Visible workflow events",
-];
-
-export default function DemoHero() {
+export default function DemoHero({ t = demoHubEn.hero }: { t?: DemoHeroCopy }) {
+  const metadata = t.metadata;
   return (
     <motion.section
       animate={{ opacity: 1, y: 0 }}
@@ -18,16 +13,16 @@ export default function DemoHero() {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
       <p className="nexus-subtle text-xs font-medium uppercase tracking-[0.16em]">
-        Product experiences
+        {t.eyebrow}
       </p>
       <h1 className="nexus-heading mt-6 font-heading text-5xl font-semibold tracking-[-0.06em] sm:text-6xl md:text-7xl">
-        See the systems at work.
+        {t.title}
       </h1>
       <p className="nexus-copy mx-auto mt-6 max-w-2xl text-base leading-7 sm:text-lg">
-        These public workspaces demonstrate real TQEN capabilities and one clearly labeled concept integration. No scripted conversations or invented results.
+        {t.description}
       </p>
       <p className="nexus-subtle mt-3 text-sm tracking-[-0.01em]">
-        The TQEN Agent and Restaurant Guest Assistant use live request paths. PGPara is an independent concept prototype with no implied endorsement.
+        {t.note}
       </p>
 
       <motion.div

@@ -3,12 +3,15 @@
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import Link from "next/link";
 import type { Demo } from "@/data/demos";
+import { demoCardCopy } from "@/lib/i18n/demo";
+import { localeHref, type Locale } from "@/lib/i18n/routing";
 import CapabilityChip from "@/components/demo/CapabilityChip";
 import DemoMetadataRow from "@/components/demo/DemoMetadataRow";
 import DemoScenarioIcon from "@/components/demo/DemoScenarioIcon";
 
 type DemoCardProps = {
   demo: Demo;
+  locale?: Locale;
 };
 
 const demoCardVariants: Variants = {
@@ -16,9 +19,10 @@ const demoCardVariants: Variants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function DemoCard({ demo }: DemoCardProps) {
+export default function DemoCard({ demo, locale = "en" }: DemoCardProps) {
   const isAvailable = demo.status === "available" || demo.status === "prototype";
-  const statusLabel = demo.status === "available" ? "Live" : demo.status === "prototype" ? "Prototype" : demo.status === "planned" ? "Planned" : "Coming soon";
+  const t = demoCardCopy(locale);
+  const statusLabel = demo.status === "available" ? t.live : demo.status === "prototype" ? t.prototype : demo.status === "planned" ? t.planned : t.comingSoon;
   const reduceMotion = useReducedMotion();
   // PGPara carries its own measured brand green (#25a520) on its existing light card.
   const isPgpara = demo.id === "pgpara";
@@ -75,9 +79,9 @@ export default function DemoCard({ demo }: DemoCardProps) {
       {isAvailable ? (
         <Link
           className={`nexus-focus relative mt-auto inline-flex h-11 w-full items-center justify-center rounded-[var(--nexus-radius-control)] text-sm font-medium ${isPgpara ? "bg-[#25a520] text-white transition hover:brightness-95" : "nexus-button-primary"}`}
-          href={demo.href ?? "/demo"}
+          href={localeHref(demo.href ?? "/demo", locale)}
         >
-          Open Workspace →
+          {t.openWorkspace} <span aria-hidden="true" className="ms-2 inline-block rtl:-scale-x-100">→</span>
         </Link>
       ) : (
         <button
@@ -86,7 +90,7 @@ export default function DemoCard({ demo }: DemoCardProps) {
           disabled
           type="button"
         >
-          {demo.status === "planned" ? "Planned configuration" : "Coming soon"}
+          {demo.status === "planned" ? t.plannedConfig : t.comingSoon}
         </button>
       )}
     </motion.article>

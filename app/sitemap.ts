@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { absoluteSiteUrl } from "@/app/site-config";
+import { arRoutePath } from "@/lib/i18n/routing";
 
 const routes = [
   "",
@@ -18,8 +19,15 @@ const routes = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return routes
-    .map((route) => absoluteSiteUrl(route || "/"))
-    .filter((url): url is string => Boolean(url))
-    .map((url) => ({ url }));
+  return routes.flatMap((route) => {
+    const enPath = route || "/";
+    const en = absoluteSiteUrl(enPath);
+    const ar = absoluteSiteUrl(arRoutePath(enPath));
+    if (!en || !ar) return [];
+    const languages = { en, ar };
+    return [
+      { url: en, alternates: { languages } },
+      { url: ar, alternates: { languages } },
+    ];
+  });
 }

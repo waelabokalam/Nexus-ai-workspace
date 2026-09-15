@@ -1,3 +1,5 @@
+import type { Locale } from "@/lib/i18n/routing";
+
 export const WORKFLOW_EVENTS = [
   "request.started",
   "request.validated",
@@ -27,7 +29,7 @@ export type WorkflowStep = {
   data?: Record<string, unknown>;
 };
 
-const labels: Record<WorkflowEventType, string> = {
+const labelsEn: Record<WorkflowEventType, string> = {
   "request.started": "Receiving message",
   "request.validated": "Checking request",
   "memory.loaded": "Loading conversation memory",
@@ -36,6 +38,17 @@ const labels: Record<WorkflowEventType, string> = {
   "retrieval.completed": "Knowledge search complete",
   "response.started": "Preparing response",
   "response.completed": "Completing request",
+};
+
+const labelsAr: Record<WorkflowEventType, string> = {
+  "request.started": "استلام الرسالة",
+  "request.validated": "التحقق من الطلب",
+  "memory.loaded": "تحميل ذاكرة المحادثة",
+  "intent.detected": "فهم القصد",
+  "retrieval.started": "البحث في معرفة الشركة",
+  "retrieval.completed": "اكتمل البحث المعرفي",
+  "response.started": "تجهيز الرد",
+  "response.completed": "إتمام الطلب",
 };
 
 function timestampFor(event: EngineStreamEvent) {
@@ -47,7 +60,8 @@ function isWorkflowEvent(type: string): type is WorkflowEventType {
   return WORKFLOW_EVENTS.includes(type as WorkflowEventType);
 }
 
-export function createWorkflowSteps(): WorkflowStep[] {
+export function createWorkflowSteps(locale: Locale = "en"): WorkflowStep[] {
+  const labels = locale === "ar" ? labelsAr : labelsEn;
   return WORKFLOW_EVENTS.map((type) => ({ type, label: labels[type], state: "pending" }));
 }
 

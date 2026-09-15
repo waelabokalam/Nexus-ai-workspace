@@ -9,26 +9,19 @@ import {
   UserRound,
 } from "lucide-react";
 import TqMonogram from "@/components/ui/TqMonogram";
+import { homeEn, type OperatingModelCopy } from "@/lib/i18n/home";
 
-const signals = [
-  { label: "Customer requests", icon: MessageSquareText },
-  { label: "Invoices and costs", icon: ReceiptText },
-  { label: "Internal workflows", icon: Inbox },
-  { label: "Operational signals", icon: Camera },
-] as const;
+const signalIcons = [MessageSquareText, ReceiptText, Inbox, Camera] as const;
+const routeIcons = [Check, ShieldCheck, UserRound] as const;
 
-const routes = [
-  { label: "Automate", detail: "Safe repeatable work", icon: Check },
-  { label: "Ask approval", detail: "Sensitive next steps", icon: ShieldCheck },
-  { label: "Bring a person", detail: "Important decisions", icon: UserRound },
-] as const;
-
-export default function CompanyOperatingModel() {
+export default function CompanyOperatingModel({ t = homeEn.operatingModel }: { t?: OperatingModelCopy }) {
+  const signals = t.signals.map((label, index) => ({ label, icon: signalIcons[index] }));
+  const routes = t.routes.map((route, index) => ({ ...route, icon: routeIcons[index] }));
   return (
-    <div className="nexus-surface relative overflow-hidden rounded-[var(--nexus-radius-surface)] p-4 sm:p-5" aria-label="TQEN operating model">
+    <div className="nexus-surface relative overflow-hidden rounded-[var(--nexus-radius-surface)] p-4 sm:p-5" aria-label={t.title}>
       <div className="flex items-center justify-between gap-4 border-b border-[var(--nexus-border)] pb-4">
-        <p className="nexus-heading text-sm font-medium">Your operation</p>
-        <p className="nexus-subtle text-xs">Connected, not replaced</p>
+        <p className="nexus-heading text-sm font-medium">{t.title}</p>
+        <p className="nexus-subtle text-xs">{t.subtitle}</p>
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-2">
@@ -45,8 +38,8 @@ export default function CompanyOperatingModel() {
         <div className="relative flex items-center gap-3 rounded-[var(--nexus-radius-control)] border border-[var(--nexus-border)] bg-[var(--nexus-surface)] px-4 py-3">
           <TqMonogram size={28} />
           <div>
-            <p className="nexus-heading text-sm font-semibold">TQEN</p>
-            <p className="nexus-subtle mt-0.5 text-[11px]">Understand, connect, act</p>
+            <p className="nexus-heading text-sm font-semibold">{t.name}</p>
+            <p className="nexus-subtle mt-0.5 text-[11px]">{t.tagline}</p>
           </div>
         </div>
         <ArrowDown aria-hidden="true" className="nexus-subtle absolute -bottom-2 size-4" strokeWidth={1.6} />

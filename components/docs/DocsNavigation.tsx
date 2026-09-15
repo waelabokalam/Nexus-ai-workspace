@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 
 type DocsNavigationProps = {
   sections: readonly { id: string; title: string }[];
+  label?: string;
+  navLabel?: string;
 };
 
-export default function DocsNavigation({ sections }: DocsNavigationProps) {
+export default function DocsNavigation({ sections, label = "On this page", navLabel = "Documentation navigation" }: DocsNavigationProps) {
   const [activeId, setActiveId] = useState(sections[0]?.id ?? "");
 
   useEffect(() => {
@@ -40,12 +42,12 @@ export default function DocsNavigation({ sections }: DocsNavigationProps) {
   return (
     <>
       <details className="nexus-surface rounded-[var(--nexus-radius-control)] p-2 lg:hidden">
-        <summary className="nexus-focus cursor-pointer list-none rounded-lg px-3 py-2 text-sm font-medium text-white">On this page</summary>
+        <summary className="nexus-focus cursor-pointer list-none rounded-lg px-3 py-2 text-sm font-medium text-white">{label}</summary>
         <div className="border-t border-white/[0.08] pt-2">{links}</div>
       </details>
       <aside className="hidden h-fit lg:sticky lg:top-24 lg:block">
-        <p className="mb-3 px-3 text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">On this page</p>
-        <nav aria-label="Documentation navigation" className="border-l border-white/[0.1] pl-2">{links}</nav>
+        <p className="mb-3 px-3 text-xs font-medium uppercase tracking-[0.16em] text-zinc-400">{label}</p>
+        <nav aria-label={navLabel} className="border-s border-white/[0.1] ps-2">{links}</nav>
       </aside>
     </>
   );
