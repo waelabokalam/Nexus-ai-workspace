@@ -6,7 +6,7 @@ import { FileUp } from "lucide-react";
 import {
   uploadSupplierInvoiceAction,
   type InvoiceUploadActionState,
-} from "@/app/restaurant/actions";
+} from "@/app/(en)/restaurant/actions";
 import type { NormalizedInvoiceExtraction } from "@/lib/restaurant/invoices";
 
 const initialState: InvoiceUploadActionState = { status: "idle", message: "" };

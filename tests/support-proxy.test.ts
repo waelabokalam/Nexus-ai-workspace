@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { POST } from "@/app/api/demo/support/route";
-import { POST as pgparaPOST } from "@/app/api/demo/pgpara/route";
+import { POST } from "@/app/(en)/api/demo/support/route";
+import { POST as pgparaPOST } from "@/app/(en)/api/demo/pgpara/route";
 
 const apiKey = "test-development-key";
 

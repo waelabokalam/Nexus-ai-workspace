@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { POST } from "@/app/api/demo/restaurant/route";
+import { POST } from "@/app/(en)/api/demo/restaurant/route";
 
 const apiKey = "test-development-key";
 

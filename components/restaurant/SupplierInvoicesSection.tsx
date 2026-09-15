@@ -5,7 +5,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-import { reviewSupplierInvoiceAction } from "@/app/restaurant/actions";
+import { reviewSupplierInvoiceAction } from "@/app/(en)/restaurant/actions";
 import RestaurantInvoiceUpload from "@/components/RestaurantInvoiceUpload";
 import RestaurantSubmitButton from "@/components/RestaurantSubmitButton";
 import {

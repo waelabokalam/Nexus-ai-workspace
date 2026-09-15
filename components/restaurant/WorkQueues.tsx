@@ -3,7 +3,7 @@ import { CheckCircle2, ChevronDown, ShieldCheck, UserRoundCheck, XCircle } from 
 import {
   processApprovalAction,
   updateAttentionAction,
-} from "@/app/restaurant/actions";
+} from "@/app/(en)/restaurant/actions";
 import RestaurantSubmitButton from "@/components/RestaurantSubmitButton";
 import {
   branchLabel,

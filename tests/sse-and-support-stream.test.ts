@@ -3,7 +3,7 @@ import { SSEParser } from "@/lib/sse";
 import { createNewSupportSession, getOrCreateSupportSession } from "@/lib/support-session";
 import { createNewDemoSession, getOrCreateDemoSession } from "@/lib/support-session";
 import { messageDirection } from "@/lib/message-direction";
-import PGParaDemoPage, { pgparaWorkspaceConfig } from "@/app/demo/pgpara/page";
+import PGParaDemoPage, { pgparaWorkspaceConfig } from "@/app/(en)/demo/pgpara/page";
 import { pgparaIntegrationTools } from "@/data/pgpara-demo";
 import {
   appendAssistantDelta,

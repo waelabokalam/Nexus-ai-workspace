@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { absoluteSiteUrl, siteConfig } from "@/app/site-config";
-import "./globals.css";
+import "../globals.css";
 
 const socialImage = absoluteSiteUrl("/social-image");
 
@@ -46,6 +46,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      dir="ltr"
       className="h-full antialiased light"
       suppressHydrationWarning
     >
