@@ -55,7 +55,7 @@ export const privacyEn: PrivacyCopy = {
 export const privacyAr: PrivacyCopy = {
   metadataTitle: "الخصوصية",
   metadataDescription: "معلومات خصوصية TQEN للموقع العام والتجربة.",
-  eyebrow: "TQEN القانونية",
+  eyebrow: "معلومات TQEN القانونية",
   appliesNote: "ينطبق على موقع TQEN العام الحالي والتجربة.",
   title: "الخصوصية",
   intro: "تصف هذه الصفحة موقع TQEN العام الحالي والتجربة بشكل عام. وهي ليست ادعاءً باكتمال برنامج خصوصية مؤسسي.",
@@ -96,7 +96,7 @@ export const termsEn: TermsCopy = {
 export const termsAr: TermsCopy = {
   metadataTitle: "الشروط",
   metadataDescription: "شروط استخدام موقع TQEN العام والتجربة.",
-  eyebrow: "TQEN القانونية",
+  eyebrow: "معلومات TQEN القانونية",
   appliesNote: "ينطبق على موقع TQEN العام الحالي والتجربة.",
   title: "الشروط",
   intro: "تنطبق هذه الشروط على موقع TQEN العام الحالي وتجربة الوصول المبكر.",

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import CompanyFooter from "@/components/marketing/CompanyFooter";
 import CompanyHeader from "@/components/marketing/CompanyHeader";
 import CompanyHero from "@/components/marketing/CompanyHero";
@@ -8,6 +9,10 @@ import RestaurantFlagship from "@/components/marketing/RestaurantFlagship";
 import WorkProof from "@/components/marketing/WorkProof";
 import NexusAgentInvitation from "@/components/marketing/NexusAgentInvitation";
 import CompanyFinalCta from "@/components/marketing/CompanyFinalCta";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/", languages: { en: "/", ar: "/ar" } },
+};
 
 export default function Home() {
   return (

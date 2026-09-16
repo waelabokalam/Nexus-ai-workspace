@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { siteConfig } from "@/app/site-config";
 import "../globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: siteConfig.siteUrl ? new URL(siteConfig.siteUrl) : undefined,
   icons: {
     icon: [{ url: "/icon.png", sizes: "512x512", type: "image/png" }],
   },

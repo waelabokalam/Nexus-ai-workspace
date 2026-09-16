@@ -181,7 +181,7 @@ export const siteAr: SiteCopy = {
         links: [
           { path: "/#solutions", label: "الحلول" },
           { path: "/#work", label: "الأعمال" },
-          { path: "/demo", label: "تجارب حيّة" },
+          { path: "/demo", label: "التجارب" },
           { path: "/docs", label: "توثيق TQEN Agent" },
         ],
       },
